@@ -15,7 +15,7 @@
         <button @click="skillStore.changeActiveSkill('skills')" class="text-2xl font-bold">Skills</button>
         </li>
         <li v-if="activeSkill !== 'inventory'" v-for="skill in skills" :key="skill.id">
-          <button @click="skillStore.changeActiveSkill(skill.name)">{{ skill.name }}</button>
+          <button @click="skillStore.changeActiveSkill(skill)">{{ skill.name }}</button>
         </li>
       </ul>
     </div>
