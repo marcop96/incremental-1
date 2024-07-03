@@ -9,10 +9,12 @@
 <template>
   <div class="flex">
     <div class="h-screen w-1/5 bg-green-400 bg-opacity-75 p-4">
-      <h2 class="text-2xl font-bold">Inventory</h2>
-      <h2 class="text-2xl font-bold">Skills</h2>
       <ul>
-        <li v-for="skill in skills" :key="skill.id">
+        <li class='flex flex-col'>
+        <button @click="skillStore.changeActiveSkill('inventory')" class="text-2xl font-bold">Inventory</button>
+        <button @click="skillStore.changeActiveSkill('skills')" class="text-2xl font-bold">Skills</button>
+        </li>
+        <li v-if="activeSkill !== 'inventory'" v-for="skill in skills" :key="skill.id">
           <button @click="skillStore.changeActiveSkill(skill.name)">{{ skill.name }}</button>
         </li>
       </ul>
