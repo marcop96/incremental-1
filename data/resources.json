@@ -1,0 +1,82 @@
+[
+  {
+    "id": 100,
+    "name": "Normal Log",
+    "skillId": 1,
+    "requiredLevel": 1,
+    "experienceGiven": 25,
+    "timeToGather": 1
+  },
+  {
+    "id": 101,
+    "name": "Oak Log",
+    "skillId": 1,
+    "requiredLevel": 15,
+    "experienceGiven": 37.5,
+    "timeToGather": 2
+  },
+  {
+    "id": 102,
+    "name": "Willow Log",
+    "skillId": 1,
+    "requiredLevel": 30,
+    "experienceGiven": 67.5,
+    "timeToGather": 4
+  },
+  {
+    "id": 103,
+    "name": "Maple Log",
+    "skillId": 1,
+    "requiredLevel": 45,
+    "experienceGiven": 100,
+    "timeToGather": 6
+  },
+  {
+    "id": 104,
+    "name": "Yew Log",
+    "skillId": 1,
+    "requiredLevel": 60,
+    "experienceGiven": 175,
+    "timeToGather": 8
+  },
+  {
+    "id": 105,
+    "name": "Magic Log",
+    "skillId": 1,
+    "requiredLevel": 75,
+    "experienceGiven": 250,
+    "timeToGather": 10
+  },
+  {
+    "id": 106,
+    "name": "Redwood Log",
+    "skillId": 1,
+    "requiredLevel": 90,
+    "experienceGiven": 380,
+    "timeToGather": 12
+  },
+  {
+    "id": 107,
+    "name": "Teak Log",
+    "skillId": 1,
+    "requiredLevel": 35,
+    "experienceGiven": 85,
+    "timeToGather": 5
+  },
+  {
+    "id": 108,
+    "name": "Mahogany Log",
+    "skillId": 1,
+    "requiredLevel": 50,
+    "experienceGiven": 125,
+    "timeToGather": 7
+  },
+  {
+    "id": 109,
+    "name": "Elder Log",
+    "skillId": 1,
+    "requiredLevel": 85,
+    "experienceGiven": 315,
+    "timeToGather": 11
+  }
+]
