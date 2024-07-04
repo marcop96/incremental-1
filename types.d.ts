@@ -11,3 +11,11 @@ export interface Resource {
   experienceGiven: number
   timeToGather: number
 }
+
+export interface Item {
+  id: number
+  name: string
+  description: string
+  value: number
+  quantity: number
+}
