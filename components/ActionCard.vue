@@ -7,7 +7,7 @@ defineProps({
     required: true,
   },
   activeResource: {
-    type: Object as PropType<Resource | undefined>,
+    type: Object as PropType<Resource | object>,
     required: true,
   },
 })
@@ -27,14 +27,14 @@ defineProps({
     <div class="w-full h-2 bg-gray-300 rounded-full mb-4">
       <div
         class="h-2 rounded-full transition-colors ease-in-out duration-300"
-        :class="{ 'bg-green-500': activeResource && activeResource.name === resource.name }"
+        :class="{ 'bg-green-500': activeResource && (activeResource as Resource).name === resource.name }"
       />
     </div>
     <div class="text-sm font-medium text-gray-600">
       Status:
       <span
         :class="{
-          'text-green-500': activeResource && activeResource.name === resource.name,
+          'text-green-500': activeResource && (activeResource as Resource).name === resource.name,
         }"
       >{{ resource.id }}</span>
     </div>
