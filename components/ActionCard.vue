@@ -6,6 +6,10 @@ defineProps({
     type: Object as PropType<Resource>,
     required: true,
   },
+  activeResource: {
+    type: Object as PropType<Resource | undefined>,
+    required: true,
+  },
 })
 </script>
 
@@ -18,21 +22,21 @@ defineProps({
     </div>
 
     <div class="text-lg font-medium mb-4 text-gray-700">
-      {{ resource.experienceGiven }}
+      {{ resource.experienceGiven }} exp
     </div>
     <div class="w-full h-2 bg-gray-300 rounded-full mb-4">
-      <!-- <div
+      <div
         class="h-2 rounded-full transition-colors ease-in-out duration-300"
-        :class="{ 'bg-green-500': activeItem && activeItem.name === item.name }"
-      /> -->
+        :class="{ 'bg-green-500': activeResource && activeResource.name === resource.name }"
+      />
     </div>
-    <!-- <div class="text-sm font-medium text-gray-600">
+    <div class="text-sm font-medium text-gray-600">
       Status:
       <span
         :class="{
-          'text-green-500': activeItem && activeItem.name === item.name,
+          'text-green-500': activeResource && activeResource.name === resource.name,
         }"
-      >{{ itemStatus }}</span>
-    </div> -->
+      >{{ resource.id }}</span>
+    </div>
   </div>
 </template>

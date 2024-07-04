@@ -13,7 +13,7 @@ const { skills } = storeToRefs(skillStore)
         <li class="flex flex-col">
           <button
             class="text-2xl font-bold"
-            @click="skillStore.changeActiveSkill('inventory')"
+            @click="skillStore.changeActiveSkill(null)"
           >
             Inventory
           </button>

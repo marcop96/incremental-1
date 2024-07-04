@@ -1,15 +1,13 @@
 <script setup lang='ts'>
-import type { Skill } from '~/types'
+import type { Skill, Resource } from '~/types'
 import resources from '~/data/resources.json'
 
-const props = defineProps<{ skill: Skill | string }>()
-
+const props = defineProps<{ skill: Skill }>()
+const activeResource = ref<Resource | undefined>(undefined)
 const filteredResources = computed(() => {
-  if (typeof props.skill === 'string') {
-    return []
-  }
   return resources.filter(resource => resource.skillId === (props.skill as Skill).id)
-})
+},
+)
 </script>
 
 <template>
@@ -21,6 +19,8 @@ const filteredResources = computed(() => {
       v-for="resource in filteredResources"
       :key="resource.id"
       :resource="resource"
+      :active-resource="activeResource"
+      @click="activeResource = resource"
     />
   </div>
 </template>
