@@ -3,7 +3,25 @@ import type { Item } from '@/types'
 
 export const useInventoryStore = defineStore('inventory', () => {
   const inventory = ref<Item[]>([
-    // Initial items can be defined here if needed
+    {
+      id: 1,
+      name: 'Sword',
+      description: 'A sharp blade used for combat.',
+      value: 50,
+      quantity: 1,
+    },
+    { id: 2,
+      name: 'Health Potion',
+      description: 'Restores health when consumed.',
+      value: 20,
+      quantity: 3,
+    },
+    { id: 3,
+      name: 'Health dfPotion',
+      description: 'Restores health when consumed.',
+      value: 20,
+      quantity: 3,
+    },
   ])
 
   const addItem = (item: Item) => {
