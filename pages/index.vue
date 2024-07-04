@@ -2,25 +2,38 @@
 import { storeToRefs } from 'pinia'
 import { useSkillStore } from '../composable/useSkills'
 import TheSkills from '../components/TheSkills.vue'
-import { Progress } from '@/components/ui/Progress'
+import { Progress } from '@/components/ui/progress'
 
 const skillStore = useSkillStore()
-const { skills, activeSkill, changeActiveSkill } = storeToRefs(skillStore)
+const { activeSkill } = storeToRefs(skillStore)
+
+const activeSkillName = computed(() => {
+  return typeof activeSkill.value === 'object' ? activeSkill.value.name : ''
+})
 </script>
 
 <template>
-  <div class="flex justify-center items-center p-3">
-    <h2
-      v-if="activeSkill !== 'inventory' && activeSkill !== 'skills'"
-      class="text-2xl"
-    >
-      {{ activeSkill.name }}
-    </h2>
-  </div>
+  <div>
+    <Progress />
+    <div class="flex justify-center items-center p-3">
+      <h2
+        v-if="activeSkillName"
+        class="text-2xl"
+      >
+        {{ activeSkillName }}
+      </h2>
+      <h2
+        v-if="!activeSkillName"
+        class="text-2xl"
+      >
+        {{ activeSkill }}
+      </h2>
+    </div>
 
-  <!-- <div v-if="activeSkill =='inventory'"></div> -->
-  <TheSkills
-    v-if="activeSkill"
-    :skill="activeSkill"
-  />
+    <!-- <div v-if="activeSkill =='inventory'"></div> -->
+    <TheSkills
+      v-if="activeSkill"
+      :skill="activeSkill"
+    />
+  </div>
 </template>

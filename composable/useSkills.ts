@@ -1,7 +1,8 @@
 import { defineStore } from 'pinia'
 import type { Skill } from '@/types'
 
-const activeSkill = ref<Skill | string>('Inventory')
+const activeSkill = ref<string | { id: number, name: string }>('')
+
 export const useSkillStore = defineStore('skills', () => {
   const skills = ref<Skill[]>([
     { id: 1, name: 'woodcutting' },
