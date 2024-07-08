@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import type { Resource } from '~/types'
+import { useSkillStore } from '~/composable/useSkills'
 
-defineProps({
+const skillStore = useSkillStore()
+const { skills } = storeToRefs(skillStore)
+
+const props = defineProps({
   resource: {
     type: Object as PropType<Resource>,
     required: true,
@@ -11,11 +15,17 @@ defineProps({
     required: true,
   },
 })
+const userHasRequiredLevel = computed(() => {
+  const skill = skills.value.find(skill => skill.id === props.resource.skillId)
+
+  return skill ? skill.level >= props.resource.requiredLevel : false
+})
 </script>
 
 <template>
   <div
     class="w-48 h-48 p-2 m-2 bg-white border-2 border-gray-300 rounded-lg shadow-md flex flex-col items-center justify-center transition-colors duration-300 ease-in-out hover:border-gray-700"
+    :class="{ hidden: !userHasRequiredLevel }"
   >
     <div class="text-xl font-bold mb-2 text-gray-800">
       {{ resource.name }}
@@ -36,7 +46,7 @@ defineProps({
         :class="{
           'text-green-500': activeResource && (activeResource as Resource).name === resource.name,
         }"
-      >{{ resource.id }}</span>
+      >{{ resource.requiredLevel }}</span>
     </div>
   </div>
 </template>
