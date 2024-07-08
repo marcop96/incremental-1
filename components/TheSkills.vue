@@ -17,7 +17,7 @@ const filteredResources = computed(() => {
   <!-- <h2 v-if="skill !=='inventory'">
     {{ skill }}
   </h2> -->
-  <div class="grid grid-cols-4">
+  <div class="grid grid-cols-6">
     <ActionCard
       v-for="resource in filteredResources"
       :key="resource.id"
