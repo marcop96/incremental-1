@@ -2,22 +2,27 @@
 import { storeToRefs } from 'pinia'
 
 import { useInventoryStore } from '../composable/useInventory'
-import { usePlayerStore } from '~/composable/usePlayer'
+import { useSkillStore } from '~/composable/useSkills'
 
 const inventoryStore = useInventoryStore()
-const playerStore = usePlayerStore()
+const skillStore = useSkillStore()
 
 const { inventory } = storeToRefs(inventoryStore)
-setTimeout(() => {
-  console.log('inventory', inventory.value)
-}, 3000)
 </script>
 
 <template>
-  <span>
-    Level    {{ playerStore.player.level }} <br>
-    {{ playerStore.player.xp }} Exp
-  </span>
+  <ul>
+    <li
+      v-for="skill in skillStore.skills"
+      :key="skill.id"
+    >
+      {{ skill.name }} - {{ skill.level }} - {{ skill.xp }} exp
+    </li>
+  </ul>
+
+  <h2 class="text-xl font-bold">
+    Inventory
+  </h2>
   <ul>
     <li
       v-for="item in inventory"

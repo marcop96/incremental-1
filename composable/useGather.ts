@@ -16,9 +16,8 @@ export const useGatherStore = defineStore('gather', () => {
   const giveResourceFromItem = (resource: Resource) => {
     const rewardItem = items.find(item => item.id === resource.rewardId)
     if (rewardItem) {
-      console.log('Found item:', rewardItem)
       inventoryStore.addItem(rewardItem)
-      usePlayer.addExperience(resource.experienceGiven)
+      usePlayer.addExperience(resource.skillId, resource.experienceGiven)
     }
     else {
       console.log('No item found')

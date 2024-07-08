@@ -1,6 +1,8 @@
 export interface Skill {
   id: number
   name: string
+  level: number
+  xp: number
 }
 
 export interface Resource {
