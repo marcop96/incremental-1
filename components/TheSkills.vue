@@ -1,12 +1,11 @@
 <script setup lang='ts'>
-import type { Skill, Resource, Item } from '~/types'
+import type { Skill, Resource } from '~/types'
 import resources from '~/data/resources.json'
 import { useGatherStore } from '~/composable/useGather'
 
 const gatherResourceStore = useGatherStore()
 
 const props = defineProps<{ skill: Skill }>()
-const rewardItem = ref<Item>({ id: 1, name: 'Sword', description: 'A sharp blade used for combat.', value: 50, quantity: 1 })
 const activeResource = ref<Resource | object>({})
 const filteredResources = computed(() => {
   return resources.filter(resource => resource.skillId === (props.skill as Skill).id)
@@ -25,7 +24,7 @@ const filteredResources = computed(() => {
       class="cursor-pointer"
       :resource="resource"
       :active-resource="activeResource"
-      @click="gatherResourceStore.gatherResource(resource, rewardItem)"
+      @click="gatherResourceStore.gatherResource(resource)"
     />
   </div>
 </template>
