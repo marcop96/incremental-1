@@ -17,10 +17,13 @@ export const usePlayerStore = defineStore('playerxp', () => {
   const checkLevelUp = (skillId: number) => {
     const skill = skills.value.find(s => s.id === skillId)
     if (skill) {
-      const nextLevel = levels.find(level => level.level === skill.level + 1)
-      if (nextLevel && skill.xp >= nextLevel.requiredXP) {
-        skill.level++
-        console.log(`Player leveled up ${skill.name} to level ${skill.level}`)
+      while (true) {
+        const nextLevel = levels.find(level => level.level === skill.level + 1)
+        if (nextLevel && skill.xp >= nextLevel.requiredXP) {
+          skill.level++
+          console.log(`Level up! ${skill.name} is now level ${skill.level}`)
+        }
+        else { break }
       }
     }
   }
