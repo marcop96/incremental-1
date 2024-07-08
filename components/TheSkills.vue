@@ -1,6 +1,9 @@
 <script setup lang='ts'>
 import type { Skill, Resource } from '~/types'
 import resources from '~/data/resources.json'
+import { useGatherStore } from '~/composable/useGather'
+
+const gatherResourceStore = useGatherStore()
 
 const props = defineProps<{ skill: Skill }>()
 const activeResource = ref<Resource | object>({})
@@ -21,7 +24,7 @@ const filteredResources = computed(() => {
       class="cursor-pointer"
       :resource="resource"
       :active-resource="activeResource"
-      @click="activeResource = resource"
+      @click="gatherResourceStore.gatherResource(resource)"
     />
   </div>
 </template>

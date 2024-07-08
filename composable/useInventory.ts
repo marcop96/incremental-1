@@ -10,18 +10,6 @@ export const useInventoryStore = defineStore('inventory', () => {
       value: 50,
       quantity: 1,
     },
-    { id: 2,
-      name: 'Health Potion',
-      description: 'Restores health when consumed.',
-      value: 20,
-      quantity: 3,
-    },
-    { id: 3,
-      name: 'Health dfPotion',
-      description: 'Restores health when consumed.',
-      value: 20,
-      quantity: 3,
-    },
   ])
 
   const addItem = (item: Item) => {
