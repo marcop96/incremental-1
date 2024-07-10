@@ -8,12 +8,10 @@ import SkillCard from '~/components/ui/SkillCard.vue'
 const inventoryStore = useInventoryStore()
 const skillStore = useSkillStore()
 const { inventory } = storeToRefs(inventoryStore)
-
-// const itemiconplaceholder = 'https://via.placeholder.com/400x200'
 </script>
 
 <template>
-  <section class="grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+  <section class="mx-4 grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
     <SkillCard
       v-for="skill in skillStore.skills"
       :key="skill.id"
@@ -24,7 +22,7 @@ const { inventory } = storeToRefs(inventoryStore)
   <h2 class="text-xl font-bold">
     Inventory
   </h2>
-  <section class="grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+  <section class="mx-4 w-4/5 grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
     <ItemCard
       v-for="item in inventory"
       :key="item.id"
