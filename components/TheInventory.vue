@@ -1,34 +1,32 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-
 import { useInventoryStore } from '../composable/useInventory'
 import { useSkillStore } from '~/composable/useSkills'
+import ItemCard from '@/components/ItemCard.vue'
+import SkillCard from '~/components/ui/SkillCard.vue'
 
 const inventoryStore = useInventoryStore()
 const skillStore = useSkillStore()
-
 const { inventory } = storeToRefs(inventoryStore)
 </script>
 
 <template>
-  <ul>
-    <li
+  <section class="mx-4 grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+    <SkillCard
       v-for="skill in skillStore.skills"
       :key="skill.id"
-    >
-      {{ skill.name }} - {{ skill.level }} - {{ skill.xp }} exp
-    </li>
-  </ul>
+      :skill="skill"
+    />
+  </section>
 
   <h2 class="text-xl font-bold">
     Inventory
   </h2>
-  <ul>
-    <li
+  <section class="mx-4 w-4/5 grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+    <ItemCard
       v-for="item in inventory"
       :key="item.id"
-    >
-      {{ item.name }} - {{ item.quantity }}
-    </li>
-  </ul>
+      :item="item"
+    />
+  </section>
 </template>

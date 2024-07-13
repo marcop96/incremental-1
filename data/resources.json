@@ -1,5 +1,14 @@
 [
   {
+    "id": 1,
+    "name": "TEST Log",
+    "skillId": 1,
+    "requiredLevel": 1,
+    "experienceGiven": 13034431,
+    "timeToGather": 1,
+    "rewardId": 1
+  },
+  {
     "id": 1001,
     "name": "Normal Log",
     "skillId": 1,

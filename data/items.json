@@ -1,5 +1,12 @@
 [
   {
+    "id": 1,
+    "name": "test Log",
+    "description": "log from a normal tree",
+    "value": 100,
+    "quantity": 1
+  },
+  {
     "id": 5001,
     "name": "Normal Log",
     "description": "log from a normal tree",
