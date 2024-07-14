@@ -41,12 +41,12 @@ const userHasRequiredLevel = computed(() => {
       />
     </div>
     <div class="text-sm font-medium text-gray-600">
-      Status:
+      gather time
       <span
         :class="{
           'text-green-500': activeResource && (activeResource as Resource).name === resource.name,
         }"
-      >{{ resource.requiredLevel }}</span>
+      >{{ resource.timeToGather }}</span>
     </div>
   </div>
 </template>

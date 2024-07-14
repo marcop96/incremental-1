@@ -1,30 +1,52 @@
 import { defineStore } from 'pinia'
 import items from '~/data/items.json'
 import type { Resource } from '@/types'
-
 import { useInventoryStore } from '~/composable/useInventory'
 import { usePlayerStore } from '~/composable/usePlayer'
 
 export const useGatherStore = defineStore('gather', () => {
   const inventoryStore = useInventoryStore()
-  const usePlayer = usePlayerStore()
+  const playerStore = usePlayerStore()
+  const progress = ref(0)
+  const currentProgress = ref(0)
+  let interval: string | number | NodeJS.Timeout | null | undefined = null
 
   const gatherResource = (resource: Resource) => {
-    giveResourceFromItem(resource)
+    if (interval) {
+      clearInterval(interval as number)
+      console.warn('Previous gather interrupted')
+    }
+
+    interval = setInterval(() => {
+      currentProgress.value++
+
+      if (currentProgress.value <= 100) {
+        progress.value = currentProgress.value
+      }
+      else {
+        clearInterval(interval as number)
+        interval = null
+        giveResourceFromItem(resource)
+        console.log('Resource gathered', resource.timeToGather, 'seconds')
+        currentProgress.value = 0
+        progress.value = 0
+      }
+    }, resource.timeToGather * 10)
   }
 
   const giveResourceFromItem = (resource: Resource) => {
     const rewardItem = items.find(item => item.id === resource.rewardId)
     if (rewardItem) {
       inventoryStore.addItem(rewardItem)
-      usePlayer.addExperience(resource.skillId, resource.experienceGiven)
+      playerStore.addExperience(resource.skillId, resource.experienceGiven)
     }
     else {
-      console.log('No item found')
+      console.error('No item found for rewardId:', resource.rewardId)
     }
   }
 
   return {
     gatherResource,
+    progress,
   }
 })
