@@ -14,7 +14,10 @@ export const useGatherStore = defineStore('gather', () => {
   const gatherResource = (resource: Resource) => {
     if (interval) {
       clearInterval(interval as number)
+      interval = null
       console.warn('Previous gather interrupted')
+      progress.value = 0
+      currentProgress.value = 0
     }
 
     interval = setInterval(() => {
