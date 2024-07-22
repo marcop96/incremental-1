@@ -2,8 +2,10 @@
 import type { Skill, Resource } from '~/types'
 import resources from '~/data/resources.json'
 import { useGatherStore } from '~/composable/useGather'
+import { useSkillStore } from '~/composable/useSkills'
 
 const gatherResourceStore = useGatherStore()
+const skillStore = useSkillStore()
 const { progress } = storeToRefs(gatherResourceStore)
 const props = defineProps<{ skill: Skill }>()
 const activeResource = ref<Resource | object>({})
@@ -14,9 +16,13 @@ const filteredResources = computed(() => {
 </script>
 
 <template>
-  <!-- <h2 v-if="skill !=='inventory'">
-    {{ skill }}
-  </h2> -->
+  <h2 v-if="skill !=='inventory'">
+    {{ skill.name[0].toUpperCase() + skill.name.slice(1) }}
+  </h2>
+  <div>
+    Level: {{ skillStore.activeSkill.level }} <br>
+    Exp: {{ skillStore.activeSkill.xp }}
+  </div>
   <progress
     :value="progress"
     max="100"
