@@ -1,56 +1,83 @@
 <template>
-  <form @submit.prevent="submitForm(item)">
-    <div>
+  <form
+    class="max-w-lg mx-auto p-4 mt-12 bg-white shadow-md rounded-md"
+    @submit.prevent="submitForm(item)"
+  >
+    <div class="space-y-4">
       <div>
-        <label for="id">ID:</label>
+        <label
+          for="id"
+          class="block text-sm font-medium text-gray-700"
+        >ID:</label>
         <input
           id="id"
           v-model="item.id"
           type="number"
           required
+          class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
         >
       </div>
       <div>
-        <label for="name">Name:</label>
+        <label
+          for="name"
+          class="block text-sm font-medium text-gray-700"
+        >Name:</label>
         <input
           id="name"
           v-model="item.name"
           type="text"
           required
+          class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
         >
       </div>
       <div>
-        <label for="description">Description:</label>
+        <label
+          for="description"
+          class="block text-sm font-medium text-gray-700"
+        >Description:</label>
         <input
           id="description"
           v-model="item.description"
           type="text"
           required
+          class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
         >
       </div>
       <div>
-        <label for="value">Value:</label>
+        <label
+          for="value"
+          class="block text-sm font-medium text-gray-700"
+        >Value:</label>
         <input
           id="value"
           v-model="item.value"
           type="number"
           required
+          class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
         >
       </div>
-
       <div>
-        <label for="icon">Icon:</label>
+        <label
+          for="icon"
+          class="block text-sm font-medium text-gray-700"
+        >Icon:</label>
         <input
           id="icon"
           v-model="item.icon"
           type="text"
           required
+          class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
         >
       </div>
     </div>
-    <button type="submit">
-      Submit
-    </button>
+    <div class="mt-6">
+      <button
+        type="submit"
+        class="px-4 py-2 bg-blue-500 text-white font-semibold rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+      >
+        Submit
+      </button>
+    </div>
   </form>
 </template>
 
