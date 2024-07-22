@@ -9,6 +9,7 @@ export const useInventoryStore = defineStore('inventory', () => {
       description: 'A sharp blade used for combat.',
       value: 50,
       quantity: 1,
+      icon: 'noto:crossed-swords',
     },
   ])
 

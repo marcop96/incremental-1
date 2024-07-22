@@ -16,7 +16,7 @@ defineProps<{
     <HoverCardTrigger as-child>
       <div class="relative flex justify-center items-center w-32 h-32 bg-red-200 rounded-lg shadow-lg">
         <Icon
-          name="noto:wood"
+          :name="item.icon"
           color="black"
           class="w-3/4 h-3/4"
         />
