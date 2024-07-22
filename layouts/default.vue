@@ -7,16 +7,16 @@ import resources from '~/data/resources.json'
 
 const skillStore = useSkillStore()
 const gatherStore = useGatherStore()
-const { gatherResource } = storeToRefs(gatherStore)
 const { skills } = storeToRefs(skillStore)
+const route = useRoute()
+console.log(route.path)
 </script>
 
 <template>
   <div class="flex">
-    <div class="h-screen w-1/5 bg-green-400 bg-opacity-75 p-4">
-      <button @click="gatherStore.gatherResource(resources[0], items[0])">
-        test mode
-      </button>
+    <div
+      class="h-screen w-1/5 bg-green-400 bg-opacity-75 p-4"
+    >
       <ul>
         <li class="flex flex-col">
           <button
@@ -29,6 +29,18 @@ const { skills } = storeToRefs(skillStore)
             class="text-2xl font-bold"
           >
             Skills
+          </button>
+          <button
+            v-if="route.path === '/'"
+            @click="navigateTo('/debug')"
+          >
+            debug
+          </button>
+          <button
+            v-else
+            @click="navigateTo('/')"
+          >
+            return
           </button>
         </li>
         <li
