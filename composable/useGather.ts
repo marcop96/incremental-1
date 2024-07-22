@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import items from '~/data/items.json'
-import type { Resource } from '@/types'
+import type { Resource, Item } from '@/types'
 import { useInventoryStore } from '~/composable/useInventory'
 import { usePlayerStore } from '~/composable/usePlayer'
 
@@ -13,11 +13,7 @@ export const useGatherStore = defineStore('gather', () => {
 
   const gatherResource = (resource: Resource) => {
     if (interval) {
-      clearInterval(interval as number)
-      interval = null
-      console.warn('Previous gather interrupted')
-      progress.value = 0
-      currentProgress.value = 0
+      resetProgress()
     }
 
     interval = setInterval(() => {
@@ -36,9 +32,14 @@ export const useGatherStore = defineStore('gather', () => {
       }
     }, resource.timeToGather * 10)
   }
-
+  const resetProgress = () => {
+    clearInterval(interval as number)
+    interval = null
+    progress.value = 0
+    currentProgress.value = 0
+  }
   const giveResourceFromItem = (resource: Resource) => {
-    const rewardItem = items.find(item => item.id === resource.rewardId)
+    const rewardItem = items.find(item => item.id === resource.rewardId) as Item
     if (rewardItem) {
       inventoryStore.addItem(rewardItem)
       playerStore.addExperience(resource.skillId, resource.experienceGiven)
