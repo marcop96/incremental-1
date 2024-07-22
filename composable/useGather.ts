@@ -23,12 +23,9 @@ export const useGatherStore = defineStore('gather', () => {
         progress.value = currentProgress.value
       }
       else {
-        clearInterval(interval as number)
-        interval = null
         giveResourceFromItem(resource)
         console.log('Resource gathered', resource.timeToGather, 'seconds')
-        currentProgress.value = 0
-        progress.value = 0
+        resetProgress()
       }
     }, resource.timeToGather * 10)
   }
