@@ -4,76 +4,88 @@
     "name": "test Log",
     "description": "log from a normal tree",
     "value": 100,
-    "quantity": 1
+    "quantity": 1,
+    "icon": "noto:crossed-swords"
   },
   {
     "id": 5001,
     "name": "Normal Log",
     "description": "log from a normal tree",
     "value": 100,
-    "quantity": 1
+    "quantity": 1,
+    "icon": "noto:crossed-swords"
   },
   {
     "id": 5002,
     "name": "Oak Log",
     "description": "log from an oak tree. Requires level 15, gives 37.5 experience",
     "value": 37.5,
-    "quantity": 1
+    "quantity": 1,
+    "icon": "noto:wood"
   },
   {
     "id": 5003,
     "name": "Willow Log",
     "description": "log from a willow tree. Requires level 30, gives 67.5 experience",
     "value": 67.5,
-    "quantity": 1
+    "quantity": 1,
+    "icon": "noto:wood"
   },
   {
     "id": 5004,
     "name": "Maple Log",
     "description": "log from a maple tree. Requires level 45, gives 100 experience",
     "value": 100,
-    "quantity": 1
+    "quantity": 1,
+    "icon": "noto:wood"
   },
   {
     "id": 5005,
     "name": "Yew Log",
     "description": "log from a yew tree. Requires level 60, gives 175 experience",
     "value": 175,
-    "quantity": 1
+    "quantity": 1,
+    "icon": "noto:wood"
   },
   {
     "id": 5006,
     "name": "Magic Log",
     "description": "log from a magic tree. Requires level 75, gives 250 experience",
     "value": 250,
-    "quantity": 1
+    "quantity": 1,
+    "icon": "noto:wood"
   },
   {
     "id": 5007,
     "name": "Redwood Log",
     "description": "log from a redwood tree. Requires level 90, gives 380 experience",
     "value": 380,
-    "quantity": 1
+    "quantity": 1,
+    "icon": "noto:wood"
   },
   {
     "id": 5008,
     "name": "Teak Log",
     "description": "log from a teak tree. Requires level 35, gives 85 experience",
     "value": 85,
-    "quantity": 1
+    "quantity": 1,
+    "icon": "noto:wood"
   },
   {
     "id": 5009,
     "name": "Mahogany Log",
     "description": "log from a mahogany tree. Requires level 50, gives 125 experience",
     "value": 125,
-    "quantity": 1
+    "quantity": 1,
+    "icon": "noto:wood"
   },
   {
     "id": 5010,
     "name": "Elder Log",
     "description": "log from an elder tree. Requires level 85, gives 315 experience",
     "value": 315,
-    "quantity": 1
-  }
+    "quantity": 1,
+    "icon": "noto:wood"
+  },
+  {}
 ]
