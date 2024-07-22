@@ -21,4 +21,5 @@ export interface Item {
   description: string
   value: number
   quantity: number
+  icon: string
 }
