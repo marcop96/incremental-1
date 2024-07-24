@@ -252,15 +252,6 @@
     "itemId": 5001
   },
   {
-    "id": 3001,
-    "name": "Normal Log",
-    "skillId": 2,
-    "requiredLevel": 1,
-    "experienceGiven": 25,
-    "timeToGather": 1,
-    "itemId": 5001
-  },
-  {
     "id": 3002,
     "name": "Oak Log",
     "skillId": 2,
