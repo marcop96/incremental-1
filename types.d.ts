@@ -3,6 +3,7 @@ export interface Skill {
   name: string
   level: number
   xp: number
+  isGathering: boolean
 }
 
 export interface Resource {
