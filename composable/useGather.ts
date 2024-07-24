@@ -13,6 +13,7 @@ export const useGatherStore = defineStore('gather', () => {
   const progress = ref(0)
   const currentProgress = ref(0)
   let interval: string | number | NodeJS.Timeout | null | undefined = null
+  const activeResource = ref<Resource | null>(null)
 
   const gatherResource = (resource: Resource) => {
     if (interval) {
@@ -27,6 +28,8 @@ export const useGatherStore = defineStore('gather', () => {
         return
       }
     }
+    activeResource.value = resource
+
     interval = setInterval(() => {
       currentProgress.value++
 
@@ -51,6 +54,7 @@ export const useGatherStore = defineStore('gather', () => {
     interval = null
     progress.value = 0
     currentProgress.value = 0
+    activeResource.value = null
   }
   const giveResourceFromItem = (resource: Resource) => {
     const rewardItem = items.find(item => item.id === resource.itemId) as Item
@@ -65,5 +69,6 @@ export const useGatherStore = defineStore('gather', () => {
   return {
     gatherResource,
     progress,
+    activeResource,
   }
 })
