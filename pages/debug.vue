@@ -126,9 +126,9 @@
             class="block text-sm font-medium text-gray-700"
           >Skill ID:</label>
           <input
-            id="description"
+            id="skill-id"
             v-model="resource.skillId"
-            type="text"
+            type="number"
             required
             class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           >
@@ -141,7 +141,7 @@
           <input
             id="description"
             v-model="resource.requiredLevel"
-            type="text"
+            type="number"
             required
             class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           >
@@ -152,9 +152,9 @@
             class="block text-sm font-medium text-gray-700"
           >Experience Given:</label>
           <input
-            id="description"
+            id="experience-given"
             v-model="resource.experienceGiven"
-            type="text"
+            type="number"
             required
             class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           >
@@ -178,9 +178,9 @@
             class="block text-sm font-medium text-gray-700"
           >Reward id:</label>
           <input
-            id="icon"
+            id="reward-id"
             v-model="resource.rewardId"
-            type="text"
+            type="number"
             required
             class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           >

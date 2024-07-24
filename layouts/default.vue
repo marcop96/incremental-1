@@ -1,15 +1,11 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { useSkillStore } from '../composable/useSkills'
-import { useGatherStore } from '../composable/useGather'
-import items from '~/data/items.json'
-import resources from '~/data/resources.json'
+// import { useGatherStore } from '../composable/useGather'
 
 const skillStore = useSkillStore()
-const gatherStore = useGatherStore()
+// const gatherStore = useGatherStore()
 const { skills } = storeToRefs(skillStore)
-const route = useRoute()
-console.log(route.path)
 </script>
 
 <template>
@@ -29,18 +25,6 @@ console.log(route.path)
             class="text-2xl font-bold"
           >
             Skills
-          </button>
-          <button
-            v-if="route.path === '/'"
-            @click="navigateTo('/debug')"
-          >
-            debug
-          </button>
-          <button
-            v-else
-            @click="navigateTo('/')"
-          >
-            return
           </button>
         </li>
         <li

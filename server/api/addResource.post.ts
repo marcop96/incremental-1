@@ -18,6 +18,7 @@ export default defineEventHandler(async (event) => {
     if (fs.existsSync(dataFilePath)) {
       const fileContent = fs.readFileSync(dataFilePath, 'utf-8')
       resources = JSON.parse(fileContent)
+      console.log(resources, 'resources')
     }
 
     // Append new item
