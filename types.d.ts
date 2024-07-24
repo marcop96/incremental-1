@@ -12,7 +12,7 @@ export interface Resource {
   requiredLevel: number
   experienceGiven: number
   timeToGather: number
-  rewardId: number
+  itemId: number
 }
 
 export interface Item {

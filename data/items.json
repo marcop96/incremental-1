@@ -86,5 +86,133 @@
     "value": 315,
     "quantity": 1,
     "icon": "noto:wood"
+  },
+  {
+    "id": 2001,
+    "name": "Shrimp",
+    "description": "A small, edible marine crustacean.",
+    "value": 10,
+    "quantity": 1,
+    "icon": "mdi:fish"
+  },
+  {
+    "id": 2002,
+    "name": "Sardine",
+    "description": "A small, silvery fish often canned.",
+    "value": 20,
+    "quantity": 1,
+    "icon": "mdi:fish"
+  },
+  {
+    "id": 2003,
+    "name": "Herring",
+    "description": "A small, oily fish found in the North Atlantic.",
+    "value": 30,
+    "quantity": 1,
+    "icon": "mdi:fish"
+  },
+  {
+    "id": 2004,
+    "name": "Anchovy",
+    "description": "A small, common salt-water forage fish.",
+    "value": 40,
+    "quantity": 1,
+    "icon": "mdi:fish"
+  },
+  {
+    "id": 2005,
+    "name": "Mackerel",
+    "description": "A fast-swimming fish of the tuna family.",
+    "value": 50,
+    "quantity": 1,
+    "icon": "mdi:fish"
+  },
+  {
+    "id": 2006,
+    "name": "Trout",
+    "description": "A freshwater fish highly prized by anglers.",
+    "value": 60,
+    "quantity": 1,
+    "icon": "mdi:fish"
+  },
+  {
+    "id": 2007,
+    "name": "Cod",
+    "description": "A large marine fish with a mild flavor.",
+    "value": 70,
+    "quantity": 1,
+    "icon": "mdi:fish"
+  },
+  {
+    "id": 2008,
+    "name": "Pike",
+    "description": "A large, predatory freshwater fish.",
+    "value": 80,
+    "quantity": 1,
+    "icon": "mdi:fish"
+  },
+  {
+    "id": 2009,
+    "name": "Salmon",
+    "description": "A popular game fish known for its pink flesh.",
+    "value": 90,
+    "quantity": 1,
+    "icon": "mdi:fish"
+  },
+  {
+    "id": 2010,
+    "name": "Tuna",
+    "description": "A large, fast-swimming fish of the open seas.",
+    "value": 100,
+    "quantity": 1,
+    "icon": "mdi:fish"
+  },
+  {
+    "id": 2011,
+    "name": "Lobster",
+    "description": "A large marine crustacean with a strong shell.",
+    "value": 120,
+    "quantity": 1,
+    "icon": "mdi:lobster"
+  },
+  {
+    "id": 2012,
+    "name": "Swordfish",
+    "description": "A large fish with a long, flat bill.",
+    "value": 150,
+    "quantity": 1,
+    "icon": "mdi:sword-fish"
+  },
+  {
+    "id": 2013,
+    "name": "Shark",
+    "description": "A large, predatory fish known for its sharp teeth.",
+    "value": 200,
+    "quantity": 1,
+    "icon": "mdi:shark"
+  },
+  {
+    "id": 2014,
+    "name": "Manta Ray",
+    "description": "A large, flat fish with wing-like pectoral fins.",
+    "value": 250,
+    "quantity": 1,
+    "icon": "mdi:ray-start"
+  },
+  {
+    "id": 2015,
+    "name": "Whale",
+    "description": "The largest marine mammal, known for its size.",
+    "value": 300,
+    "quantity": 1,
+    "icon": "mdi:whale"
+  },
+  {
+    "id": 2016,
+    "name": "cheats",
+    "description": "An item that grants significant experience.",
+    "value": 13034431,
+    "quantity": 1,
+    "icon": "mdi:cheats"
   }
 ]
