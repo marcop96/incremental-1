@@ -3,10 +3,13 @@ import items from '~/data/items.json'
 import type { Resource, Item } from '@/types'
 import { useInventoryStore } from '~/composable/useInventory'
 import { usePlayerStore } from '~/composable/usePlayer'
+import { useSkillStore } from '~/composable/useSkills'
 
 export const useGatherStore = defineStore('gather', () => {
   const inventoryStore = useInventoryStore()
   const playerStore = usePlayerStore()
+  const skillStore = useSkillStore()
+
   const progress = ref(0)
   const currentProgress = ref(0)
   let interval: string | number | NodeJS.Timeout | null | undefined = null
@@ -15,7 +18,15 @@ export const useGatherStore = defineStore('gather', () => {
     if (interval) {
       resetProgress()
     }
-
+    if (!skillStore.activeSkill?.isGathering) {
+      // Check if the resource requires an item to be consumed
+      const requiredItem = items.find(item => item.id === resource.itemId) as Item
+      const inventoryItem = inventoryStore.findItemById(requiredItem.id)
+      if (!inventoryItem || inventoryItem.quantity < 1) {
+        console.error('You do not have the required item to gather this resource')
+        return
+      }
+    }
     interval = setInterval(() => {
       currentProgress.value++
 
@@ -23,8 +34,14 @@ export const useGatherStore = defineStore('gather', () => {
         progress.value = currentProgress.value
       }
       else {
-        giveResourceFromItem(resource)
-        console.log('Resource gathered', resource.timeToGather, 'seconds')
+        if (skillStore.activeSkill?.isGathering === false) {
+          inventoryStore.removeItem(items.find(item => item.id === resource.itemId) as Item)
+          playerStore.addExperience(resource.skillId, resource.experienceGiven)
+        }
+        if (skillStore.activeSkill?.isGathering === true) {
+          giveResourceFromItem(resource)
+          playerStore.addExperience(resource.skillId, resource.experienceGiven)
+        }
         resetProgress()
       }
     }, resource.timeToGather * 10)
@@ -39,7 +56,6 @@ export const useGatherStore = defineStore('gather', () => {
     const rewardItem = items.find(item => item.id === resource.itemId) as Item
     if (rewardItem) {
       inventoryStore.addItem(rewardItem)
-      playerStore.addExperience(resource.skillId, resource.experienceGiven)
     }
     else {
       console.error('No item found for rewardId:', resource.itemId)
