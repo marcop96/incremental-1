@@ -2,43 +2,43 @@
 import { storeToRefs } from 'pinia'
 import { useSkillStore } from '../composable/useSkills'
 import { useGatherStore } from '../composable/useGather'
-// import { useGatherStore } from '../composable/useGather'
+
 const gatherStore = useGatherStore()
 const skillStore = useSkillStore()
-// const gatherStore = useGatherStore()
 const { skills } = storeToRefs(skillStore)
 </script>
 
 <template>
-  <div class="flex">
-    <div
-      class="h-screen w-1/5 bg-green-400 bg-opacity-75 p-4"
-    >
-      <ul>
-        <li class="flex flex-col">
-          <button
-            class="text-2xl font-bold"
-            @click="skillStore.changeActiveSkill(null), gatherStore.stopGathering()"
-          >
-            Inventory
-          </button>
-          <button
-            class="text-2xl font-bold"
-          >
-            Skills
-          </button>
-        </li>
-        <li
-          v-for="skill in skills"
-          :key="skill.id"
-        >
-          <button @click="skillStore.changeActiveSkill(skill), gatherStore.stopGathering()">
-            {{ skill.name }}
-          </button>
-        </li>
-      </ul>
+  <div class="flex h-screen">
+    <div class="w-64 bg-green-500 text-white shadow-lg">
+      <div class="p-4">
+        <h2 class="text-2xl text-center font-bold mb-4">Menu</h2>
+        <ul class="space-y-2">
+          <li>
+            <button
+              class="w-full text-left py-2 px-4 rounded hover:bg-green-600 transition duration-200"
+              @click="skillStore.changeActiveSkill(null)"
+            >
+              Inventory
+            </button>
+          </li>
+          <li>
+            <h2 class="text-xl text-center font-bold mb-4">Skills</h2>
+
+          </li>
+          <li class="border-t border-green-400 my-2"></li>
+          <li v-for="skill in skills" :key="skill.id">
+            <button 
+              class="w-full text-center py-2 px-4 rounded hover:bg-green-600 transition duration-200"
+              @click="skillStore.changeActiveSkill(skill), gatherStore.stopGathering()"
+            >
+              {{ skill.name }}
+            </button>
+          </li>
+        </ul>
+      </div>
     </div>
-    <div class="flex-1">
+    <div class="flex-1 overflow-auto">
       <NuxtPage />
     </div>
   </div>
