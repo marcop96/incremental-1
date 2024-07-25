@@ -30,7 +30,7 @@ onMounted(() => {
     localStorage.setItem('activeSkill', JSON.stringify(activeSkill.value))
     localStorage.setItem('playerInventory', JSON.stringify(inventoryStore.inventory))
     localStorage.setItem('playerSkills', JSON.stringify(skillStore.skills))
-  }, 1000)
+  }, 60000)
 })
 
 onUnmounted(() => {
