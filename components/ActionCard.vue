@@ -45,7 +45,10 @@ const userHasItem = computed(() => {
       {{ props.resource.name }}
     </div>
 
-    <div class="text-lg font-medium mb-4 text-gray-700">
+    <div
+      class="text-lg font-medium mb-4 text-gray-700"
+      :class="{ 'text-green-500 ': gatherStore.activeResource && (gatherStore.activeResource as Resource).name === props.resource.name }"
+    >
       {{ props.resource.experienceGiven }} exp
     </div>
     <div class="w-full h-2 bg-gray-300 rounded-full mb-4">
