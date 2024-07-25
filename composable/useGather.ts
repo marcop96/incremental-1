@@ -15,10 +15,16 @@ export const useGatherStore = defineStore('gather', () => {
   let interval: string | number | NodeJS.Timeout | null | undefined = null
   const activeResource = ref<Resource | null>(null)
 
-  const gatherResource = (resource: Resource) => {
+  const toggleGathering = (resource: Resource) => {
     if (interval) {
-      resetProgress()
+      stopGathering()
     }
+    else {
+      startGathering(resource)
+    }
+  }
+
+  const startGathering = (resource: Resource) => {
     if (!skillStore.activeSkill?.isGathering) {
       // Check if the resource requires an item to be consumed
       const requiredItem = items.find(item => item.id === resource.itemId) as Item
@@ -31,31 +37,43 @@ export const useGatherStore = defineStore('gather', () => {
     activeResource.value = resource
 
     interval = setInterval(() => {
-      currentProgress.value++
-
-      if (currentProgress.value <= 100) {
-        progress.value = currentProgress.value
-      }
-      else {
-        if (skillStore.activeSkill?.isGathering === false) {
-          inventoryStore.removeItem(items.find(item => item.id === resource.itemId) as Item)
-          playerStore.addExperience(resource.skillId, resource.experienceGiven)
-        }
-        if (skillStore.activeSkill?.isGathering === true) {
-          giveResourceFromItem(resource)
-          playerStore.addExperience(resource.skillId, resource.experienceGiven)
-        }
-        resetProgress()
-      }
+      gatherAction()
     }, resource.timeToGather * 10)
   }
-  const resetProgress = () => {
+
+  const gatherAction = () => {
+    currentProgress.value++
+
+    if (currentProgress.value <= 100) {
+      progress.value = currentProgress.value
+    }
+    else {
+      const resource = activeResource.value
+      if (!resource) return
+
+      if (skillStore.activeSkill?.isGathering === false) {
+        const requiredItem = items.find(item => item.id === resource.itemId) as Item
+        inventoryStore.removeItem(requiredItem)
+        playerStore.addExperience(resource.skillId, resource.experienceGiven)
+      }
+
+      if (skillStore.activeSkill?.isGathering === true) {
+        giveResourceFromItem(resource)
+        playerStore.addExperience(resource.skillId, resource.experienceGiven)
+      }
+
+      currentProgress.value = 0
+    }
+  }
+
+  const stopGathering = () => {
     clearInterval(interval as number)
     interval = null
     progress.value = 0
     currentProgress.value = 0
     activeResource.value = null
   }
+
   const giveResourceFromItem = (resource: Resource) => {
     const rewardItem = items.find(item => item.id === resource.itemId) as Item
     if (rewardItem) {
@@ -67,7 +85,7 @@ export const useGatherStore = defineStore('gather', () => {
   }
 
   return {
-    gatherResource,
+    toggleGathering,
     progress,
     activeResource,
   }
