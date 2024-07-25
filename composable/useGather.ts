@@ -15,6 +15,25 @@ export const useGatherStore = defineStore('gather', () => {
   let interval: string | number | NodeJS.Timeout | null | undefined = null
   const activeResource = ref<Resource | null>(null)
 
+  const checkIfResourceIsGatherable = (resource: Resource) => {
+    if (skillStore.activeSkill?.isGathering === false) {
+      const requiredItem = items.find(item => item.id === resource.itemId) as Item
+      const inventoryItem = inventoryStore.findItemById(requiredItem.id)
+      if (!inventoryItem || inventoryItem.quantity < 1) {
+        console.error(`You don't have any ${resource.name} for this`)
+        return false
+      }
+    }
+    return true
+  }
+  const stopGathering = () => {
+    clearInterval(interval as number)
+    interval = null
+    progress.value = 0
+    currentProgress.value = 0
+    activeResource.value = null
+  }
+
   const toggleGathering = (resource: Resource) => {
     if (interval) {
       stopGathering()
@@ -25,18 +44,15 @@ export const useGatherStore = defineStore('gather', () => {
   }
 
   const startGathering = (resource: Resource) => {
-    if (!skillStore.activeSkill?.isGathering) {
-      // Check if the resource requires an item to be consumed
-      const requiredItem = items.find(item => item.id === resource.itemId) as Item
-      const inventoryItem = inventoryStore.findItemById(requiredItem.id)
-      if (!inventoryItem || inventoryItem.quantity < 1) {
-        console.error('You do not have the required item to gather this resource')
-        return
-      }
-    }
+    if (!checkIfResourceIsGatherable(resource)) return
+
     activeResource.value = resource
 
     interval = setInterval(() => {
+      if (!checkIfResourceIsGatherable(resource)) {
+        stopGathering()
+        return
+      }
       gatherAction()
     }, resource.timeToGather * 10)
   }
@@ -66,14 +82,6 @@ export const useGatherStore = defineStore('gather', () => {
     }
   }
 
-  const stopGathering = () => {
-    clearInterval(interval as number)
-    interval = null
-    progress.value = 0
-    currentProgress.value = 0
-    activeResource.value = null
-  }
-
   const giveResourceFromItem = (resource: Resource) => {
     const rewardItem = items.find(item => item.id === resource.itemId) as Item
     if (rewardItem) {
@@ -88,5 +96,5 @@ export const useGatherStore = defineStore('gather', () => {
     toggleGathering,
     progress,
     activeResource,
-  }
+    stopGathering }
 })
