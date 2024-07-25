@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { useSkillStore } from '../composable/useSkills'
+import { useGatherStore } from '../composable/useGather'
 // import { useGatherStore } from '../composable/useGather'
-
+const gatherStore = useGatherStore()
 const skillStore = useSkillStore()
 // const gatherStore = useGatherStore()
 const { skills } = storeToRefs(skillStore)
@@ -17,7 +18,7 @@ const { skills } = storeToRefs(skillStore)
         <li class="flex flex-col">
           <button
             class="text-2xl font-bold"
-            @click="skillStore.changeActiveSkill(null)"
+            @click="skillStore.changeActiveSkill(null), gatherStore.stopGathering()"
           >
             Inventory
           </button>
@@ -31,7 +32,7 @@ const { skills } = storeToRefs(skillStore)
           v-for="skill in skills"
           :key="skill.id"
         >
-          <button @click="skillStore.changeActiveSkill(skill)">
+          <button @click="skillStore.changeActiveSkill(skill), gatherStore.stopGathering()">
             {{ skill.name }}
           </button>
         </li>

@@ -20,8 +20,8 @@ const filteredResources = computed(() => {
     {{ skill.name[0].toUpperCase() + skill.name.slice(1) }}
   </h2> -->
   <div>
-    Level: {{ skillStore.activeSkill.level }} <br>
-    Exp: {{ skillStore.activeSkill.xp }}
+    Level: {{ skillStore.activeSkill!.level }} <br>
+    Exp: {{ skillStore.activeSkill!.xp }}
   </div>
   <progress
     :value="progress"
@@ -37,7 +37,7 @@ const filteredResources = computed(() => {
       class="cursor-pointer"
       :resource="resource"
       :active-resource="activeResource"
-      @click="gatherResourceStore.gatherResource(resource)"
+      @click="gatherResourceStore.toggleGathering(resource)"
     />
   </div>
 </template>

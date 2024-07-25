@@ -13,21 +13,27 @@ export const useInventoryStore = defineStore('inventory', () => {
     },
   ])
 
+  // Add item to inventory
   const addItem = (item: Item) => {
     const foundItem = inventory.value.find(i => i.id === item.id)
-
     if (foundItem) {
       foundItem.quantity++
     }
     else {
       inventory.value.push({ ...item, quantity: 1 })
     }
-
     return inventory.value
   }
 
+  // Find item by id
+  const findItemById = (id: number) => {
+    const foundItem = inventory.value.find(i => i.id === id)
+    return foundItem
+  }
+
+  // Remove item from inventory
   const removeItem = (item: Item) => {
-    const foundItem = inventory.value.find(i => i.id === item.id)
+    const foundItem = findItemById(item.id)
     if (foundItem && foundItem.quantity > 1) {
       foundItem.quantity--
     }
@@ -35,9 +41,11 @@ export const useInventoryStore = defineStore('inventory', () => {
       inventory.value = inventory.value.filter(i => i.id !== item.id)
     }
   }
+
   return {
     inventory,
     addItem,
     removeItem,
+    findItemById,
   }
 })
