@@ -1,14 +1,5 @@
 [
   {
-    "id": 1,
-    "name": "TEST Log",
-    "skillId": 1,
-    "requiredLevel": 1,
-    "experienceGiven": 13034431,
-    "timeToGather": 1,
-    "itemId": 1
-  },
-  {
     "id": 1001,
     "name": "Normal Log",
     "skillId": 1,
@@ -234,15 +225,6 @@
     "itemId": 2015
   },
   {
-    "id": 2016,
-    "name": "cheats",
-    "skillId": 3,
-    "requiredLevel": 1,
-    "experienceGiven": 13034431,
-    "timeToGather": 0,
-    "itemId": 2001
-  },
-  {
     "id": 3001,
     "name": "Normal Log",
     "skillId": 2,
@@ -333,12 +315,138 @@
     "itemId": 5010
   },
   {
-    "id": 3011,
-    "name": ",ax",
-    "skillId": 2,
+    "id": 4001,
+    "name": "Shrimp",
+    "skillId": 4,
     "requiredLevel": 1,
-    "experienceGiven": 13034431,
+    "experienceGiven": 10,
     "timeToGather": 1,
-    "itemId": 1
+    "itemId": 2001
+  },
+  {
+    "id": 4002,
+    "name": "Sardine",
+    "skillId": 4,
+    "requiredLevel": 5,
+    "experienceGiven": 20,
+    "timeToGather": 2,
+    "itemId": 2002
+  },
+  {
+    "id": 4003,
+    "name": "Herring",
+    "skillId": 4,
+    "requiredLevel": 10,
+    "experienceGiven": 30,
+    "timeToGather": 3,
+    "itemId": 2003
+  },
+  {
+    "id": 4004,
+    "name": "Anchovy",
+    "skillId": 4,
+    "requiredLevel": 15,
+    "experienceGiven": 40,
+    "timeToGather": 4,
+    "itemId": 2004
+  },
+  {
+    "id": 4005,
+    "name": "Mackerel",
+    "skillId": 4,
+    "requiredLevel": 20,
+    "experienceGiven": 50,
+    "timeToGather": 5,
+    "itemId": 2005
+  },
+  {
+    "id": 4006,
+    "name": "Trout",
+    "skillId": 4,
+    "requiredLevel": 25,
+    "experienceGiven": 60,
+    "timeToGather": 6,
+    "itemId": 2006
+  },
+  {
+    "id": 4007,
+    "name": "Cod",
+    "skillId": 4,
+    "requiredLevel": 30,
+    "experienceGiven": 70,
+    "timeToGather": 7,
+    "itemId": 2007
+  },
+  {
+    "id": 4008,
+    "name": "Pike",
+    "skillId": 4,
+    "requiredLevel": 35,
+    "experienceGiven": 80,
+    "timeToGather": 8,
+    "itemId": 2008
+  },
+  {
+    "id": 4009,
+    "name": "Salmon",
+    "skillId": 4,
+    "requiredLevel": 40,
+    "experienceGiven": 90,
+    "timeToGather": 9,
+    "itemId": 2009
+  },
+  {
+    "id": 4010,
+    "name": "Tuna",
+    "skillId": 4,
+    "requiredLevel": 50,
+    "experienceGiven": 100,
+    "timeToGather": 10,
+    "itemId": 2010
+  },
+  {
+    "id": 4011,
+    "name": "Lobster",
+    "skillId": 4,
+    "requiredLevel": 60,
+    "experienceGiven": 120,
+    "timeToGather": 11,
+    "itemId": 2011
+  },
+  {
+    "id": 4012,
+    "name": "Swordfish",
+    "skillId": 4,
+    "requiredLevel": 70,
+    "experienceGiven": 150,
+    "timeToGather": 12,
+    "itemId": 2012
+  },
+  {
+    "id": 4013,
+    "name": "Shark",
+    "skillId": 4,
+    "requiredLevel": 80,
+    "experienceGiven": 200,
+    "timeToGather": 13,
+    "itemId": 2013
+  },
+  {
+    "id": 4014,
+    "name": "Manta Ray",
+    "skillId": 4,
+    "requiredLevel": 90,
+    "experienceGiven": 250,
+    "timeToGather": 14,
+    "itemId": 2014
+  },
+  {
+    "id": 4015,
+    "name": "Whale",
+    "skillId": 4,
+    "requiredLevel": 99,
+    "experienceGiven": 300,
+    "timeToGather": 15,
+    "itemId": 2015
   }
 ]
