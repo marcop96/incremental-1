@@ -1,6 +1,9 @@
 import { defineStore } from 'pinia'
 import { useSkillStore } from '../composable/useSkills'
 import levels from '~/data/levels.json'
+import { useToast } from '@/components/ui/toast/use-toast'
+
+const { toast } = useToast()
 
 export const usePlayerStore = defineStore('playerxp', () => {
   const skillStore = useSkillStore()
@@ -23,6 +26,10 @@ export const usePlayerStore = defineStore('playerxp', () => {
         const nextLevel = levels.find(level => level.level === skill.level + 1)
         if (nextLevel && skill.xp >= nextLevel.requiredXP) {
           skill.level++
+          toast({
+            title: `Congratulations!`,
+            description: `your ${skillStore.activeSkill!.name} level is ${skill.level}`,
+          })
         }
         else { break }
       }

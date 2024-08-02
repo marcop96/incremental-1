@@ -4,6 +4,7 @@ import { useSkillStore } from '../composable/useSkills'
 import { useInventoryStore } from '../composable/useInventory'
 import TheSkills from '../components/TheSkills.vue'
 import type { Skill } from '~/types'
+import Toaster from '@/components/ui/toast/Toaster.vue'
 
 const skillStore = useSkillStore()
 const inventoryStore = useInventoryStore()
@@ -39,28 +40,31 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div
-    v-if="activeSkill"
-    class="flex justify-center flex-col items-center p-3"
-  >
-    <h2
-      class="text-2xl"
-    >
-      {{ activeSkillName }}
-    </h2>
-    <h2
-      v-if="!activeSkillName"
-      class="text-2xl"
-    >
-      {{ activeSkill }}
-    </h2>
-
-    <TheSkills
+  <div>
+    <Toaster />
+    <div
       v-if="activeSkill"
-      :skill="activeSkill as Skill"
-    />
-  </div>
-  <div v-else>
-    <TheInventory v-if="!activeSkill" />
+      class="flex justify-center flex-col items-center p-3"
+    >
+      <h2
+        class="text-2xl"
+      >
+        {{ activeSkillName }}
+      </h2>
+      <h2
+        v-if="!activeSkillName"
+        class="text-2xl"
+      >
+        {{ activeSkill }}
+      </h2>
+
+      <TheSkills
+        v-if="activeSkill"
+        :skill="activeSkill as Skill"
+      />
+    </div>
+    <div v-else>
+      <TheInventory v-if="!activeSkill" />
+    </div>
   </div>
 </template>
