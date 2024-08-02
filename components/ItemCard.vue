@@ -20,7 +20,7 @@ defineProps<{
           color="black"
           class="w-3/4 h-3/4"
         />
-        <div class="absolute bottom-0 right-0 bg-red-500 text-white text-sm font-bold p-1 rounded-full shadow">
+        <div class="absolute top-0 right-0 bg-red-500 text-white text-sm font-bold p-1 rounded-full shadow">
           {{ item.quantity }}
         </div>
         <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white text-xs font-semibold p-1 rounded-t-lg shadow mt-1 max-w-full w-fit  ">
