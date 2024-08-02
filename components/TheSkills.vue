@@ -37,9 +37,6 @@ const nextLevelExpRequired = computed(() => {
 </script>
 
 <template>
-  <!-- <h2 v-if="skill !=='inventory'">
-    {{ skill.name[0].toUpperCase() + skill.name.slice(1) }}
-  </h2> -->
   <div>
     Level: {{ skillStore.activeSkill!.level }}  <br>
     Exp: {{ skillStore.activeSkill!.xp }}/ {{ nextLevelExpRequired }} <br>
