@@ -20,6 +20,13 @@ const remainingExp = computed(() => {
   if (!nextLevel) return ''
   return `Exp to next level: ${nextLevel.requiredXP - skillStore.activeSkill!.xp}`
 })
+const xpPerHour = computed(() => {
+  const resource = filteredResources.value[0] // Assuming there is at least one resource
+  const gatheringTime = resource?.timeToGather || 0
+  const xpPerResource = resource?.experienceGiven || 0
+  const resourcesPerHour = 3600 / gatheringTime
+  return xpPerResource * resourcesPerHour
+})
 </script>
 
 <template>
@@ -28,8 +35,9 @@ const remainingExp = computed(() => {
   </h2> -->
   <div>
     Level: {{ skillStore.activeSkill!.level }}  <br>
-    Exp: {{ skillStore.activeSkill!.xp }}
-    {{ remainingExp }}
+    Exp: {{ skillStore.activeSkill!.xp }} <br>
+    {{ remainingExp }} <br>
+    {{ xpPerHour }} xp/h
   </div>
   <progress
     :value="progress"
