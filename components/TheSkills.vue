@@ -1,6 +1,7 @@
 <script setup lang='ts'>
 import type { Skill, Resource } from '~/types'
 import resources from '~/data/resources.json'
+import levels from '~/data/levels.json'
 import { useGatherStore } from '~/composable/useGather'
 import { useSkillStore } from '~/composable/useSkills'
 
@@ -13,6 +14,12 @@ const filteredResources = computed(() => {
   return resources.filter(resource => resource.skillId === (props.skill as Skill).id)
 },
 )
+
+const remainingExp = computed(() => {
+  const nextLevel = levels.find(level => level.level === skillStore.activeSkill!.level + 1)
+  if (!nextLevel) return ''
+  return `Exp to next level: ${nextLevel.requiredXP - skillStore.activeSkill!.xp}`
+})
 </script>
 
 <template>
@@ -20,8 +27,9 @@ const filteredResources = computed(() => {
     {{ skill.name[0].toUpperCase() + skill.name.slice(1) }}
   </h2> -->
   <div>
-    Level: {{ skillStore.activeSkill!.level }} <br>
+    Level: {{ skillStore.activeSkill!.level }}  <br>
     Exp: {{ skillStore.activeSkill!.xp }}
+    {{ remainingExp }}
   </div>
   <progress
     :value="progress"
