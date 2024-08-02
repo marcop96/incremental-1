@@ -1,9 +1,14 @@
 <script setup lang='ts'>
+import Toaster from '@/components/ui/toast/Toaster.vue'
+import { useToast } from '@/components/ui/toast/use-toast'
+
 import type { Skill } from '~/types'
 import resources from '~/data/resources.json'
 import levels from '~/data/levels.json'
 import { useGatherStore } from '~/composable/useGather'
 import { useSkillStore } from '~/composable/useSkills'
+
+const { toast } = useToast()
 
 const gatherStore = useGatherStore()
 const skillStore = useSkillStore()
@@ -34,12 +39,26 @@ const nextLevelExpRequired = computed(() => {
   if (!nextLevel) return ''
   return nextLevel.requiredXP
 })
+watch(
+  () => skillStore.activeSkill!.level,
+  (newLevel) => {
+    if (newLevel === 99) {
+      toast({
+        title: `Congratulations! You have reached the max level!`,
+      })
+    }
+    if (newLevel != 1) {
+      toast({
+        title: `Congratulations! your ${skillStore.activeSkill!.name} level is ${newLevel}`,
+      })
+    }
+  },
+)
 </script>
 
 <template>
-  <!-- <h2 v-if="skill !=='inventory'">
-    {{ skill.name[0].toUpperCase() + skill.name.slice(1) }}
-  </h2> -->
+  <Toaster />
+
   <div>
     Level: {{ skillStore.activeSkill!.level }}  <br>
     Exp: {{ skillStore.activeSkill!.xp }}/ {{ nextLevelExpRequired }} <br>
