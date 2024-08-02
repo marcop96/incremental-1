@@ -4,6 +4,9 @@ import type { Resource, Item } from '@/types'
 import { useInventoryStore } from '~/composable/useInventory'
 import { usePlayerStore } from '~/composable/usePlayer'
 import { useSkillStore } from '~/composable/useSkills'
+import { useToast } from '@/components/ui/toast/use-toast'
+
+const { toast } = useToast()
 
 export const useGatherStore = defineStore('gather', () => {
   const inventoryStore = useInventoryStore()
@@ -20,7 +23,11 @@ export const useGatherStore = defineStore('gather', () => {
       const requiredItem = items.find(item => item.id === resource.itemId) as Item
       const inventoryItem = inventoryStore.findItemById(requiredItem.id)
       if (!inventoryItem || inventoryItem.quantity < 1) {
-        console.error(`You don't have any ${resource.name} for this`)
+        toast({
+          title: `Oh no!`,
+          description: `You don't have any ${resource.name} for this`,
+          variant: 'destructive',
+        })
         return false
       }
     }
