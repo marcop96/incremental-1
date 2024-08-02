@@ -1,13 +1,5 @@
 [
   {
-    "id": 1,
-    "name": "test Log",
-    "description": "log from a normal tree",
-    "value": 100,
-    "quantity": 1,
-    "icon": "noto:crossed-swords"
-  },
-  {
     "id": 5001,
     "name": "Normal Log",
     "description": "log from a normal tree",
@@ -89,7 +81,7 @@
   },
   {
     "id": 2001,
-    "name": "Shrimp",
+    "name": "Raw Shrimp",
     "description": "A small, edible marine crustacean.",
     "value": 10,
     "quantity": 1,
@@ -97,7 +89,7 @@
   },
   {
     "id": 2002,
-    "name": "Sardine",
+    "name": "Raw Sardine",
     "description": "A small, silvery fish often canned.",
     "value": 20,
     "quantity": 1,
@@ -105,7 +97,7 @@
   },
   {
     "id": 2003,
-    "name": "Herring",
+    "name": "Raw Herring",
     "description": "A small, oily fish found in the North Atlantic.",
     "value": 30,
     "quantity": 1,
@@ -113,7 +105,7 @@
   },
   {
     "id": 2004,
-    "name": "Anchovy",
+    "name": "Raw Anchovy",
     "description": "A small, common salt-water forage fish.",
     "value": 40,
     "quantity": 1,
@@ -121,7 +113,7 @@
   },
   {
     "id": 2005,
-    "name": "Mackerel",
+    "name": "Raw Mackerel",
     "description": "A fast-swimming fish of the tuna family.",
     "value": 50,
     "quantity": 1,
@@ -129,7 +121,7 @@
   },
   {
     "id": 2006,
-    "name": "Trout",
+    "name": "Raw Trout",
     "description": "A freshwater fish highly prized by anglers.",
     "value": 60,
     "quantity": 1,
@@ -137,7 +129,7 @@
   },
   {
     "id": 2007,
-    "name": "Cod",
+    "name": "Raw Cod",
     "description": "A large marine fish with a mild flavor.",
     "value": 70,
     "quantity": 1,
@@ -145,7 +137,7 @@
   },
   {
     "id": 2008,
-    "name": "Pike",
+    "name": "Raw Pike",
     "description": "A large, predatory freshwater fish.",
     "value": 80,
     "quantity": 1,
@@ -153,7 +145,7 @@
   },
   {
     "id": 2009,
-    "name": "Salmon",
+    "name": "Raw Salmon",
     "description": "A popular game fish known for its pink flesh.",
     "value": 90,
     "quantity": 1,
@@ -161,7 +153,7 @@
   },
   {
     "id": 2010,
-    "name": "Tuna",
+    "name": "Raw Tuna",
     "description": "A large, fast-swimming fish of the open seas.",
     "value": 100,
     "quantity": 1,
@@ -169,7 +161,7 @@
   },
   {
     "id": 2011,
-    "name": "Lobster",
+    "name": "Raw Lobster",
     "description": "A large marine crustacean with a strong shell.",
     "value": 120,
     "quantity": 1,
@@ -177,7 +169,7 @@
   },
   {
     "id": 2012,
-    "name": "Swordfish",
+    "name": "Raw Swordfish",
     "description": "A large fish with a long, flat bill.",
     "value": 150,
     "quantity": 1,
@@ -185,7 +177,7 @@
   },
   {
     "id": 2013,
-    "name": "Shark",
+    "name": "Raw Shark",
     "description": "A large, predatory fish known for its sharp teeth.",
     "value": 200,
     "quantity": 1,
@@ -193,7 +185,7 @@
   },
   {
     "id": 2014,
-    "name": "Manta Ray",
+    "name": "Raw Manta Ray",
     "description": "A large, flat fish with wing-like pectoral fins.",
     "value": 250,
     "quantity": 1,
@@ -201,18 +193,130 @@
   },
   {
     "id": 2015,
-    "name": "Whale",
+    "name": "Raw Whale",
     "description": "The largest marine mammal, known for its size.",
     "value": 300,
     "quantity": 1,
     "icon": "mdi:whale"
   },
   {
-    "id": 2016,
-    "name": "cheats",
-    "description": "An item that grants significant experience.",
-    "value": 13034431,
+    "id": 4001,
+    "name": "Raw Shrimp",
+    "description": "A small, edible marine crustacean.",
+    "value": 10,
     "quantity": 1,
-    "icon": "mdi:cheats"
+    "icon": "mdi:fish"
+  },
+  {
+    "id": 4002,
+    "name": "Raw Sardine",
+    "description": "A small, silvery fish often canned.",
+    "value": 20,
+    "quantity": 1,
+    "icon": "mdi:fish"
+  },
+  {
+    "id": 4003,
+    "name": "Raw Herring",
+    "description": "A small, oily fish found in the North Atlantic.",
+    "value": 30,
+    "quantity": 1,
+    "icon": "mdi:fish"
+  },
+  {
+    "id": 4004,
+    "name": "Raw Anchovy",
+    "description": "A small, common salt-water forage fish.",
+    "value": 40,
+    "quantity": 1,
+    "icon": "mdi:fish"
+  },
+  {
+    "id": 4005,
+    "name": "Raw Mackerel",
+    "description": "A fast-swimming fish of the tuna family.",
+    "value": 50,
+    "quantity": 1,
+    "icon": "mdi:fish"
+  },
+  {
+    "id": 4006,
+    "name": "Raw Trout",
+    "description": "A freshwater fish highly prized by anglers.",
+    "value": 60,
+    "quantity": 1,
+    "icon": "mdi:fish"
+  },
+  {
+    "id": 4007,
+    "name": "Raw Cod",
+    "description": "A large marine fish with a mild flavor.",
+    "value": 70,
+    "quantity": 1,
+    "icon": "mdi:fish"
+  },
+  {
+    "id": 4008,
+    "name": "Raw Pike",
+    "description": "A large, predatory freshwater fish.",
+    "value": 80,
+    "quantity": 1,
+    "icon": "mdi:fish"
+  },
+  {
+    "id": 4009,
+    "name": "Raw Salmon",
+    "description": "A popular game fish known for its pink flesh.",
+    "value": 90,
+    "quantity": 1,
+    "icon": "mdi:fish"
+  },
+  {
+    "id": 4010,
+    "name": "Raw Tuna",
+    "description": "A large, fast-swimming fish of the open seas.",
+    "value": 100,
+    "quantity": 1,
+    "icon": "mdi:fish"
+  },
+  {
+    "id": 4011,
+    "name": "Raw Lobster",
+    "description": "A large marine crustacean with a strong shell.",
+    "value": 120,
+    "quantity": 1,
+    "icon": "mdi:lobster"
+  },
+  {
+    "id": 4012,
+    "name": "Raw Swordfish",
+    "description": "A large fish with a long, flat bill.",
+    "value": 150,
+    "quantity": 1,
+    "icon": "mdi:sword-fish"
+  },
+  {
+    "id": 4013,
+    "name": "Raw Shark",
+    "description": "A large, predatory fish known for its sharp teeth.",
+    "value": 200,
+    "quantity": 1,
+    "icon": "mdi:shark"
+  },
+  {
+    "id": 4014,
+    "name": "Raw Manta Ray",
+    "description": "A large, flat fish with wing-like pectoral fins.",
+    "value": 250,
+    "quantity": 1,
+    "icon": "mdi:ray-start"
+  },
+  {
+    "id": 4015,
+    "name": "Raw Whale",
+    "description": "The largest marine mammal, known for its size.",
+    "value": 300,
+    "quantity": 1,
+    "icon": "mdi:whale"
   }
 ]
