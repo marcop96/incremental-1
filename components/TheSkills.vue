@@ -1,15 +1,14 @@
 <script setup lang='ts'>
-import type { Skill, Resource } from '~/types'
+import type { Skill } from '~/types'
 import resources from '~/data/resources.json'
 import levels from '~/data/levels.json'
 import { useGatherStore } from '~/composable/useGather'
 import { useSkillStore } from '~/composable/useSkills'
 
-const gatherResourceStore = useGatherStore()
+const gatherStore = useGatherStore()
 const skillStore = useSkillStore()
-const { progress } = storeToRefs(gatherResourceStore)
+const { progress, activeResource } = storeToRefs(gatherStore)
 const props = defineProps<{ skill: Skill }>()
-const activeResource = ref<Resource | object>({})
 const filteredResources = computed(() => {
   return resources.filter(resource => resource.skillId === (props.skill as Skill).id)
 },
@@ -21,11 +20,14 @@ const remainingExp = computed(() => {
   return `Exp to next level: ${nextLevel.requiredXP - skillStore.activeSkill!.xp}`
 })
 const xpPerHour = computed(() => {
-  const resource = filteredResources.value[0] // Assuming there is at least one resource
-  const gatheringTime = resource?.timeToGather || 0
-  const xpPerResource = resource?.experienceGiven || 0
+  const gatheringTime = activeResource.value?.timeToGather || 0
+  const xpPerResource = activeResource.value?.experienceGiven || 0
   const resourcesPerHour = 3600 / gatheringTime
-  return xpPerResource * resourcesPerHour
+  const xpPerHour = xpPerResource * resourcesPerHour
+  if (!xpPerHour) {
+    return 0
+  }
+  else { return xpPerHour }
 })
 </script>
 
@@ -53,7 +55,7 @@ const xpPerHour = computed(() => {
       class="cursor-pointer"
       :resource="resource"
       :active-resource="activeResource"
-      @click="gatherResourceStore.toggleGathering(resource)"
+      @click="gatherStore.toggleGathering(resource)"
     />
   </div>
 </template>
