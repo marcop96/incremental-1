@@ -448,5 +448,77 @@
     "experienceGiven": 300,
     "timeToGather": 15,
     "itemId": 2015
+  },
+  {
+    "id": 5001,
+    "name": "Copper Ore",
+    "skillId": 5,
+    "requiredLevel": 1,
+    "experienceGiven": 17.5,
+    "timeToGather": 2,
+    "itemId": 6001
+  },
+  {
+    "id": 5002,
+    "name": "Tin Ore",
+    "skillId": 5,
+    "requiredLevel": 1,
+    "experienceGiven": 17.5,
+    "timeToGather": 2,
+    "itemId": 6002
+  },
+  {
+    "id": 5003,
+    "name": "Iron Ore",
+    "skillId": 5,
+    "requiredLevel": 15,
+    "experienceGiven": 35,
+    "timeToGather": 3,
+    "itemId": 6003
+  },
+  {
+    "id": 5004,
+    "name": "Coal",
+    "skillId": 5,
+    "requiredLevel": 30,
+    "experienceGiven": 50,
+    "timeToGather": 4,
+    "itemId": 6004
+  },
+  {
+    "id": 5005,
+    "name": "Gold Ore",
+    "skillId": 5,
+    "requiredLevel": 40,
+    "experienceGiven": 65,
+    "timeToGather": 5,
+    "itemId": 6005
+  },
+  {
+    "id": 5006,
+    "name": "Mithril Ore",
+    "skillId": 5,
+    "requiredLevel": 55,
+    "experienceGiven": 80,
+    "timeToGather": 6,
+    "itemId": 6006
+  },
+  {
+    "id": 5007,
+    "name": "Adamantite Ore",
+    "skillId": 5,
+    "requiredLevel": 70,
+    "experienceGiven": 95,
+    "timeToGather": 7,
+    "itemId": 6007
+  },
+  {
+    "id": 5008,
+    "name": "Runite Ore",
+    "skillId": 5,
+    "requiredLevel": 85,
+    "experienceGiven": 125,
+    "timeToGather": 8,
+    "itemId": 6008
   }
 ]

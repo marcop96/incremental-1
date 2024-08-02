@@ -318,5 +318,69 @@
     "value": 300,
     "quantity": 1,
     "icon": "mdi:whale"
+  },
+  {
+    "id": 6001,
+    "name": "Copper Ore",
+    "description": "A lump of copper ore.",
+    "value": 5,
+    "quantity": 1,
+    "icon": "copper_ore_icon.png"
+  },
+  {
+    "id": 6002,
+    "name": "Tin Ore",
+    "description": "A lump of tin ore.",
+    "value": 5,
+    "quantity": 1,
+    "icon": "tin_ore_icon.png"
+  },
+  {
+    "id": 6003,
+    "name": "Iron Ore",
+    "description": "A lump of iron ore.",
+    "value": 10,
+    "quantity": 1,
+    "icon": "iron_ore_icon.png"
+  },
+  {
+    "id": 6004,
+    "name": "Coal",
+    "description": "A chunk of coal.",
+    "value": 15,
+    "quantity": 1,
+    "icon": "coal_icon.png"
+  },
+  {
+    "id": 6005,
+    "name": "Gold Ore",
+    "description": "A lump of gold ore.",
+    "value": 20,
+    "quantity": 1,
+    "icon": "gold_ore_icon.png"
+  },
+  {
+    "id": 6006,
+    "name": "Mithril Ore",
+    "description": "A lump of mithril ore.",
+    "value": 25,
+    "quantity": 1,
+    "icon": "mithril_ore_icon.png"
+  },
+  {
+    "id": 6007,
+    "name": "Adamantite Ore",
+    "description": "A lump of adamantite ore.",
+    "value": 30,
+    "quantity": 1,
+    "icon": "adamantite_ore_icon.png"
+  },
+  {
+    "id": 6008,
+    "name": "Runite Ore",
+    "description": "A lump of runite ore.",
+    "value": 50,
+    "quantity": 1,
+    "icon": "runite_ore_icon.png"
   }
 ]
