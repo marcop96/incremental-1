@@ -7,7 +7,7 @@ import type { Skill } from '~/types'
 
 const skillStore = useSkillStore()
 const inventoryStore = useInventoryStore()
-const { activeSkill } = storeToRefs(skillStore)
+const { activeSkill, activePage } = storeToRefs(skillStore)
 
 const activeSkillName = computed(() => {
   return typeof activeSkill.value === 'object' ? activeSkill.value?.name : ''
@@ -61,6 +61,7 @@ onUnmounted(() => {
     />
   </div>
   <div v-else>
-    <TheInventory v-if="!activeSkill" />
+    <TheInventory v-if="!activeSkill && activePage == 'inventory'" />
+    <TheShop v-if="!activeSkill && activePage === 'shop'" />
   </div>
 </template>

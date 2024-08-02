@@ -19,9 +19,17 @@ const { skills } = storeToRefs(skillStore)
           <li>
             <button
               class="w-full text-left py-2 px-4 rounded hover:bg-green-600 transition duration-200"
-              @click="skillStore.changeActiveSkill(null)"
+              @click="skillStore.changeActiveSkill(null), skillStore.changeActivePage('inventory')"
             >
               Inventory
+            </button>
+          </li>
+          <li class="w-full text-left py-2 px-4 rounded hover:bg-green-600 transition duration-200">
+            <button
+              class="w-full text-left py-2 px-4 rounded hover:bg-green-600 transition duration-200"
+              @click="skillStore.changeActiveSkill(null), skillStore.changeActivePage('shop')"
+            >
+              Shop
             </button>
           </li>
           <li>
