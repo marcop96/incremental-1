@@ -13,17 +13,17 @@ const activeSkillName = computed(() => {
   return typeof activeSkill.value === 'object' ? activeSkill.value?.name : ''
 })
 
-let intervalId
+let intervalId: NodeJS.Timeout
 
 onMounted(() => {
   if (localStorage.getItem('activeSkill')) {
-    skillStore.activeSkill = (JSON.parse(localStorage.getItem('activeSkill')))
+    skillStore.activeSkill = (JSON.parse(localStorage.getItem('activeSkill') ?? ''))
   }
   if (localStorage.getItem('playerInventory')) {
-    inventoryStore.inventory = (JSON.parse(localStorage.getItem('playerInventory')))
+    inventoryStore.inventory = (JSON.parse(localStorage.getItem('playerInventory') ?? ''))
   }
   if (localStorage.getItem('playerSkills')) {
-    skillStore.skills = (JSON.parse(localStorage.getItem('playerSkills')))
+    skillStore.skills = (JSON.parse(localStorage.getItem('playerSkills') ?? ''))
   }
 
   intervalId = setInterval(() => {
