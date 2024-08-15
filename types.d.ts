@@ -4,6 +4,7 @@ export interface Skill {
   level: number
   xp: number
   isGathering: boolean
+  isCombat?: boolean
 }
 
 export interface Resource {
