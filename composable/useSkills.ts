@@ -18,8 +18,6 @@ export const useSkillStore = defineStore('skills', () => {
   ])
 
   const changeActiveSkill = (skill: Skill | null) => {
-    console.log(activeSkill.value)
-    console.log(skill)
     activeSkill.value = skill
   }
   return { skills, activeSkill, changeActiveSkill }
