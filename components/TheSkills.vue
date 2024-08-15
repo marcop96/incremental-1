@@ -14,25 +14,25 @@ const filteredResources = computed(() => {
 </script>
 
 <template>
-  <div>
+  <div v-if="!skill.isCombat">
     <SkillProgress :skill="skill" />
-  </div>
-  <progress
-    :value="progress"
-    max="100"
-    class="progress-bar"
-  />
-  <div
-    class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
-  >
-    <ActionCard
-      v-for="resource in filteredResources"
-      :key="resource.id"
-      class="cursor-pointer"
-      :resource="resource"
-      :active-resource="activeResource"
-      @click="gatherStore.toggleGathering(resource)"
+    <progress
+      :value="progress"
+      max="100"
+      class="progress-bar"
     />
+    <div
+      class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+    >
+      <ActionCard
+        v-for="resource in filteredResources"
+        :key="resource.id"
+        class="cursor-pointer"
+        :resource="resource"
+        :active-resource="activeResource"
+        @click="gatherStore.toggleGathering(resource)"
+      />
+    </div>
   </div>
 </template>
 
