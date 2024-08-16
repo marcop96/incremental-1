@@ -13,8 +13,8 @@ const player = {
   attack: attack[0].level,
   defense: defense[0].level,
   strength: strength[0].level,
-  hitpoints: hitpoints[0].level,
-  currentHealth: hitpoints[0].level,
+  hitpoints: hitpoints[0].level * 10,
+  startingHealth: hitpoints[0].level * 10,
 }
 
 const monster = {
@@ -29,6 +29,9 @@ const monster = {
 }
 
 function combatLoop() {
+  console.log('combat loop')
+  rollDamage()
+
   // get both stats
   // player attacks first
   // attack speed is based on player weapon speed
@@ -44,14 +47,23 @@ function combatLoop() {
   // player can choose to run away
   // player can eat whenever he wants, but it takes a turn
   // turns are 'live'  with a progress bar that fills up and then waits till monster bars fills up
+  // ROLL FOR LOOT AFTER MONSTER KILL
+  // when combat finishes, reset monster stats
+}
 
+function rollDamage(playerStats, monsterStats) {
+  // roll for damage based on player and monster stats
+  // basic attack formula is (attack * strength) - (defense * 0.5)
+  // return damage number
+  console.log('rolled damage')
+  return Math.random()
 }
 </script>
 
 <template>
-  <div class="flex h-screen items-center justify-center bg-gray-800 min-w-screen text-white p-4">
+  <div class="flex h-screen  items-center justify-center bg-gray-800  text-white p-4">
     <!-- Combat Area -->
-    <div class="w-full max-w-5xl grid grid-cols-2 gap-6">
+    <div class=" max-w-5xl grid grid-cols-2   gap-6">
       <!-- Player Section -->
       <div class="flex flex-col items-center bg-green-500 p-6 rounded-lg shadow-lg">
         <h2 class="text-2xl font-bold mb-4">
@@ -96,13 +108,20 @@ function combatLoop() {
         </div>
       </div>
       <div
-        class="flex w-screen justify-center"
+        class="flex  justify-center"
       >
         <p
-          class=" "
+          class="text-center w-screen "
         >
           {{ monster.name }} attacks you for {{ monster.attack }} damage!
         </p>
+
+        <button
+          class="bg-red-500 text-white px-4 py-2 rounded-lg mt-4"
+          @click="combatLoop"
+        >
+          Attack
+        </button>
       </div>
     </div>
   </div>
