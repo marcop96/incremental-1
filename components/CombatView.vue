@@ -9,6 +9,8 @@ const attack = combatStats.filter(stat => stat.name === 'attack')
 const defense = combatStats.filter(stat => stat.name === 'defense')
 const strength = combatStats.filter(stat => stat.name === 'strength')
 const hitpoints = combatStats.filter(stat => stat.name === 'hitpoints')
+const rolledDamage = ref(0)
+const combatLog = ref([])
 const player = {
   attack: attack[0].level,
   defense: defense[0].level,
@@ -22,16 +24,17 @@ const monster = {
   name: 'Goblin',
   health: 10,
   attack: 5,
-  defense: 2,
+  strength: 2,
+  defense: 1,
   speed: 3,
   gold: 5,
   xp: 10,
 }
 
 function combatLoop() {
-  console.log('combat loop')
-  rollDamage()
+  rollPlayerDamage(player.attack, player.strength, monster.defense)
 
+  rollMonsterDamage(monster.attack, monster.strength, player.defense)
   // get both stats
   // player attacks first
   // attack speed is based on player weapon speed
@@ -51,12 +54,28 @@ function combatLoop() {
   // when combat finishes, reset monster stats
 }
 
-function rollDamage(playerStats, monsterStats) {
-  // roll for damage based on player and monster stats
-  // basic attack formula is (attack * strength) - (defense * 0.5)
-  // return damage number
-  console.log('rolled damage')
-  return Math.random()
+function rollPlayerDamage(playerAttack, playerStrength, enemyDefense) {
+  // Calculate the maximum possible damage
+  let maxDamage = (playerAttack * playerStrength) - (enemyDefense * 0.5)
+  // Ensure that maxDamage doesn't go below zero
+  maxDamage = Math.max(0, maxDamage)
+
+  // Generate a random number between 0 and maxDamage
+  const hitDamage = Math.random() * maxDamage
+  rolledDamage.value = hitDamage
+  return hitDamage
+}
+
+function rollMonsterDamage(monsterAttack, monsterStrength, playerDefense) {
+  // Calculate the maximum possible damage
+  let maxDamage = (monsterAttack * monsterStrength) - (playerDefense * 0.5)
+  // Ensure that maxDamage doesn't go below zero
+  maxDamage = Math.max(0, maxDamage)
+  // Generate a random number between 0 and maxDamage
+  const hitDamage = Math.random() * maxDamage
+  console.log(rolledDamage)
+  rolledDamage.value = hitDamage
+  return hitDamage
 }
 </script>
 
@@ -113,7 +132,7 @@ function rollDamage(playerStats, monsterStats) {
         <p
           class="text-center w-screen "
         >
-          {{ monster.name }} attacks you for {{ monster.attack }} damage!
+          {{ monster.name }} attacks you for {{ rolledDamage }} damage!
         </p>
 
         <button
