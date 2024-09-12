@@ -11,16 +11,14 @@ const defense = combatStats.find(stat => stat.name === 'defense')
 const strength = combatStats.find(stat => stat.name === 'strength')
 const hitpoints = combatStats.find(stat => stat.name === 'hitpoints')
 
-// Default weapon speed in seconds
 const DEFAULT_WEAPON_SPEED = 1
 
 const rolledDamage = ref(0)
-const combatLog = ref([]) // Use ref to make it reactive
-const isCombatActive = ref(false) // Track combat state
+const combatLog = ref([])
+const isCombatActive = ref(false)
 
-// Player and monster speeds (in seconds per attack)
-const playerWeaponSpeed = ref(DEFAULT_WEAPON_SPEED) // Default weapon speed
-const monsterWeaponSpeed = ref(2) // Default weapon speed
+const playerWeaponSpeed = ref(DEFAULT_WEAPON_SPEED)
+const monsterWeaponSpeed = ref(2)
 
 const player = {
   attack: attack ? attack.level : 0,
@@ -43,8 +41,8 @@ const monster = {
   xp: 10,
 }
 
-let playerNextAttackTime: number = 0 // Time when the player can next attack
-let monsterNextAttackTime: number = 0 // Time when the monster can next attack
+let playerNextAttackTime: number = 0
+let monsterNextAttackTime: number = 0
 
 function startCombat() {
   if (isCombatActive.value) return
@@ -64,22 +62,19 @@ function stopCombat() {
 
 function combatLoop() {
   if (!isCombatActive.value) return
-
   const now = Date.now()
 
   if (player.currentHealth > 0 && monster.currentHealth > 0) {
     if (now >= playerNextAttackTime) {
-      // Player attacks
       const playerDamage = rollPlayerDamage(player.attack, player.strength, monster.defense)
       updateCombatLog('Player', playerDamage, 0)
-      playerNextAttackTime = now + playerWeaponSpeed.value * 1000 // Schedule next attack
+      playerNextAttackTime = now + playerWeaponSpeed.value * 1000
     }
 
     if (now >= monsterNextAttackTime) {
-      // Monster attacks
       const monsterDamage = rollMonsterDamage(monster.attack, monster.strength, player.defense)
       updateCombatLog('Monster', 0, monsterDamage)
-      monsterNextAttackTime = now + monsterWeaponSpeed.value * 1000 // Schedule next attack
+      monsterNextAttackTime = now + monsterWeaponSpeed.value * 1000
     }
 
     if (checkIfPlayerIsDead()) {
@@ -89,19 +84,17 @@ function combatLoop() {
     }
 
     if (checkIfMonsterIsDead()) {
-      updateCombatLog('Victory', null, null)
-      stopCombat()
+      updateCombatLog(`You Killed ${monster.name}`, null, null)
+      restartCombat()
       return
     }
-
-    // Continue the combat loop
-    setTimeout(combatLoop, 100) // Check every 100ms
+    setTimeout(combatLoop, 100)
   }
 }
 
 function rollPlayerDamage(playerAttack, playerStrength, enemyDefense) {
   const maxDamage = Math.max(0, (playerAttack * playerStrength + 2) - (enemyDefense * 0.5))
-  const hitDamage = Math.floor(Math.random() * (maxDamage + 1)) // +1 to include maxDamage
+  const hitDamage = Math.floor(Math.random() * (maxDamage + 1))
   monster.currentHealth -= hitDamage
   rolledDamage.value = hitDamage
   console.log(rolledDamage.value)
@@ -110,7 +103,7 @@ function rollPlayerDamage(playerAttack, playerStrength, enemyDefense) {
 
 function rollMonsterDamage(monsterAttack, monsterStrength, playerDefense) {
   const maxDamage = Math.max(0, (monsterAttack * monsterStrength + 2) - (playerDefense * 0.5))
-  const hitDamage = Math.floor(Math.random() * (maxDamage + 1)) // +1 to include maxDamage
+  const hitDamage = Math.floor(Math.random() * (maxDamage + 1))
   player.currentHealth -= hitDamage
   rolledDamage.value = hitDamage
   return hitDamage
@@ -127,19 +120,24 @@ function checkIfMonsterIsDead() {
 function updateCombatLog(action, playerDamage, monsterDamage) {
   combatLog.value.push({
     action,
-    playerDamage: playerDamage || 0,
-    monsterDamage: monsterDamage || 0,
+    playerDamage: playerDamage,
+    monsterDamage: monsterDamage,
   })
 }
 
-// Clean up on component unmount
 onUnmounted(() => {
   stopCombat()
 })
+
+function restartCombat() {
+  stopCombat()
+  combatLog.value = []
+  monster.currentHealth = monster.health
+}
 </script>
 
 <template>
-  <div class="flex h-screen items-center justify-center bg-gray-800 text-white p-4">
+  <div class="flex flex-col h-screen items-center justify-center bg-gray-800 text-white p-4">
     <!-- Combat Area -->
     <div class="max-w-5xl grid grid-cols-2 gap-6">
       <!-- Player Section -->
@@ -177,18 +175,6 @@ onUnmounted(() => {
       </div>
 
       <div class="flex justify-center">
-        <section>
-          <ul>
-            <li
-              v-for="(log, index) in combatLog"
-              :key="index"
-            >
-              <strong>{{ log.action }}:</strong>
-              <span v-if="log.playerDamage">Player dealt {{ log.playerDamage }} damage</span>
-              <span v-if="log.monsterDamage">Monster dealt {{ log.monsterDamage }} damage</span>
-            </li>
-          </ul>
-        </section>
         <button
           class="bg-red-500 text-white px-4 py-2 rounded-lg mt-4"
           :disabled="isCombatActive"
@@ -205,6 +191,18 @@ onUnmounted(() => {
         </button>
       </div>
     </div>
+    <section>
+      <ul>
+        <li
+          v-for="(log, index) in combatLog"
+          :key="index"
+        >
+          <strong>{{ log.action }}:</strong>
+          <span v-if="log.playerDamage">Player dealt {{ log.playerDamage }} damage</span>
+          <span v-if="log.monsterDamage">Monster dealt {{ log.monsterDamage }} damage</span>
+        </li>
+      </ul>
+    </section>
   </div>
 </template>
 
