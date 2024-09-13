@@ -14,6 +14,7 @@ const DEFAULT_WEAPON_SPEED = 1
 const isRespawning = ref(false)
 const rolledDamage = ref(0)
 const combatLog = ref<Array<{ action: string, playerDamage?: number, monsterDamage?: number }>>([])
+const lootLog = ref<Array<{ loot: string }>>([])
 const isCombatActive = ref(false)
 
 const playerWeaponSpeed = ref(DEFAULT_WEAPON_SPEED)
@@ -32,12 +33,17 @@ const monster = {
   name: 'Goblin',
   health: 5,
   currentHealth: 5,
-  attack: 10,
+  attack: 1,
   strength: 1,
   defense: 1,
   speed: 3,
   gold: 5,
   xp: 10,
+  drops: [
+    { loot: 'bones', chance: 100 },
+    { loot: 'goblin ear', chance: 50 },
+    { loot: 'rusty sword', chance: 10 },
+  ],
 }
 
 let playerNextAttackTime: number = 0
@@ -110,7 +116,19 @@ function checkIfPlayerIsDead() {
 }
 
 function checkIfMonsterIsDead() {
-  return monster.currentHealth <= 0
+  if (monster.currentHealth <= 0) {
+    updateCombatLog(`You Killed ${monster.name}`, null, null)
+    const lootedItems = giveLoot(monster.drops)
+    if (lootedItems.length > 0) {
+      updateCombatLog(`You received: ${lootedItems.join(', ')}`, null, null)
+    }
+    else {
+      updateCombatLog(`No loot dropped`, null, null)
+    }
+    restartCombat()
+    return true
+  }
+  return false
 }
 
 function updateCombatLog(action: string, playerDamage: number | null, monsterDamage: number | null) {
@@ -151,6 +169,47 @@ function respawn() {
     restartCombat()
     isRespawning.value = false
   }, 10000)
+}
+
+function giveLoot(drops: { loot: string, chance: number }[] | { loot: string, chance: number }) {
+  const dropsArray = Array.isArray(drops) ? drops : [drops]
+  const lootedItems: string[] = []
+
+  // First, add all guaranteed drops (100% chance)
+  dropsArray.forEach((item) => {
+    if (item.chance === 100) {
+      lootedItems.push(item.loot)
+    }
+  })
+
+  // Now, roll for one random item from the remaining drops
+  const remainingDrops = dropsArray.filter(item => item.chance < 100)
+  if (remainingDrops.length > 0) {
+    const totalChance = remainingDrops.reduce((sum, item) => sum + item.chance, 0)
+    const roll = Math.random() * totalChance
+    let cumulativeChance = 0
+
+    for (const item of remainingDrops) {
+      cumulativeChance += item.chance
+      if (roll <= cumulativeChance) {
+        lootedItems.push(item.loot)
+        break
+      }
+    }
+  }
+
+  // Log and return the looted items
+  if (lootedItems.length > 0) {
+    lootedItems.forEach((item) => {
+      lootLog.value.push({ loot: item })
+      console.log(`Player received: ${item}`)
+    })
+  }
+  else {
+    console.log('No loot this time!')
+  }
+
+  return lootedItems
 }
 </script>
 
@@ -219,18 +278,34 @@ function respawn() {
         </button>
       </div>
     </div>
-    <section>
-      <ul>
-        <li
-          v-for="(log, index) in combatLog"
-          :key="index"
-        >
-          <strong>{{ log.action }}</strong>
-          <span v-if="log.playerDamage">Player dealt {{ log.playerDamage }} damage</span>
-          <span v-if="log.monsterDamage">Monster dealt {{ log.monsterDamage }} damage</span>
-        </li>
-      </ul>
-    </section>
+    <div class="flex ">
+      <section class=" m-2 p-2">
+        <ul>
+          <strong>Combat Log</strong>
+          <li
+            v-for="(log, index) in combatLog"
+            :key="index"
+          >
+            <span>{{ log.action }}</span>
+            <span v-if="log.playerDamage">Player dealt {{ log.playerDamage }} damage</span>
+            <span v-if="log.monsterDamage">Monster dealt {{ log.monsterDamage }} damage</span>
+          </li>
+        </ul>
+      </section>
+      <section class="m-2 p-2">
+        <ul>
+          <strong>Loot Log</strong>
+          <li>
+            <span
+              v-for="(loot, index) in lootLog"
+              :key="index"
+            >
+              {{ loot.loot }}
+            </span>
+          </li>
+        </ul>
+      </section>
+    </div>
   </div>
 </template>
 
