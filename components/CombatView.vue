@@ -31,9 +31,9 @@ const player = {
 const monster = {
   id: 1,
   name: 'Goblin',
-  health: 5,
+  health: 40,
   currentHealth: 5,
-  attack: 1,
+  attack: 1000,
   strength: 1,
   defense: 1,
   speed: 3,
@@ -79,7 +79,7 @@ function combatLoop() {
     }
 
     if (checkIfPlayerIsDead()) {
-      restartCombat()
+      // restartCombat()
       updateCombatLog('You Died', null, null)
 
       return
@@ -98,7 +98,6 @@ function rollPlayerDamage(playerAttack: number, playerStrength: number, enemyDef
   const hitDamage = Math.floor(Math.random() * (maxDamage + 1))
   monster.currentHealth -= hitDamage
   rolledDamage.value = hitDamage
-  console.log(rolledDamage.value)
   return hitDamage
 }
 
@@ -150,9 +149,9 @@ onUnmounted(() => {
 })
 
 function restartCombat() {
-  console.log('restartc ombat')
   isCombatActive.value = false
   combatLog.value = []
+  lootLog.value = []
   monster.currentHealth = monster.health
 }
 function respawn() {
@@ -161,7 +160,7 @@ function respawn() {
     player.currentHealth = player.hitpoints
     restartCombat()
     isRespawning.value = false
-  }, 10000)
+  }, 1000)
 }
 
 function giveLoot(drops: { loot: string, chance: number }[] | { loot: string, chance: number }) {
@@ -249,7 +248,7 @@ function giveLoot(drops: { loot: string, chance: number }[] | { loot: string, ch
           v-if="player.currentHealth >= 0"
           class="bg-red-500 text-white px-4 py-2 rounded-lg mt-4"
           :class="{ 'bg-red-900': isRespawning }"
-          :disabled="isCombatActive || isRespawning"
+          :hidden="isCombatActive || isRespawning"
           @click="startCombat"
         >
           Start Combat
@@ -264,7 +263,7 @@ function giveLoot(drops: { loot: string, chance: number }[] | { loot: string, ch
         <button
           v-else
           class="bg-gray-500 text-white px-4 py-2 rounded-lg mt-4 ml-2"
-          :disabled="!isCombatActive"
+          :hidden="!isCombatActive"
           @click="restartCombat"
         >
           Run Away
