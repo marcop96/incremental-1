@@ -10,7 +10,7 @@ const defense = combatStats.find(stat => stat.name === 'defense')
 const strength = combatStats.find(stat => stat.name === 'strength')
 const hitpoints = combatStats.find(stat => stat.name === 'hitpoints')
 
-const DEFAULT_WEAPON_SPEED = 1
+const DEFAULT_WEAPON_SPEED = 0.1
 const isRespawning = ref(false)
 const rolledDamage = ref(0)
 const combatLog = ref<Array<{ action: string, playerDamage?: number, monsterDamage?: number }>>([])
@@ -44,6 +44,7 @@ const monster = {
     { loot: 'goblin ear', chance: 50 },
     { loot: 'rusty sword', chance: 10 },
     { loot: 'ultra rare', chance: 1 },
+    { loot: '', chance: 60 },
   ],
 }
 
@@ -202,12 +203,7 @@ function giveLoot(drops: { loot: string, chance: number }[] | { loot: string, ch
       else {
         lootLog.value.push({ loot: item, count: 1 })
       }
-      console.log(`Player received: ${item}`)
     })
-  }
-
-  else {
-    console.log('No loot this time!')
   }
 
   return lootedItems
@@ -282,7 +278,7 @@ function giveLoot(drops: { loot: string, chance: number }[] | { loot: string, ch
         <div class="h-48 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-800">
           <ul class="space-y-1">
             <li
-              v-for="(log, index) in combatLog"
+              v-for="(log, index) in combatLog.slice().reverse()"
               :key="index"
               class="text-sm"
             >
