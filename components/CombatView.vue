@@ -88,7 +88,7 @@ function combatLoop() {
   }
 }
 
-function rollPlayerDamage(playerAttack, playerStrength, enemyDefense) {
+function rollPlayerDamage(playerAttack: number, playerStrength: number, enemyDefense: number) {
   const maxDamage = Math.max(0, (playerAttack * playerStrength + 2) - (enemyDefense * 0.5))
   const hitDamage = Math.floor(Math.random() * (maxDamage + 1))
   monster.currentHealth -= hitDamage
@@ -97,7 +97,7 @@ function rollPlayerDamage(playerAttack, playerStrength, enemyDefense) {
   return hitDamage
 }
 
-function rollMonsterDamage(monsterAttack, monsterStrength, playerDefense) {
+function rollMonsterDamage(monsterAttack: number, monsterStrength: number, playerDefense: number) {
   const maxDamage = Math.max(0, (monsterAttack * monsterStrength + 2) - (playerDefense * 0.5))
   const hitDamage = Math.floor(Math.random() * (maxDamage + 1))
   player.currentHealth -= hitDamage
