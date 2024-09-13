@@ -14,7 +14,7 @@ const DEFAULT_WEAPON_SPEED = 1
 const isRespawning = ref(false)
 const rolledDamage = ref(0)
 const combatLog = ref<Array<{ action: string, playerDamage?: number, monsterDamage?: number }>>([])
-const lootLog = ref<Array<{ loot: string }>>([])
+const lootLog = ref<Array<{ }>>([])
 const isCombatActive = ref(false)
 
 const playerWeaponSpeed = ref(DEFAULT_WEAPON_SPEED)
@@ -31,9 +31,9 @@ const player = {
 const monster = {
   id: 1,
   name: 'Goblin',
-  health: 40,
-  currentHealth: 5,
-  attack: 1000,
+  health: 1,
+  currentHealth: 1,
+  attack: 1,
   strength: 1,
   defense: 1,
   speed: 3,
@@ -43,6 +43,7 @@ const monster = {
     { loot: 'bones', chance: 100 },
     { loot: 'goblin ear', chance: 50 },
     { loot: 'rusty sword', chance: 10 },
+    { loot: 'ultra rare', chance: 1 },
   ],
 }
 
@@ -87,6 +88,7 @@ function combatLoop() {
 
     if (checkIfMonsterIsDead()) {
       updateCombatLog(`You Killed ${monster.name}`, null, null)
+      giveLoot(monster.drops)
       monster.currentHealth = monster.health
     }
     setTimeout(combatLoop, 100)
@@ -104,7 +106,7 @@ function rollPlayerDamage(playerAttack: number, playerStrength: number, enemyDef
 function rollMonsterDamage(monsterAttack: number, monsterStrength: number, playerDefense: number) {
   const maxDamage = Math.max(0, (monsterAttack * monsterStrength + 2) - (playerDefense * 0.5))
   const hitDamage = Math.floor(Math.random() * (maxDamage + 1))
-  player.currentHealth -= hitDamage
+  player.currentHealth += hitDamage
   rolledDamage.value = hitDamage
   return hitDamage
 }
@@ -193,10 +195,17 @@ function giveLoot(drops: { loot: string, chance: number }[] | { loot: string, ch
   // Log and return the looted items
   if (lootedItems.length > 0) {
     lootedItems.forEach((item) => {
-      lootLog.value.push({ loot: item })
+      const existingLoot = lootLog.value.find(loot => loot.loot === item)
+      if (existingLoot) {
+        existingLoot.count++
+      }
+      else {
+        lootLog.value.push({ loot: item, count: 1 })
+      }
       console.log(`Player received: ${item}`)
     })
   }
+
   else {
     console.log('No loot this time!')
   }
@@ -303,7 +312,7 @@ function giveLoot(drops: { loot: string, chance: number }[] | { loot: string, ch
               :key="index"
               class="text-sm text-yellow-300"
             >
-              {{ loot.loot }}
+              {{ loot.loot }} x{{ loot.count }}
             </li>
           </ul>
         </div>
