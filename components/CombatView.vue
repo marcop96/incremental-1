@@ -115,7 +115,7 @@ function checkIfPlayerIsDead() {
 
 function checkIfMonsterIsDead() {
   if (monster.currentHealth <= 0) {
-    const lootedItems = giveLoot(monster.drops)
+    // const lootedItems = giveLoot(monster.drops)
 
     return true
   }
@@ -214,16 +214,12 @@ function giveLoot(drops: { loot: string, chance: number }[] | { loot: string, ch
         <h2 class="text-2xl font-bold mb-4">
           Player
         </h2>
-        <div class="w-32 h-32 bg-green-700 rounded-full mb-4">
-          <!-- Player Avatar -->
-        </div>
-        <div class="space-y-2">
-          <p>Health: {{ player.currentHealth }} / {{ player.hitpoints }}</p>
-          <p>Attack: {{ player.attack }}</p>
-          <p>Strength: {{ player.strength }}</p>
-          <p>Defense: {{ player.defense }}</p>
-          <p>Weapon Speed: {{ playerWeaponSpeed }} seconds</p>
-        </div>
+        <div class="w-32 h-32 bg-green-700 rounded-full mb-4" />
+        <p>Health: {{ player.currentHealth }} / {{ player.hitpoints }}</p>
+        <p>Attack: {{ player.attack }}</p>
+        <p>Strength: {{ player.strength }}</p>
+        <p>Defense: {{ player.defense }}</p>
+        <p>Weapon Speed: {{ playerWeaponSpeed }} seconds</p>
       </div>
 
       <!-- Monster Section -->
@@ -231,46 +227,44 @@ function giveLoot(drops: { loot: string, chance: number }[] | { loot: string, ch
         <h2 class="text-2xl font-bold mb-4">
           Monster
         </h2>
-        <div class="w-32 h-32 bg-red-700 rounded-full mb-4">
-          <!-- Monster Avatar -->
-        </div>
-        <div class="space-y-2">
-          <p>{{ monster.name }}</p>
-          <p>Health: {{ monster.currentHealth }} / {{ monster.health }}</p>
-          <p>Attack: {{ monster.attack }}</p>
-          <p>Defense: {{ monster.defense }}</p>
-          <p>Weapon Speed: {{ monsterWeaponSpeed }} seconds</p>
-        </div>
-      </div>
-
-      <div class="flex justify-center">
-        <button
-          v-if="player.currentHealth >= 0"
-          class="bg-red-500 text-white px-4 py-2 rounded-lg mt-4"
-          :class="{ 'bg-red-900': isRespawning }"
-          :hidden="isCombatActive || isRespawning"
-          @click="startCombat"
-        >
-          Start Combat
-        </button>
-        <button
-          v-if="player.currentHealth <= 0"
-          class="bg-gray-500 text-white px-4 py-2 rounded-lg mt-4 ml-2"
-          @click="respawn"
-        >
-          {{ isRespawning ? 'Respawning...' : 'Respawn' }}
-        </button>
-        <button
-          v-else
-          class="bg-gray-500 text-white px-4 py-2 rounded-lg mt-4 ml-2"
-          :hidden="!isCombatActive"
-          @click="restartCombat"
-        >
-          Run Away
-        </button>
+        <div class="w-32 h-32 bg-red-700 rounded-full mb-4" />
+        <p>{{ monster.name }}</p>
+        <p>Health: {{ monster.currentHealth }} / {{ monster.health }}</p>
+        <p>Attack: {{ monster.attack }}</p>
+        <p>Defense: {{ monster.defense }}</p>
+        <p>Weapon Speed: {{ monsterWeaponSpeed }} seconds</p>
       </div>
     </div>
-    <div class="w-full max-w-5xl grid grid-cols-2 gap-6">
+
+    <!-- Combat Buttons -->
+    <div class="mt-6">
+      <button
+        v-if="player.currentHealth >= 0"
+        class="bg-red-500 text-white px-4 py-2 rounded-lg mr-2"
+        :class="{ 'bg-red-900': isRespawning }"
+        :hidden="isCombatActive || isRespawning"
+        @click="startCombat"
+      >
+        Start Combat
+      </button>
+      <button
+        v-if="player.currentHealth <= 0"
+        class="bg-gray-500 text-white px-4 py-2 rounded-lg mr-2"
+        @click="respawn"
+      >
+        {{ isRespawning ? 'Respawning...' : 'Respawn' }}
+      </button>
+      <button
+        v-else
+        class="bg-gray-500 text-white px-4 py-2 rounded-lg"
+        :hidden="!isCombatActive"
+        @click="restartCombat"
+      >
+        Run Away
+      </button>
+    </div>
+
+    <div class="w-full max-w-5xl grid grid-cols-2 gap-6 mt-6">
       <!-- Combat Log -->
       <div class="bg-gray-700 rounded-lg shadow-lg p-4">
         <h3 class="text-xl font-bold mb-2">
@@ -307,9 +301,9 @@ function giveLoot(drops: { loot: string, chance: number }[] | { loot: string, ch
             <li
               v-for="(loot, index) in lootLog"
               :key="index"
-              class="text-sm"
+              class="text-sm text-yellow-300"
             >
-              <span class="text-yellow-300">{{ loot.loot }}</span>
+              {{ loot.loot }}
             </li>
           </ul>
         </div>
