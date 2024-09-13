@@ -87,15 +87,14 @@ function combatLoop() {
 
     if (checkIfMonsterIsDead()) {
       updateCombatLog(`You Killed ${monster.name}`, null, null)
-      restartCombat()
-      return
+      monster.currentHealth = monster.health
     }
     setTimeout(combatLoop, 100)
   }
 }
 
 function rollPlayerDamage(playerAttack: number, playerStrength: number, enemyDefense: number) {
-  const maxDamage = Math.max(0, (playerAttack * playerStrength + 2) - (enemyDefense * 0.5))
+  const maxDamage = Math.max(0, (playerAttack * playerStrength + 20) - (enemyDefense * 0.5)) // !HARD CODED
   const hitDamage = Math.floor(Math.random() * (maxDamage + 1))
   monster.currentHealth -= hitDamage
   rolledDamage.value = hitDamage
@@ -117,15 +116,8 @@ function checkIfPlayerIsDead() {
 
 function checkIfMonsterIsDead() {
   if (monster.currentHealth <= 0) {
-    updateCombatLog(`You Killed ${monster.name}`, null, null)
     const lootedItems = giveLoot(monster.drops)
-    if (lootedItems.length > 0) {
-      updateCombatLog(`You received: ${lootedItems.join(', ')}`, null, null)
-    }
-    else {
-      updateCombatLog(`No loot dropped`, null, null)
-    }
-    restartCombat()
+
     return true
   }
   return false
@@ -158,6 +150,7 @@ onUnmounted(() => {
 })
 
 function restartCombat() {
+  console.log('restartc ombat')
   isCombatActive.value = false
   combatLog.value = []
   monster.currentHealth = monster.health
@@ -278,33 +271,50 @@ function giveLoot(drops: { loot: string, chance: number }[] | { loot: string, ch
         </button>
       </div>
     </div>
-    <div class="flex ">
-      <section class=" m-2 p-2">
-        <ul>
-          <strong>Combat Log</strong>
-          <li
-            v-for="(log, index) in combatLog"
-            :key="index"
-          >
-            <span>{{ log.action }}</span>
-            <span v-if="log.playerDamage">Player dealt {{ log.playerDamage }} damage</span>
-            <span v-if="log.monsterDamage">Monster dealt {{ log.monsterDamage }} damage</span>
-          </li>
-        </ul>
-      </section>
-      <section class="m-2 p-2">
-        <ul>
-          <strong>Loot Log</strong>
-          <li>
-            <span
+    <div class="w-full max-w-5xl grid grid-cols-2 gap-6">
+      <!-- Combat Log -->
+      <div class="bg-gray-700 rounded-lg shadow-lg p-4">
+        <h3 class="text-xl font-bold mb-2">
+          Combat Log {{ isCombatActive ? ' - Active' : '' }}
+        </h3>
+        <div class="h-48 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-800">
+          <ul class="space-y-1">
+            <li
+              v-for="(log, index) in combatLog"
+              :key="index"
+              class="text-sm"
+            >
+              <span>{{ log.action }}</span>
+              <span
+                v-if="log.playerDamage"
+                class="text-green-400"
+              >Player dealt {{ log.playerDamage }} damage</span>
+              <span
+                v-if="log.monsterDamage"
+                class="text-red-400"
+              >Monster dealt {{ log.monsterDamage }} damage</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Loot Log -->
+      <div class="bg-gray-700 rounded-lg shadow-lg p-4">
+        <h3 class="text-xl font-bold mb-2">
+          Loot Log
+        </h3>
+        <div class="h-48 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-800">
+          <ul class="space-y-1">
+            <li
               v-for="(loot, index) in lootLog"
               :key="index"
+              class="text-sm"
             >
-              {{ loot.loot }}
-            </span>
-          </li>
-        </ul>
-      </section>
+              <span class="text-yellow-300">{{ loot.loot }}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 </template>
