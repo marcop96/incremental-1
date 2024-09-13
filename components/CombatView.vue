@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, onUnmounted } from 'vue'
 import { useSkillStore } from '../composable/useSkills'
-import monsters from '../data/monsters.json'
 
 const skillStore = useSkillStore()
 const combatStats = skillStore.skills.filter(skill => skill.isCombat)
@@ -12,9 +11,9 @@ const strength = combatStats.find(stat => stat.name === 'strength')
 const hitpoints = combatStats.find(stat => stat.name === 'hitpoints')
 
 const DEFAULT_WEAPON_SPEED = 1
-
+const isRespawning = ref(false)
 const rolledDamage = ref(0)
-const combatLog = ref([])
+const combatLog = ref<Array<{ action: string, playerDamage?: number, monsterDamage?: number }>>([])
 const isCombatActive = ref(false)
 
 const playerWeaponSpeed = ref(DEFAULT_WEAPON_SPEED)
@@ -33,7 +32,7 @@ const monster = {
   name: 'Goblin',
   health: 5,
   currentHealth: 5,
-  attack: 1,
+  attack: 10,
   strength: 1,
   defense: 1,
   speed: 3,
@@ -56,10 +55,6 @@ function startCombat() {
   combatLoop()
 }
 
-function stopCombat() {
-  isCombatActive.value = false
-}
-
 function combatLoop() {
   if (!isCombatActive.value) return
   const now = Date.now()
@@ -78,8 +73,9 @@ function combatLoop() {
     }
 
     if (checkIfPlayerIsDead()) {
-      updateCombatLog('Game Over', null, null)
-      stopCombat()
+      restartCombat()
+      updateCombatLog('You Died', null, null)
+
       return
     }
 
@@ -117,22 +113,44 @@ function checkIfMonsterIsDead() {
   return monster.currentHealth <= 0
 }
 
-function updateCombatLog(action, playerDamage, monsterDamage) {
-  combatLog.value.push({
-    action,
-    playerDamage: playerDamage,
-    monsterDamage: monsterDamage,
-  })
+function updateCombatLog(action: string, playerDamage: number | null, monsterDamage: number | null) {
+  if (action === 'Player') {
+    if (playerDamage === 0) {
+      combatLog.value.push({ action: 'Player attacked but missed!' })
+    }
+    else {
+      combatLog.value.push({ action: `Player dealt ${playerDamage} damage to ${monster.name}!` })
+    }
+  }
+  else if (action === 'Monster') {
+    if (monsterDamage === 0) {
+      combatLog.value.push({ action: `${monster.name} attacked but missed!` })
+    }
+    else {
+      combatLog.value.push({ action: `${monster.name} dealt ${monsterDamage} damage to Player!` })
+    }
+  }
+  else {
+    combatLog.value.push({ action })
+  }
 }
 
 onUnmounted(() => {
-  stopCombat()
+  restartCombat()
 })
 
 function restartCombat() {
-  stopCombat()
+  isCombatActive.value = false
   combatLog.value = []
   monster.currentHealth = monster.health
+}
+function respawn() {
+  isRespawning.value = true
+  setTimeout(() => {
+    player.currentHealth = player.hitpoints
+    restartCombat()
+    isRespawning.value = false
+  }, 10000)
 }
 </script>
 
@@ -176,18 +194,28 @@ function restartCombat() {
 
       <div class="flex justify-center">
         <button
+          v-if="player.currentHealth >= 0"
           class="bg-red-500 text-white px-4 py-2 rounded-lg mt-4"
-          :disabled="isCombatActive"
+          :class="{ 'bg-red-900': isRespawning }"
+          :disabled="isCombatActive || isRespawning"
           @click="startCombat"
         >
           Start Combat
         </button>
         <button
+          v-if="player.currentHealth <= 0"
+          class="bg-gray-500 text-white px-4 py-2 rounded-lg mt-4 ml-2"
+          @click="respawn"
+        >
+          {{ isRespawning ? 'Respawning...' : 'Respawn' }}
+        </button>
+        <button
+          v-else
           class="bg-gray-500 text-white px-4 py-2 rounded-lg mt-4 ml-2"
           :disabled="!isCombatActive"
-          @click="stopCombat"
+          @click="restartCombat"
         >
-          Stop Combat
+          Run Away
         </button>
       </div>
     </div>
@@ -197,7 +225,7 @@ function restartCombat() {
           v-for="(log, index) in combatLog"
           :key="index"
         >
-          <strong>{{ log.action }}:</strong>
+          <strong>{{ log.action }}</strong>
           <span v-if="log.playerDamage">Player dealt {{ log.playerDamage }} damage</span>
           <span v-if="log.monsterDamage">Monster dealt {{ log.monsterDamage }} damage</span>
         </li>
