@@ -29,6 +29,7 @@ export interface Item {
 export interface Monster {
   id: number
   name: string
+  level: number
   health: number
   currentHealth: number
   attack: number

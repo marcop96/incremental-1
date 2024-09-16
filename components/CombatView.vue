@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onUnmounted } from 'vue'
 import { useSkillStore } from '../composable/useSkills'
-import itemDatabase from '../data/items.json'
+import monsters from '../data/monsters.json'
 import { useInventoryStore } from '~/composable/useInventory'
 
 const skillStore = useSkillStore()
@@ -13,7 +13,7 @@ const defense = combatStats.find(stat => stat.name === 'defense')
 const strength = combatStats.find(stat => stat.name === 'strength')
 const hitpoints = combatStats.find(stat => stat.name === 'hitpoints')
 
-const DEFAULT_WEAPON_SPEED = 0
+const DEFAULT_WEAPON_SPEED = 0.001
 const isRespawning = ref(false)
 const rolledDamage = ref(0)
 const combatLog = ref<Array<{ action: string, playerDamage?: number, monsterDamage?: number }>>([])
@@ -31,7 +31,7 @@ const player = {
   currentHealth: hitpoints ? hitpoints.level * 10 : 0,
 }
 
-const monster = {
+const monster = ref({
   id: 1,
   name: 'Goblin',
   health: 1,
@@ -44,12 +44,11 @@ const monster = {
   xp: 10,
   drops: [
     { name: 'Bones', chance: 100 },
-    { name: 'goblin ear', chance: 20 },
-    { name: 'rusty sword', chance: 10 },
+    { name: 'sword', chance: 10 },
     { name: 'ultra rare', chance: 1 },
     { name: '', chance: 60 },
   ],
-}
+})
 
 let playerNextAttackTime: number = 0
 let monsterNextAttackTime: number = 0
@@ -65,20 +64,29 @@ function startCombat() {
 
   combatLoop()
 }
-
+function updateMonster(selectedMonsterName: string) {
+  const selectedMonster = monsters.find(m => m.name === selectedMonsterName)
+  if (selectedMonster) {
+    monster.value = {
+      ...selectedMonster,
+      currentHealth: selectedMonster.health,
+    }
+    restartCombat()
+  }
+}
 function combatLoop() {
   if (!isCombatActive.value) return
   const now = Date.now()
 
-  if (player.currentHealth > 0 && monster.currentHealth > 0) {
+  if (player.currentHealth > 0 && monster.value.currentHealth > 0) {
     if (now >= playerNextAttackTime) {
-      const playerDamage = rollPlayerDamage(player.attack, player.strength, monster.defense)
+      const playerDamage = rollPlayerDamage(player.attack, player.strength, monster.value.defense)
       updateCombatLog('Player', playerDamage, 0)
       playerNextAttackTime = now + playerWeaponSpeed.value * 1000
     }
 
     if (now >= monsterNextAttackTime) {
-      const monsterDamage = rollMonsterDamage(monster.attack, monster.strength, player.defense)
+      const monsterDamage = rollMonsterDamage(monster.value.attack, monster.value.strength, player.defense)
       updateCombatLog('Monster', 0, monsterDamage)
       monsterNextAttackTime = now + monsterWeaponSpeed.value * 1000
     }
@@ -91,9 +99,9 @@ function combatLoop() {
     }
 
     if (checkIfMonsterIsDead()) {
-      updateCombatLog(`You Killed ${monster.name}`, null, null)
-      giveLoot(monster.drops)
-      monster.currentHealth = monster.health
+      updateCombatLog(`You Killed ${monster.value.name}`, null, null)
+      giveLoot(monster.value.drops)
+      monster.value.currentHealth = monster.value.health
     }
     setTimeout(combatLoop, 100)
   }
@@ -102,7 +110,7 @@ function combatLoop() {
 function rollPlayerDamage(playerAttack: number, playerStrength: number, enemyDefense: number) {
   const maxDamage = Math.max(0, (playerAttack * playerStrength + 20) - (enemyDefense * 0.5)) // !HARD CODED
   const hitDamage = Math.floor(Math.random() * (maxDamage + 1))
-  monster.currentHealth -= hitDamage
+  monster.value.currentHealth -= hitDamage
   rolledDamage.value = hitDamage
   return hitDamage
 }
@@ -120,7 +128,7 @@ function checkIfPlayerIsDead() {
 }
 
 function checkIfMonsterIsDead() {
-  if (monster.currentHealth <= 0) {
+  if (monster.value.currentHealth <= 0) {
     // const lootedItems = giveLoot(monster.drops)
 
     return true
@@ -134,15 +142,15 @@ function updateCombatLog(action: string, playerDamage: number | null, monsterDam
       combatLog.value.push({ action: 'Player attacked but missed!' })
     }
     else {
-      combatLog.value.push({ action: `Player dealt ${playerDamage} damage to ${monster.name}!` })
+      combatLog.value.push({ action: `Player dealt ${playerDamage} damage to ${monster.value.name}!` })
     }
   }
   else if (action === 'Monster') {
     if (monsterDamage === 0) {
-      combatLog.value.push({ action: `${monster.name} attacked but missed!` })
+      combatLog.value.push({ action: `${monster.value.name} attacked but missed!` })
     }
     else {
-      combatLog.value.push({ action: `${monster.name} dealt ${monsterDamage} damage to Player!` })
+      combatLog.value.push({ action: `${monster.value.name} dealt ${monsterDamage} damage to Player!` })
     }
   }
   else {
@@ -158,7 +166,7 @@ function restartCombat() {
   isCombatActive.value = false
   combatLog.value = []
   lootLog.value = []
-  monster.currentHealth = monster.health
+  monster.value.currentHealth = monster.value.health
 }
 function respawn() {
   isRespawning.value = true
@@ -248,11 +256,23 @@ function giveLoot(drops: { name: string, chance: number }[] | { name: string, ch
 
       <!-- Monster Section -->
       <div class="flex flex-col items-center bg-red-500 p-6 rounded-lg shadow-lg">
+        <select
+          :disabled="isCombatActive"
+          class="bg-gray-800 text-white"
+          @change="updateMonster(($event.target as HTMLInputElement)?.value)"
+        >
+          <option
+            v-for="m in monsters"
+            :key="m.name"
+            :value="m.name"
+          >
+            {{ m.name }} - Level {{ m.level }}
+          </option>
+        </select>
         <h2 class="text-2xl font-bold mb-4">
-          Monster
+          {{ monster.name }}
         </h2>
         <div class="w-32 h-32 bg-red-700 rounded-full mb-4" />
-        <p>{{ monster.name }}</p>
         <p>Health: {{ monster.currentHealth }} / {{ monster.health }}</p>
         <p>Attack: {{ monster.attack }}</p>
         <p>Defense: {{ monster.defense }}</p>
