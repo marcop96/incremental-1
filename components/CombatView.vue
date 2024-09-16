@@ -17,7 +17,7 @@ const DEFAULT_WEAPON_SPEED = 0.001
 const isRespawning = ref(false)
 const rolledDamage = ref(0)
 const combatLog = ref<Array<{ action: string, playerDamage?: number, monsterDamage?: number }>>([])
-const lootLog = ref<Array<{ }>>([])
+const lootLog = ref<Array<{ name: string, count: number }>>([])
 const isCombatActive = ref(false)
 
 const playerWeaponSpeed = ref(DEFAULT_WEAPON_SPEED)
@@ -71,11 +71,11 @@ function updateMonster(selectedMonsterName: string) {
       ...selectedMonster,
       currentHealth: selectedMonster.health,
     }
+    restartCombat()
   }
   selectedMonster?.drops.forEach((drop) => {
     inventoryStore.findItemInDataBase(drop.name)
   })
-  restartCombat()
 }
 function combatLoop() {
   if (!isCombatActive.value) return
