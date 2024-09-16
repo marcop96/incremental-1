@@ -265,7 +265,7 @@ function giveLoot(drops: { name: string, chance: number }[] | { name: string, ch
           @change="updateMonster(($event.target as HTMLInputElement)?.value)"
         >
           <option
-            v-for="m in monsters"
+            v-for="m in monsters.sort((a, b) => a.level - b.level)"
             :key="m.name"
             :value="m.name"
           >
