@@ -188,8 +188,8 @@
     "xp": 20,
     "drops": [
       {
-        "name": "bones",
-        "chance": 80
+        "name": "Bones",
+        "chance": 100
       },
       {
         "name": "Leather Boots",
@@ -202,6 +202,130 @@
       {
         "name": "",
         "chance": 70
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "name": "Vampire",
+    "health": 50,
+    "level": 10,
+    "currentHealth": 50,
+    "attack": 15,
+    "strength": 10,
+    "defense": 8,
+    "speed": 6,
+    "gold": 100,
+    "xp": 200,
+    "drops": [
+      {
+        "name": "Vampire Fang",
+        "chance": 100
+      },
+      {
+        "name": "Blood Potion",
+        "chance": 20
+      },
+      {
+        "name": "Dark Cloak",
+        "chance": 5
+      },
+      {
+        "name": "",
+        "chance": 75
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "name": "Werewolf",
+    "health": 60,
+    "level": 12,
+    "currentHealth": 60,
+    "attack": 18,
+    "strength": 12,
+    "defense": 10,
+    "speed": 7,
+    "gold": 120,
+    "xp": 250,
+    "drops": [
+      {
+        "name": "Werewolf Fur",
+        "chance": 100
+      },
+      {
+        "name": "Silver Claw",
+        "chance": 15
+      },
+      {
+        "name": "Moonstone",
+        "chance": 5
+      },
+      {
+        "name": "",
+        "chance": 80
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "name": "Giant",
+    "health": 100,
+    "level": 15,
+    "currentHealth": 100,
+    "attack": 25,
+    "strength": 20,
+    "defense": 15,
+    "speed": 3,
+    "gold": 200,
+    "xp": 400,
+    "drops": [
+      {
+        "name": "Giant's Club",
+        "chance": 100
+      },
+      {
+        "name": "Giant's Tooth",
+        "chance": 10
+      },
+      {
+        "name": "Giant's Armor",
+        "chance": 5
+      },
+      {
+        "name": "",
+        "chance": 85
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "name": "Phoenix",
+    "health": 80,
+    "level": 18,
+    "currentHealth": 80,
+    "attack": 22,
+    "strength": 18,
+    "defense": 12,
+    "speed": 8,
+    "gold": 300,
+    "xp": 500,
+    "drops": [
+      {
+        "name": "Phoenix Feather",
+        "chance": 100
+      },
+      {
+        "name": "Flame Sword",
+        "chance": 10
+      },
+      {
+        "name": "Phoenix Egg",
+        "chance": 1
+      },
+      {
+        "name": "",
+        "chance": 89
       }
     ]
   }

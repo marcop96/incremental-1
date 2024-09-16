@@ -406,5 +406,125 @@
     "value": 2,
     "quantity": 1,
     "icon": "tattered_cloth_icon.png"
+  },
+  {
+    "id": 10003,
+    "name": "Dragon Scale",
+    "description": "A torn piece of cloth from a goblin's attire.",
+    "value": 2,
+    "quantity": 1,
+    "icon": "tattered_cloth_icon.png"
+  },
+  {
+    "id": 10004,
+    "name": "Magic Herb",
+    "description": "A rare herb with magical properties.",
+    "value": 50,
+    "quantity": 1,
+    "icon": "magic_herb_icon.png"
+  },
+  {
+    "id": 10005,
+    "name": "Ancient Relic",
+    "description": "A relic from ancient times.",
+    "value": 100,
+    "quantity": 1,
+    "icon": "ancient_relic_icon.png"
+  },
+  {
+    "id": 10006,
+    "name": "Leather Armor",
+    "description": "Armor made from leather.",
+    "value": 75,
+    "quantity": 1,
+    "icon": "leather_armor_icon.png"
+  },
+  {
+    "id": 10007,
+    "name": "Battle Axe",
+    "description": "A heavy axe used in battle.",
+    "value": 150,
+    "quantity": 1,
+    "icon": "battle_axe_icon.png"
+  },
+  {
+    "id": 10008,
+    "name": "Fire Sword",
+    "description": "A sword imbued with fire.",
+    "value": 200,
+    "quantity": 1,
+    "icon": "fire_sword_icon.png"
+  },
+  {
+    "id": 10009,
+    "name": "Dragon Egg",
+    "description": "An egg of a dragon.",
+    "value": 500,
+    "quantity": 1,
+    "icon": "dragon_egg_icon.png"
+  },
+  {
+    "id": 10010,
+    "name": "Rare Potion",
+    "description": "A potion with rare ingredients.",
+    "value": 300,
+    "quantity": 1,
+    "icon": "rare_potion_icon.png"
+  },
+  {
+    "id": 10011,
+    "name": "Gemstone",
+    "description": "A precious gemstone.",
+    "value": 250,
+    "quantity": 1,
+    "icon": "gemstone_icon.png"
+  },
+  {
+    "id": 10012,
+    "name": "Club",
+    "description": "A heavy club used by trolls.",
+    "value": 50,
+    "quantity": 1,
+    "icon": "club_icon.png"
+  },
+  {
+    "id": 10013,
+    "name": "Troll Hide",
+    "description": "The hide of a troll.",
+    "value": 100,
+    "quantity": 1,
+    "icon": "troll_hide_icon.png"
+  },
+  {
+    "id": 10014,
+    "name": "Broken Shield",
+    "description": "A shield that is broken.",
+    "value": 20,
+    "quantity": 1,
+    "icon": "broken_shield_icon.png"
+  },
+  {
+    "id": 10015,
+    "name": "Dark Crystal",
+    "description": "A crystal with dark energy.",
+    "value": 150,
+    "quantity": 1,
+    "icon": "dark_crystal_icon.png"
+  },
+  {
+    "id": 10016,
+    "name": "Leather Boots",
+    "description": "Boots made from leather.",
+    "value": 30,
+    "quantity": 1,
+    "icon": "leather_boots_icon.png"
+  },
+  {
+    "id": 10017,
+    "name": "Stolen Pouch",
+    "description": "A pouch stolen by bandits.",
+    "value": 40,
+    "quantity": 1,
+    "icon": "stolen_pouch_icon.png"
   }
 ]
