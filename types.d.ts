@@ -25,3 +25,22 @@ export interface Item {
   quantity: number
   icon: string
 }
+
+export interface Monster {
+  id: number
+  name: string
+  health: number
+  currentHealth: number
+  attack: number
+  strength: number
+  defense: number
+  speed: number
+  gold: number
+  xp: number
+  drops: Drop[]
+}
+
+export interface Drop {
+  name: string
+  chance: number
+}
