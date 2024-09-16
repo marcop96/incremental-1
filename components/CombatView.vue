@@ -7,12 +7,14 @@ import { useInventoryStore } from '~/composable/useInventory'
 const skillStore = useSkillStore()
 const inventoryStore = useInventoryStore()
 const combatStats = skillStore.skills.filter(skill => skill.isCombat)
-
+const sortedMonsters = computed(() => {
+  return monsters.sort((a, b) => a.level - b.level)
+})
 const attack = combatStats.find(stat => stat.name === 'attack')
 const defense = combatStats.find(stat => stat.name === 'defense')
 const strength = combatStats.find(stat => stat.name === 'strength')
 const hitpoints = combatStats.find(stat => stat.name === 'hitpoints')
-
+const isRunningAway = ref(false)
 const DEFAULT_WEAPON_SPEED = 0.001
 const isRespawning = ref(false)
 const rolledDamage = ref(0)
@@ -164,7 +166,13 @@ function updateCombatLog(action: string, playerDamage: number | null, monsterDam
 onUnmounted(() => {
   restartCombat()
 })
-
+function runAwayFromCombat() {
+  isRunningAway.value = true
+  setTimeout(() => {
+    restartCombat()
+    isRunningAway.value = false
+  }, 5000)
+}
 function restartCombat() {
   isCombatActive.value = false
   combatLog.value = []
@@ -265,7 +273,7 @@ function giveLoot(drops: { name: string, chance: number }[] | { name: string, ch
           @change="updateMonster(($event.target as HTMLInputElement)?.value)"
         >
           <option
-            v-for="m in monsters.sort((a, b) => a.level - b.level)"
+            v-for="m in sortedMonsters"
             :key="m.name"
             :value="m.name"
           >
@@ -278,6 +286,7 @@ function giveLoot(drops: { name: string, chance: number }[] | { name: string, ch
         <div class="w-32 h-32 bg-red-700 rounded-full mb-4" />
         <p>Health: {{ monster.currentHealth }} / {{ monster.health }}</p>
         <p>Attack: {{ monster.attack }}</p>
+        <p>Strength: {{ monster.strength }}</p>
         <p>Defense: {{ monster.defense }}</p>
         <p>Weapon Speed: {{ monsterWeaponSpeed }} seconds</p>
       </div>
@@ -305,9 +314,9 @@ function giveLoot(drops: { name: string, chance: number }[] | { name: string, ch
         v-else
         class="bg-gray-500 text-white px-4 py-2 rounded-lg"
         :hidden="!isCombatActive"
-        @click="restartCombat"
+        @click="runAwayFromCombat"
       >
-        Run Away
+        {{ isRunningAway ? 'Running away...' : 'Run away' }}
       </button>
     </div>
 
