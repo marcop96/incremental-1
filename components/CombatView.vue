@@ -206,9 +206,6 @@ function giveLoot(drops: { name: string, chance: number }[] | { name: string, ch
           if (existingItem) {
             inventoryStore.addItem(existingItem)
           }
-          else {
-            console.log(`Item ${item.name} not found in database`)
-          }
         }
         break // Correctly placed break after handling the item
       }

@@ -49,22 +49,20 @@ export const useInventoryStore = defineStore('inventory', () => {
     if (name) {
       const foundItem = itemDataBase.find(item => item.name === name)
       if (foundItem !== undefined) {
-        console.log(`Item ${name} found in database`)
         return foundItem // Return the found item
       }
       else {
-        console.log(`Item ${name} not found in database`)
+        console.warn(`Item ${name} not found in database`)
         return null
       }
     }
     else if (id) {
       const foundItem = itemDataBase.find(item => item.id === id)
       if (foundItem !== undefined) {
-        console.log(`Item with id ${id} found in database`)
         return foundItem // Return the found item
       }
       else {
-        console.log(`Item with id ${id} not found in database`)
+        console.warn(`Item with id ${id} not found in database`)
         return null
       }
     }
