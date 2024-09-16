@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { ref, onUnmounted } from 'vue'
 import { useSkillStore } from '../composable/useSkills'
+import itemDatabase from '../data/items.json'
+import { useInventoryStore } from '~/composable/useInventory'
 
 const skillStore = useSkillStore()
+const inventoryStore = useInventoryStore()
 const combatStats = skillStore.skills.filter(skill => skill.isCombat)
 
 const attack = combatStats.find(stat => stat.name === 'attack')
@@ -10,7 +13,7 @@ const defense = combatStats.find(stat => stat.name === 'defense')
 const strength = combatStats.find(stat => stat.name === 'strength')
 const hitpoints = combatStats.find(stat => stat.name === 'hitpoints')
 
-const DEFAULT_WEAPON_SPEED = 0.1
+const DEFAULT_WEAPON_SPEED = 0
 const isRespawning = ref(false)
 const rolledDamage = ref(0)
 const combatLog = ref<Array<{ action: string, playerDamage?: number, monsterDamage?: number }>>([])
@@ -40,11 +43,11 @@ const monster = {
   gold: 5,
   xp: 10,
   drops: [
-    { loot: 'bones', chance: 100 },
-    { loot: 'goblin ear', chance: 50 },
-    { loot: 'rusty sword', chance: 10 },
-    { loot: 'ultra rare', chance: 1 },
-    { loot: '', chance: 60 },
+    { name: 'Bones', chance: 100 },
+    { name: 'goblin ear', chance: 20 },
+    { name: 'rusty sword', chance: 10 },
+    { name: 'ultra rare', chance: 1 },
+    { name: '', chance: 60 },
   ],
 }
 
@@ -166,14 +169,19 @@ function respawn() {
   }, 1000)
 }
 
-function giveLoot(drops: { loot: string, chance: number }[] | { loot: string, chance: number }) {
+function giveLoot(drops: { name: string, chance: number }[] | { name: string, chance: number }) {
   const dropsArray = Array.isArray(drops) ? drops : [drops]
   const lootedItems: string[] = []
 
   // First, add all guaranteed drops (100% chance)
   dropsArray.forEach((item) => {
     if (item.chance === 100) {
-      lootedItems.push(item.loot)
+      const existingItem = inventoryStore.findItemInDataBase(item.name)
+      if (existingItem) {
+        inventoryStore.addItem(existingItem)
+        lootedItems.push(item.name)
+      }
+      else { console.log(`Item ${item.name} not found in database`) }
     }
   })
 
@@ -187,7 +195,10 @@ function giveLoot(drops: { loot: string, chance: number }[] | { loot: string, ch
     for (const item of remainingDrops) {
       cumulativeChance += item.chance
       if (roll <= cumulativeChance) {
-        lootedItems.push(item.loot)
+        if (item.name === '') {
+          break
+        }
+        else { lootedItems.push(item.name) }
         break
       }
     }
@@ -196,12 +207,12 @@ function giveLoot(drops: { loot: string, chance: number }[] | { loot: string, ch
   // Log and return the looted items
   if (lootedItems.length > 0) {
     lootedItems.forEach((item) => {
-      const existingLoot = lootLog.value.find(loot => loot.loot === item)
+      const existingLoot = lootLog.value.find(loot => loot.name === item)
       if (existingLoot) {
         existingLoot.count++
       }
       else {
-        lootLog.value.push({ loot: item, count: 1 })
+        lootLog.value.push({ name: item, count: 1 })
       }
     })
   }
@@ -308,7 +319,7 @@ function giveLoot(drops: { loot: string, chance: number }[] | { loot: string, ch
               :key="index"
               class="text-sm text-yellow-300"
             >
-              {{ loot.loot }} x{{ loot.count }}
+              {{ loot.name }} x{{ loot.count }}
             </li>
           </ul>
         </div>

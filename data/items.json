@@ -382,5 +382,29 @@
     "value": 50,
     "quantity": 1,
     "icon": "runite_ore_icon.png"
+  },
+  {
+    "id": 10001,
+    "name": "Goblin Dagger",
+    "description": "A crude dagger used by goblins.",
+    "value": 10,
+    "quantity": 1,
+    "icon": "goblin_dagger_icon.png"
+  },
+  {
+    "id": 10002,
+    "name": "Tattered Cloth",
+    "description": "A torn piece of cloth from a goblin's attire.",
+    "value": 2,
+    "quantity": 1,
+    "icon": "tattered_cloth_icon.png"
+  },
+  {
+    "id": 10003,
+    "name": "Bones",
+    "description": "A torn piece of cloth from a goblin's attire.",
+    "value": 2,
+    "quantity": 1,
+    "icon": "tattered_cloth_icon.png"
   }
 ]

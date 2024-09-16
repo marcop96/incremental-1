@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import itemDataBase from '../data/items.json'
 import type { Item } from '@/types'
 
 export const useInventoryStore = defineStore('inventory', () => {
@@ -30,7 +31,10 @@ export const useInventoryStore = defineStore('inventory', () => {
     const foundItem = inventory.value.find(i => i.id === id)
     return foundItem
   }
-
+  const findItemByName = (name: string) => {
+    const foundItem = inventory.value.find(i => i.name === name)
+    return foundItem
+  }
   // Remove item from inventory
   const removeItem = (item: Item) => {
     const foundItem = findItemById(item.id)
@@ -41,11 +45,17 @@ export const useInventoryStore = defineStore('inventory', () => {
       inventory.value = inventory.value.filter(i => i.id !== item.id)
     }
   }
+  const findItemInDataBase = (name?: string, id?: number) => {
+    if (name) return itemDataBase.find(item => item.name === name) || null
+    else return itemDataBase.find(item => item.id === id) || null
+  }
 
   return {
     inventory,
     addItem,
     removeItem,
     findItemById,
+    findItemByName,
+    findItemInDataBase,
   }
 })
