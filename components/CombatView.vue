@@ -181,7 +181,9 @@ function giveLoot(drops: { name: string, chance: number }[] | { name: string, ch
         inventoryStore.addItem(existingItem)
         lootedItems.push(item.name)
       }
-      else { console.log(`Item ${item.name} not found in database`) }
+      else {
+        console.log(`Item ${item.name} not found in database`)
+      }
     }
   })
 
@@ -198,8 +200,17 @@ function giveLoot(drops: { name: string, chance: number }[] | { name: string, ch
         if (item.name === '') {
           break
         }
-        else { lootedItems.push(item.name) }
-        break
+        else {
+          lootedItems.push(item.name)
+          const existingItem = inventoryStore.findItemInDataBase(item.name)
+          if (existingItem) {
+            inventoryStore.addItem(existingItem)
+          }
+          else {
+            console.log(`Item ${item.name} not found in database`)
+          }
+        }
+        break // Correctly placed break after handling the item
       }
     }
   }
