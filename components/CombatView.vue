@@ -71,8 +71,11 @@ function updateMonster(selectedMonsterName: string) {
       ...selectedMonster,
       currentHealth: selectedMonster.health,
     }
-    restartCombat()
   }
+  selectedMonster?.drops.forEach((drop) => {
+    inventoryStore.findItemInDataBase(drop.name)
+  })
+  restartCombat()
 }
 function combatLoop() {
   if (!isCombatActive.value) return

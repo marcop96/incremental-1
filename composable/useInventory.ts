@@ -67,8 +67,6 @@ export const useInventoryStore = defineStore('inventory', () => {
       }
     }
 
-    console.log('No name or id provided')
-    // Return null if neither name nor id are provided
     return null
   }
   return {
