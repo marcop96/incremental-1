@@ -249,11 +249,11 @@ function giveLoot(drops: { name: string, chance: number }[] | { name: string, ch
 </script>
 
 <template>
-  <div class="flex flex-col h-screen items-center justify-center bg-gray-800 text-white p-4">
+  <div class="flex flex-col min-h-screen items-center justify-center bg-gray-800 text-white p-4">
     <!-- Combat Area -->
-    <div class="max-w-5xl grid grid-cols-2 gap-6">
+    <div class="w-full max-w-6xl grid grid-cols-3 gap-6">
       <!-- Player Section -->
-      <div class="flex flex-col items-center bg-green-500 p-6 rounded-lg shadow-lg">
+      <div class="flex flex-col items-center bg-gray-700 p-6 rounded-lg shadow-lg">
         <h2 class="text-2xl font-bold mb-4">
           Player
         </h2>
@@ -263,14 +263,66 @@ function giveLoot(drops: { name: string, chance: number }[] | { name: string, ch
         <p>Strength: {{ player.strength }}</p>
         <p>Defense: {{ player.defense }}</p>
         <p>Weapon Speed: {{ playerWeaponSpeed }} seconds</p>
+
+        <!-- Attack Style Selection -->
+        <div class="mt-6 w-full">
+          <h3 class="text-xl font-bold mb-2">
+            Attack Style
+          </h3>
+          <div class="flex justify-around">
+            <button
+              v-for="style in attackStyles"
+              :key="style.name"
+              class="p-2 rounded-full transition-colors"
+              :class="{ 'bg-gray-600': selectedStyle === style.name }"
+              @click="setSelectedStyle(style.name)"
+            >
+              <component
+                :is="style.icon"
+                class="w-8 h-8"
+                :class="style.color"
+              />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Combat Actions -->
+      <div class="flex flex-col items-center justify-center">
+        <div class="text-4xl mb-4">
+          ⚔️
+        </div>
+        <button
+          v-if="player.currentHealth > 0"
+          class="bg-red-500 text-white px-6 py-3 rounded-lg text-xl font-bold hover:bg-red-600 transition-colors mb-4"
+          :class="{ 'bg-red-900': isRespawning }"
+          :hidden="isCombatActive || isRespawning"
+          @click="startCombat"
+        >
+          FIGHT!
+        </button>
+        <button
+          v-if="player.currentHealth <= 0"
+          class="bg-gray-500 text-white px-6 py-3 rounded-lg text-xl font-bold hover:bg-gray-600 transition-colors mb-4"
+          @click="respawn"
+        >
+          {{ isRespawning ? 'Respawning...' : 'Respawn' }}
+        </button>
+        <button
+          v-else-if="isCombatActive"
+          class="bg-gray-500 text-white px-6 py-3 rounded-lg text-xl font-bold hover:bg-gray-600 transition-colors"
+          @click="runAwayFromCombat"
+        >
+          {{ isRunningAway ? 'Running away...' : 'Run away' }}
+        </button>
       </div>
 
       <!-- Monster Section -->
-      <div class="flex flex-col items-center bg-red-500 p-6 rounded-lg shadow-lg">
+      <div class="flex flex-col items-center bg-gray-700 p-6 rounded-lg shadow-lg">
         <select
           :disabled="isCombatActive"
-          class="bg-gray-800 text-white"
-          @change="updateMonster(($event.target as HTMLInputElement)?.value)"
+          class="bg-gray-800 text-white mb-4"
+          @change="updateMonster($event.target.value)"
         >
           <option
             v-for="m in sortedMonsters"
@@ -292,35 +344,36 @@ function giveLoot(drops: { name: string, chance: number }[] | { name: string, ch
       </div>
     </div>
 
-    <!-- Combat Buttons -->
-    <div class="mt-6">
-      <button
-        v-if="player.currentHealth >= 0"
-        class="bg-red-500 text-white px-4 py-2 rounded-lg mr-2"
-        :class="{ 'bg-red-900': isRespawning }"
-        :hidden="isCombatActive || isRespawning"
-        @click="startCombat"
-      >
-        Start Combat
-      </button>
-      <button
-        v-if="player.currentHealth <= 0"
-        class="bg-gray-500 text-white px-4 py-2 rounded-lg mr-2"
-        @click="respawn"
-      >
-        {{ isRespawning ? 'Respawning...' : 'Respawn' }}
-      </button>
-      <button
-        v-else
-        class="bg-gray-500 text-white px-4 py-2 rounded-lg"
-        :hidden="!isCombatActive"
-        @click="runAwayFromCombat"
-      >
-        {{ isRunningAway ? 'Running away...' : 'Run away' }}
-      </button>
+    <!-- Equipment Section -->
+    <div class="w-full max-w-6xl mt-8">
+      <h2 class="text-2xl font-bold mb-4">
+        Equipment
+      </h2>
+      <div class="grid grid-cols-4 gap-4">
+        <div
+          v-for="item in equipment"
+          :key="item.slot"
+          class="bg-gray-700 p-4 rounded-lg"
+        >
+          <h3 class="text-lg font-semibold mb-2">
+            {{ item.slot }}
+          </h3>
+          <p>{{ item.name }}</p>
+          <div class="mt-2">
+            <span
+              v-for="(value, stat) in item.stats"
+              :key="stat"
+              class="mr-2 text-sm"
+            >
+              {{ stat }}: +{{ value }}
+            </span>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div class="w-full max-w-5xl grid grid-cols-2 gap-6 mt-6">
+    <!-- Logs Section -->
+    <div class="w-full max-w-6xl grid grid-cols-2 gap-6 mt-8">
       <!-- Combat Log -->
       <div class="bg-gray-700 rounded-lg shadow-lg p-4">
         <h3 class="text-xl font-bold mb-2">
