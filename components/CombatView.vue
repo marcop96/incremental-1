@@ -17,6 +17,10 @@ const sortedCombatLog = computed(() => {
   return combatLog.value.slice().reverse()
 })
 
+function imgUrl(name: string) {
+  return new URL(`../assets/monsters/${name}.webp`, import.meta.url).href
+}
+
 const isRunningAway = ref(false)
 const DEFAULT_WEAPON_SPEED = 0.001
 const isRespawning = ref(false)
@@ -54,6 +58,7 @@ const monster = ref({
     { name: '', chance: 60 },
   ],
 })
+
 const attackStyles = [
   { name: 'attack', icon: 'IconSword', color: 'text-red-500', id: 6 },
   { name: 'strength', icon: 'IconArm', color: 'text-yellow-500', id: 7 },
@@ -155,6 +160,9 @@ function checkIfMonsterIsDead() {
 }
 
 function updateCombatLog(action: string, playerDamage: number | null, monsterDamage: number | null) {
+  if (combatLog.value.length > 10) {
+    combatLog.value.splice(0, 1)
+  }
   if (action === 'Player') {
     if (playerDamage === 0) {
       combatLog.value.push({ action: 'Player attacked but missed!' })
@@ -344,7 +352,11 @@ function giveLoot(drops: { name: string, chance: number }[] | { name: string, ch
         <h2 class="text-2xl font-bold mb-4">
           {{ monster.name }}
         </h2>
-        <div class="w-32 h-32 bg-red-700 rounded-full mb-4" />
+        <img
+          class="w-32 h-32  rounded-full mb-4"
+          :src="imgUrl(monster.name)"
+        >
+
         <p>Health: {{ monster.currentHealth }} / {{ monster.health }}</p>
         <p>Attack: {{ monster.attack }}</p>
         <p>Strength: {{ monster.strength }}</p>
