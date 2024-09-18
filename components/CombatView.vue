@@ -3,17 +3,20 @@ import { ref, onUnmounted } from 'vue'
 import { useSkillStore } from '../composable/useSkills'
 import monsters from '../data/monsters.json'
 import { useInventoryStore } from '~/composable/useInventory'
+import { usePlayerStore } from '~/composable/usePlayer'
 
 const skillStore = useSkillStore()
 const inventoryStore = useInventoryStore()
+const playerStore = usePlayerStore()
+
 const combatStats = skillStore.skills.filter(skill => skill.isCombat)
 const sortedMonsters = computed(() => {
   return monsters.sort((a, b) => a.level - b.level)
 })
-const attack = combatStats.find(stat => stat.name === 'attack')
-const defense = combatStats.find(stat => stat.name === 'defense')
-const strength = combatStats.find(stat => stat.name === 'strength')
-const hitpoints = combatStats.find(stat => stat.name === 'hitpoints')
+const sortedCombatLog = computed(() => {
+  return combatLog.value.slice().reverse()
+})
+
 const isRunningAway = ref(false)
 const DEFAULT_WEAPON_SPEED = 0.001
 const isRespawning = ref(false)
@@ -25,13 +28,13 @@ const isCombatActive = ref(false)
 const playerWeaponSpeed = ref(DEFAULT_WEAPON_SPEED)
 const monsterWeaponSpeed = ref(2)
 
-const player = {
-  attack: attack ? attack.level : 0,
-  defense: defense ? defense.level : 0,
-  strength: strength ? strength.level : 0,
-  hitpoints: hitpoints ? hitpoints.level * 10 : 0,
-  currentHealth: hitpoints ? hitpoints.level * 10 : 0,
-}
+const player = computed(() => ({
+  attack: combatStats.find(stat => stat.name === 'attack')?.level || 1,
+  defense: combatStats.find(stat => stat.name === 'defense')?.level || 1,
+  strength: combatStats.find(stat => stat.name === 'strength')?.level || 1,
+  hitpoints: combatStats.find(stat => stat.name === 'hitpoints')?.level || 1,
+  currentHealth: (combatStats.find(stat => stat.name === 'hitpoints')?.level || 1) * 10,
+}))
 
 const monster = ref({
   id: 1,
@@ -43,7 +46,7 @@ const monster = ref({
   defense: 1,
   speed: 3,
   gold: 5,
-  xp: 10,
+  xp: 10000,
   drops: [
     { name: 'Bones', chance: 100 },
     { name: 'sword', chance: 10 },
@@ -51,6 +54,13 @@ const monster = ref({
     { name: '', chance: 60 },
   ],
 })
+const attackStyles = [
+  { name: 'attack', icon: 'IconSword', color: 'text-red-500', id: 6 },
+  { name: 'strength', icon: 'IconArm', color: 'text-yellow-500', id: 7 },
+  { name: 'defense', icon: 'IconShield', color: 'text-blue-500', id: 8 },
+]
+
+const selectedAttackStyle = ref(attackStyles[0])
 
 let playerNextAttackTime: number = 0
 let monsterNextAttackTime: number = 0
@@ -83,15 +93,15 @@ function combatLoop() {
   if (!isCombatActive.value) return
   const now = Date.now()
 
-  if (player.currentHealth > 0 && monster.value.currentHealth > 0) {
+  if (player.value.currentHealth > 0 && monster.value.currentHealth > 0) {
     if (now >= playerNextAttackTime) {
-      const playerDamage = rollPlayerDamage(player.attack, player.strength, monster.value.defense)
+      const playerDamage = rollPlayerDamage(player.value.attack, player.value.strength, monster.value.defense)
       updateCombatLog('Player', playerDamage, 0)
       playerNextAttackTime = now + playerWeaponSpeed.value * 1000
     }
 
     if (now >= monsterNextAttackTime) {
-      const monsterDamage = rollMonsterDamage(monster.value.attack, monster.value.strength, player.defense)
+      const monsterDamage = rollMonsterDamage(monster.value.attack, monster.value.strength, player.value.defense)
       updateCombatLog('Monster', 0, monsterDamage)
       monsterNextAttackTime = now + monsterWeaponSpeed.value * 1000
     }
@@ -104,6 +114,9 @@ function combatLoop() {
     }
 
     if (checkIfMonsterIsDead()) {
+      playerStore.addExperience(selectedAttackStyle.value.id, Math.floor(monster.value.xp * 0.66))
+      playerStore.addExperience(9, Math.floor(monster.value.xp * 0.33))
+
       updateCombatLog(`You Killed ${monster.value.name}`, null, null)
       giveLoot(monster.value.drops)
       monster.value.currentHealth = monster.value.health
@@ -123,13 +136,13 @@ function rollPlayerDamage(playerAttack: number, playerStrength: number, enemyDef
 function rollMonsterDamage(monsterAttack: number, monsterStrength: number, playerDefense: number) {
   const maxDamage = Math.max(0, (monsterAttack * monsterStrength + 2) - (playerDefense * 0.5))
   const hitDamage = Math.floor(Math.random() * (maxDamage + 1))
-  player.currentHealth += hitDamage
+  player.value.currentHealth += hitDamage
   rolledDamage.value = hitDamage
   return hitDamage
 }
 
 function checkIfPlayerIsDead() {
-  return player.currentHealth <= 0
+  return player.value.currentHealth <= 0
 }
 
 function checkIfMonsterIsDead() {
@@ -182,7 +195,7 @@ function restartCombat() {
 function respawn() {
   isRespawning.value = true
   setTimeout(() => {
-    player.currentHealth = player.hitpoints
+    player.value.currentHealth = player.value.hitpoints
     restartCombat()
     isRespawning.value = false
   }, 1000)
@@ -273,15 +286,11 @@ function giveLoot(drops: { name: string, chance: number }[] | { name: string, ch
             <button
               v-for="style in attackStyles"
               :key="style.name"
-              class="p-2 rounded-full transition-colors"
-              :class="{ 'bg-gray-600': selectedStyle === style.name }"
-              @click="setSelectedStyle(style.name)"
+              class="bg-blue-500 p-2 rounded-full transition-colors"
+              :class="{ 'bg-red-500': selectedAttackStyle.name === style.name }"
+              @click="selectedAttackStyle = style"
             >
-              <component
-                :is="style.icon"
-                class="w-8 h-8"
-                :class="style.color"
-              />
+              {{ style.name }}
             </button>
           </div>
         </div>
@@ -290,7 +299,7 @@ function giveLoot(drops: { name: string, chance: number }[] | { name: string, ch
       <!-- Combat Actions -->
       <div class="flex flex-col items-center justify-center">
         <div class="text-4xl mb-4">
-          ⚔️
+          {{ isCombatActive ? '🏃‍♂️' : '⚔️' }}
         </div>
         <button
           v-if="player.currentHealth > 0"
@@ -345,7 +354,7 @@ function giveLoot(drops: { name: string, chance: number }[] | { name: string, ch
     </div>
 
     <!-- Equipment Section -->
-    <div class="w-full max-w-6xl mt-8">
+    <!-- <div class="w-full max-w-6xl mt-8">
       <h2 class="text-2xl font-bold mb-4">
         Equipment
       </h2>
@@ -370,7 +379,7 @@ function giveLoot(drops: { name: string, chance: number }[] | { name: string, ch
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <!-- Logs Section -->
     <div class="w-full max-w-6xl grid grid-cols-2 gap-6 mt-8">
@@ -382,7 +391,7 @@ function giveLoot(drops: { name: string, chance: number }[] | { name: string, ch
         <div class="h-48 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-800">
           <ul class="space-y-1">
             <li
-              v-for="(log, index) in combatLog.slice().reverse()"
+              v-for="(log, index) in sortedCombatLog"
               :key="index"
               class="text-sm"
             >
