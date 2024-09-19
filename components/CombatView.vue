@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onUnmounted } from 'vue'
+import { ref, onUnmounted, computed } from 'vue'
 import { useSkillStore } from '../composable/useSkills'
 import monsters from '../data/monsters.json'
 import { useInventoryStore } from '~/composable/useInventory'
@@ -10,12 +10,8 @@ const inventoryStore = useInventoryStore()
 const playerStore = usePlayerStore()
 
 const combatStats = skillStore.skills.filter(skill => skill.isCombat)
-const sortedMonsters = computed(() => {
-  return monsters.sort((a, b) => a.level - b.level)
-})
-const sortedCombatLog = computed(() => {
-  return combatLog.value.slice().reverse()
-})
+const sortedMonsters = computed(() => monsters.sort((a, b) => a.level - b.level))
+const sortedCombatLog = computed(() => combatLog.value.slice().reverse())
 
 function imgUrl(name: string) {
   return new URL(`../assets/monsters/${name}.webp`, import.meta.url).href
@@ -31,6 +27,8 @@ const isCombatActive = ref(false)
 
 const playerWeaponSpeed = ref(DEFAULT_WEAPON_SPEED)
 const monsterWeaponSpeed = ref(2)
+
+const MAX_COMBAT_LOG_ENTRIES = 10
 
 const player = computed(() => ({
   attack: combatStats.find(stat => stat.name === 'attack')?.level || 1,
@@ -67,83 +65,61 @@ const attackStyles = [
 
 const selectedAttackStyle = ref(attackStyles[0])
 
-let playerNextAttackTime: number = 0
-let monsterNextAttackTime: number = 0
+let playerNextAttackTime = 0
+let monsterNextAttackTime = 0
 
 function startCombat() {
   if (isCombatActive.value) return
   isCombatActive.value = true
-
-  // Initialize next attack times
   const now = Date.now()
   playerNextAttackTime = now + playerWeaponSpeed.value * 1000
   monsterNextAttackTime = now + monsterWeaponSpeed.value * 1000
-
   combatLoop()
 }
+
 function updateMonster(selectedMonsterName: string) {
   const selectedMonster = monsters.find(m => m.name === selectedMonsterName)
   if (selectedMonster) {
-    monster.value = {
-      ...selectedMonster,
-      currentHealth: selectedMonster.health,
-    }
+    monster.value = { ...selectedMonster, currentHealth: selectedMonster.health }
     restartCombat()
   }
-  selectedMonster?.drops.forEach((drop) => {
-    inventoryStore.findItemInDataBase(drop.name)
-  })
 }
+
 function combatLoop() {
   if (!isCombatActive.value) return
   const now = Date.now()
 
   if (player.value.currentHealth > 0 && monster.value.currentHealth > 0) {
     if (now >= playerNextAttackTime) {
-      const playerDamage = rollPlayerDamage(player.value.attack, player.value.strength, monster.value.defense)
+      const playerDamage = rollDamage(player.value.attack, player.value.strength, monster.value.defense)
+      monster.value.currentHealth -= playerDamage
       updateCombatLog('Player', playerDamage, 0)
       playerNextAttackTime = now + playerWeaponSpeed.value * 1000
     }
 
     if (now >= monsterNextAttackTime) {
-      const monsterDamage = rollMonsterDamage(monster.value.attack, monster.value.strength, player.value.defense)
+      const monsterDamage = rollDamage(monster.value.attack, monster.value.strength, player.value.defense)
+      player.value.currentHealth -= monsterDamage
       updateCombatLog('Monster', 0, monsterDamage)
       monsterNextAttackTime = now + monsterWeaponSpeed.value * 1000
     }
 
     if (checkIfPlayerIsDead()) {
-      // restartCombat()
       updateCombatLog('You Died', null, null)
-
       return
     }
 
     if (checkIfMonsterIsDead()) {
-      playerStore.addExperience(selectedAttackStyle.value.id, Math.floor(monster.value.xp * 0.66))
-      playerStore.addExperience(9, Math.floor(monster.value.xp * 0.33))
-
-      updateCombatLog(`You Killed ${monster.value.name}`, null, null)
-      giveLoot(monster.value.drops)
-      monster.value.currentHealth = monster.value.health
+      handleMonsterDeath()
     }
+
     setTimeout(combatLoop, 100)
   }
 }
 
-function rollPlayerDamage(playerAttack: number, playerStrength: number, enemyDefense: number) {
-  const maxDamage = Math.max(0, (playerAttack * playerStrength + 20) - (enemyDefense * 0.5)) // !HARD CODED
-  const hitDamage = Math.floor(Math.random() * (maxDamage + 1))
-  monster.value.currentHealth -= hitDamage
-  rolledDamage.value = hitDamage
-  return hitDamage
-}
-
-function rollMonsterDamage(monsterAttack: number, monsterStrength: number, playerDefense: number) {
-  const maxDamage = Math.max(0, (monsterAttack * monsterStrength + 2) - (playerDefense * 0.5))
-  const hitDamage = Math.floor(Math.random() * (maxDamage + 1))
-  player.value.currentHealth += hitDamage
-  rolledDamage.value = hitDamage
-  return hitDamage
+function rollDamage(attack: number, strength: number, defense: number) {
+  const maxDamage = Math.max(0, (attack * strength + 20) - (defense * 0.5))
+  return Math.floor(Math.random() * (maxDamage + 1))
 }
 
 function checkIfPlayerIsDead() {
@@ -151,42 +127,31 @@ function checkIfPlayerIsDead() {
 }
 
 function checkIfMonsterIsDead() {
-  if (monster.value.currentHealth <= 0) {
-    // const lootedItems = giveLoot(monster.drops)
+  return monster.value.currentHealth <= 0
+}
 
-    return true
-  }
-  return false
+function handleMonsterDeath() {
+  playerStore.addExperience(selectedAttackStyle.value.id, Math.floor(monster.value.xp * 0.66))
+  playerStore.addExperience(9, Math.floor(monster.value.xp * 0.33))
+  updateCombatLog(`You Killed ${monster.value.name}`, null, null)
+  giveLoot(monster.value.drops)
+  monster.value.currentHealth = monster.value.health
 }
 
 function updateCombatLog(action: string, playerDamage: number | null, monsterDamage: number | null) {
-  if (combatLog.value.length > 10) {
+  if (combatLog.value.length >= MAX_COMBAT_LOG_ENTRIES) {
     combatLog.value.splice(0, 1)
   }
-  if (action === 'Player') {
-    if (playerDamage === 0) {
-      combatLog.value.push({ action: 'Player attacked but missed!' })
-    }
-    else {
-      combatLog.value.push({ action: `Player dealt ${playerDamage} damage to ${monster.value.name}!` })
-    }
-  }
-  else if (action === 'Monster') {
-    if (monsterDamage === 0) {
-      combatLog.value.push({ action: `${monster.value.name} attacked but missed!` })
-    }
-    else {
-      combatLog.value.push({ action: `${monster.value.name} dealt ${monsterDamage} damage to Player!` })
-    }
-  }
-  else {
-    combatLog.value.push({ action })
-  }
+  const message = action === 'Player'
+    ? `Player dealt ${playerDamage} damage to ${monster.value.name}!`
+    : action === 'Monster'
+      ? `${monster.value.name} dealt ${monsterDamage} damage to Player!`
+      : action
+  combatLog.value.push({ action: message })
 }
 
-onUnmounted(() => {
-  restartCombat()
-})
+onUnmounted(() => restartCombat())
+
 function runAwayFromCombat() {
   isRunningAway.value = true
   setTimeout(() => {
@@ -194,12 +159,14 @@ function runAwayFromCombat() {
     isRunningAway.value = false
   }, 5000)
 }
+
 function restartCombat() {
   isCombatActive.value = false
   combatLog.value = []
   lootLog.value = []
   monster.value.currentHealth = monster.value.health
 }
+
 function respawn() {
   isRespawning.value = true
   setTimeout(() => {
@@ -209,63 +176,22 @@ function respawn() {
   }, 1000)
 }
 
-function giveLoot(drops: { name: string, chance: number }[] | { name: string, chance: number }) {
-  const dropsArray = Array.isArray(drops) ? drops : [drops]
-  const lootedItems: string[] = []
-
-  // First, add all guaranteed drops (100% chance)
-  dropsArray.forEach((item) => {
-    if (item.chance === 100) {
-      const existingItem = inventoryStore.findItemInDataBase(item.name)
-      if (existingItem) {
-        inventoryStore.addItem(existingItem)
-        lootedItems.push(item.name)
-      }
-      else {
-        console.log(`Item ${item.name} not found in database`)
-      }
+function giveLoot(drops) {
+  const lootedItems = []
+  drops.forEach((drop) => {
+    const roll = Math.random() * 100
+    if (roll <= drop.chance && drop.name) {
+      const existingItem = inventoryStore.findItemInDataBase(drop.name)
+      if (existingItem) inventoryStore.addItem(existingItem)
+      lootedItems.push(drop.name)
     }
   })
-
-  // Now, roll for one random item from the remaining drops
-  const remainingDrops = dropsArray.filter(item => item.chance < 100)
-  if (remainingDrops.length > 0) {
-    const totalChance = remainingDrops.reduce((sum, item) => sum + item.chance, 0)
-    const roll = Math.random() * totalChance
-    let cumulativeChance = 0
-
-    for (const item of remainingDrops) {
-      cumulativeChance += item.chance
-      if (roll <= cumulativeChance) {
-        if (item.name === '') {
-          break
-        }
-        else {
-          lootedItems.push(item.name)
-          const existingItem = inventoryStore.findItemInDataBase(item.name)
-          if (existingItem) {
-            inventoryStore.addItem(existingItem)
-          }
-        }
-        break // Correctly placed break after handling the item
-      }
-    }
-  }
-
-  // Log and return the looted items
-  if (lootedItems.length > 0) {
+  if (lootedItems.length) {
     lootedItems.forEach((item) => {
       const existingLoot = lootLog.value.find(loot => loot.name === item)
-      if (existingLoot) {
-        existingLoot.count++
-      }
-      else {
-        lootLog.value.push({ name: item, count: 1 })
-      }
+      existingLoot ? existingLoot.count++ : lootLog.value.push({ name: item, count: 1 })
     })
   }
-
-  return lootedItems
 }
 </script>
 
