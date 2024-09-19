@@ -18,7 +18,7 @@ function imgUrl(name: string) {
 }
 
 const isRunningAway = ref(false)
-const DEFAULT_WEAPON_SPEED = 0.001
+const DEFAULT_WEAPON_SPEED = 1
 const isRespawning = ref(false)
 const rolledDamage = ref(0)
 const combatLog = ref<Array<{ action: string, playerDamage?: number, monsterDamage?: number }>>([])
@@ -85,36 +85,57 @@ function updateMonster(selectedMonsterName: string) {
   }
 }
 
-function combatLoop() {
+// Asynchronous attack loop
+async function combatLoop() {
   if (!isCombatActive.value) return
-  const now = Date.now()
 
-  if (player.value.currentHealth > 0 && monster.value.currentHealth > 0) {
-    if (now >= playerNextAttackTime) {
-      const playerDamage = rollDamage(player.value.attack, player.value.strength, monster.value.defense)
-      monster.value.currentHealth -= playerDamage
-      updateCombatLog('Player', playerDamage, 0)
-      playerNextAttackTime = now + playerWeaponSpeed.value * 1000
-    }
+  // Wait for both player and monster attacks asynchronously
+  try {
+    await Promise.all([handlePlayerAttack(), handleMonsterAttack()])
+  }
+  catch (error) {
+    console.error('Combat Error:', error)
+  }
 
-    if (now >= monsterNextAttackTime) {
-      const monsterDamage = rollDamage(monster.value.attack, monster.value.strength, player.value.defense)
-      player.value.currentHealth -= monsterDamage
-      updateCombatLog('Monster', 0, monsterDamage)
-      monsterNextAttackTime = now + monsterWeaponSpeed.value * 1000
-    }
+  if (checkIfPlayerIsDead()) {
+    updateCombatLog('You Died', null, null)
+    return
+  }
 
-    if (checkIfPlayerIsDead()) {
-      updateCombatLog('You Died', null, null)
-      return
-    }
+  if (checkIfMonsterIsDead()) {
+    handleMonsterDeath()
+  }
 
-    if (checkIfMonsterIsDead()) {
-      handleMonsterDeath()
-    }
-
+  // Run next loop after a short delay
+  if (isCombatActive.value) {
     setTimeout(combatLoop, 100)
   }
+}
+
+// Handle player's attack asynchronously
+async function handlePlayerAttack() {
+  const now = Date.now()
+  if (now >= playerNextAttackTime) {
+    const playerDamage = rollDamage(player.value.attack, player.value.strength, monster.value.defense)
+    monster.value.currentHealth -= playerDamage
+    updateCombatLog('Player', playerDamage, 0)
+    playerNextAttackTime = now + playerWeaponSpeed.value * 1000
+  }
+  // Wait for the player weapon speed delay
+  await new Promise(resolve => setTimeout(resolve, playerWeaponSpeed.value * 1000))
+}
+
+// Handle monster's attack asynchronously
+async function handleMonsterAttack() {
+  const now = Date.now()
+  if (now >= monsterNextAttackTime) {
+    const monsterDamage = rollDamage(monster.value.attack, monster.value.strength, player.value.defense)
+    player.value.currentHealth -= monsterDamage
+    updateCombatLog('Monster', 0, monsterDamage)
+    monsterNextAttackTime = now + monsterWeaponSpeed.value * 1000
+  }
+  // Wait for the monster weapon speed delay
+  await new Promise(resolve => setTimeout(resolve, monsterWeaponSpeed.value * 1000))
 }
 
 function rollDamage(attack: number, strength: number, defense: number) {
