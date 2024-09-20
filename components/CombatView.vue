@@ -18,7 +18,7 @@ function imgUrl(name: string) {
 }
 
 const isRunningAway = ref(false)
-const DEFAULT_WEAPON_SPEED = 0.000001
+const DEFAULT_WEAPON_SPEED = 5
 
 const isRespawning = ref(false)
 const combatLog = ref<Array<{ action: string, playerDamage?: number, monsterDamage?: number }>>([])
@@ -27,7 +27,7 @@ const isCombatActive = ref(false)
 const isMonsterRespawning = ref(false)
 
 const playerWeaponSpeed = ref(DEFAULT_WEAPON_SPEED)
-const monsterWeaponSpeed = ref(2)
+const monsterWeaponSpeed = ref(1)
 
 const MAX_COMBAT_LOG_ENTRIES = 10
 const MONSTER_RESPAWN_DELAY = 3000 // 3 seconds delay for monster respawn
@@ -39,12 +39,11 @@ const player = computed(() => ({
   hitpoints: combatStats.find(stat => stat.name === 'hitpoints')?.level || 1,
   currentHealth: (combatStats.find(stat => stat.name === 'hitpoints')?.level || 1) * 10,
 }))
-const isMonsterDead = computed(() => monster.value.currentHealth <= 0)
 const monster = ref({
   id: 1,
   name: 'Goblin',
-  health: 5000,
-  currentHealth: 5000,
+  health: 500,
+  currentHealth: 500,
   attack: 1,
   strength: 1,
   defense: 1,
@@ -88,51 +87,47 @@ function updateMonster(selectedMonsterName: string) {
 }
 
 // Asynchronous attack loop
+// Asynchronous attack loop with independent timing
 async function combatLoop() {
   if (!isCombatActive.value) return
 
-  if (isMonsterDead.value) {
-    isCombatActive.value = false
-    handleMonsterDeath()
-    return
-  }
-  try {
-    await Promise.all([handlePlayerAttack(), handleMonsterAttack()])
-  }
-  catch (error) {
-    console.error('Combat Error:', error)
+  // Handle player attack if enough time has passed
+  const now = Date.now()
+
+  if (now >= playerNextAttackTime && monster.value.currentHealth > 0) {
+    await handlePlayerAttack() // Wait for player attack before checking monster attack
   }
 
-  if (checkIfPlayerIsDead()) {
-    updateCombatLog('You Died', null, null)
-    return
+  if (now >= monsterNextAttackTime && player.value.currentHealth > 0) {
+    await handleMonsterAttack() // Wait for monster attack after player attack
   }
 
-  if (isMonsterDead.value) { // Corrected from "isMonsterDead.value <= 0"
-    handleMonsterDeath()
-  }
-
+  // After both attacks, check if the combat is still active
   if (isCombatActive.value) {
-    setTimeout(combatLoop, 100)
+    setTimeout(combatLoop, 100) // Loop continues
   }
 }
 
 // Handle player's attack asynchronously
 async function handlePlayerAttack() {
   const now = Date.now()
-
   if (now >= playerNextAttackTime) {
     const playerDamage = rollDamage(player.value.attack, player.value.strength, monster.value.defense)
     monster.value.currentHealth -= playerDamage
     updateCombatLog('Player', playerDamage, 0)
+
+    // Check if the monster is dead immediately after the hit
     if (monster.value.currentHealth <= 0) {
       handleMonsterDeath()
       return
     }
+
+    // Schedule the next player attack
     playerNextAttackTime = now + playerWeaponSpeed.value * 1000
   }
-  await new Promise(resolve => setTimeout(resolve, playerWeaponSpeed.value * 1000))
+  await new Promise(resolve => setTimeout(resolve, 100)) // Add a small delay between attacks
 }
+
 // Handle monster's attack asynchronously
 async function handleMonsterAttack() {
   const now = Date.now()
@@ -140,9 +135,18 @@ async function handleMonsterAttack() {
     const monsterDamage = rollDamage(monster.value.attack, monster.value.strength, player.value.defense)
     player.value.currentHealth -= monsterDamage
     updateCombatLog('Monster', 0, monsterDamage)
+
+    // Check if the player is dead
+    if (player.value.currentHealth <= 0) {
+      updateCombatLog('You Died', null, null)
+      isCombatActive.value = false
+      return
+    }
+
+    // Schedule the next monster attack
     monsterNextAttackTime = now + monsterWeaponSpeed.value * 1000
   }
-  await new Promise(resolve => setTimeout(resolve, monsterWeaponSpeed.value * 1000))
+  await new Promise(resolve => setTimeout(resolve, 100)) // Add a small delay between attacks
 }
 
 function rollDamage(attack: number, strength: number, defense: number) {
@@ -172,6 +176,10 @@ function startMonsterRespawn() {
     monster.value.currentHealth = monster.value.health
     isMonsterRespawning.value = false
     updateCombatLog(`${monster.value.name} has respawned`, null, null)
+    const now = Date.now()
+    playerNextAttackTime = now + playerWeaponSpeed.value * 1000
+    monsterNextAttackTime = now + monsterWeaponSpeed.value * 1000
+
     startCombat()
   }, MONSTER_RESPAWN_DELAY)
 }
@@ -273,7 +281,7 @@ function giveLoot(drops: { name: string, chance: number }[]) {
         <div class="text-4xl mb-4">
           {{ isCombatActive && !isMonsterRespawning ? '🏃‍♂️' : '' }}
 
-          {{ isMonsterRespawning ? 'spinner de respawn' : '' }}
+          {{ isMonsterRespawning ? 'placeholder spinner' : '' }}
         </div>
         <button
           v-if="player.currentHealth > 0"
