@@ -255,7 +255,7 @@ function giveLoot(drops: { name: string, chance: number }[]) {
           Player
         </h2>
         <div class="w-32 h-32 bg-green-700 rounded-full mb-4" />
-        <p>Health: {{ player.currentHealth }} / {{ player.hitpoints *10 }}</p>
+        <p> Health: {{ player.currentHealth }} / {{ player.hitpoints *10 }}</p>
         <div class="health-bar-container">
           <div
             v-if="player.currentHealth > 0"
@@ -263,7 +263,6 @@ function giveLoot(drops: { name: string, chance: number }[]) {
             :style="{ width: playerHealthPercentage + '%' }"
           />
         </div>
-        <p>Health: {{ player.currentHealth }} / {{ player.hitpoints }}</p>
         <p>Attack: {{ player.attack }}</p>
         <p>Strength: {{ player.strength }}</p>
         <p>Defense: {{ player.defense }}</p>
@@ -290,6 +289,19 @@ function giveLoot(drops: { name: string, chance: number }[]) {
 
       <!-- Combat Actions -->
       <div class="flex flex-col items-center justify-center">
+        <select
+          :disabled="isCombatActive"
+          class="bg-gray-800 text-white mb-4"
+          @change="updateMonster($event.target.value)"
+        >
+          <option
+            v-for="m in sortedMonsters"
+            :key="m.name"
+            :value="m.name"
+          >
+            {{ m.name }} - Level {{ m.level }}
+          </option>
+        </select>
         <div class="text-4xl mb-4">
           {{ isCombatActive && !isMonsterRespawning ? '🏃‍♂️' : '' }}
 
@@ -322,19 +334,6 @@ function giveLoot(drops: { name: string, chance: number }[]) {
 
       <!-- Monster Section -->
       <div class="flex flex-col items-center bg-gray-700 p-6 rounded-lg shadow-lg">
-        <select
-          :disabled="isCombatActive"
-          class="bg-gray-800 text-white mb-4"
-          @change="updateMonster($event.target.value)"
-        >
-          <option
-            v-for="m in sortedMonsters"
-            :key="m.name"
-            :value="m.name"
-          >
-            {{ m.name }} - Level {{ m.level }}
-          </option>
-        </select>
         <h2 class="text-2xl font-bold mb-4">
           {{ monster.name }}
         </h2>
@@ -353,7 +352,6 @@ function giveLoot(drops: { name: string, chance: number }[]) {
             :style="{ width: monsterHealthPercentage + '%' }"
           />
         </div>
-        <p>Health: {{ monster.currentHealth }} / {{ monster.health }}</p>
         <p>Attack: {{ monster.attack }}</p>
         <p>Strength: {{ monster.strength }}</p>
         <p>Defense: {{ monster.defense }}</p>
@@ -451,6 +449,6 @@ function giveLoot(drops: { name: string, chance: number }[]) {
 .health-bar {
   height: 100%;
   background-color: #4caf50; /* Color of the health bar */
-  transition: width 0.2s; /* Smooth transition when health changes */
+  transition: width 0.3s; /* Smooth transition when health changes */
 }
 </style>
