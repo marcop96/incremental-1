@@ -258,6 +258,7 @@ function giveLoot(drops: { name: string, chance: number }[]) {
         <p>Health: {{ player.currentHealth }} / {{ player.hitpoints *10 }}</p>
         <div class="health-bar-container">
           <div
+            v-if="player.currentHealth > 0"
             class="health-bar"
             :style="{ width: playerHealthPercentage + '%' }"
           />
@@ -347,6 +348,7 @@ function giveLoot(drops: { name: string, chance: number }[]) {
         </p>
         <div class="health-bar-container">
           <div
+            v-if="monster.currentHealth > 0"
             class="health-bar"
             :style="{ width: monsterHealthPercentage + '%' }"
           />
@@ -441,7 +443,7 @@ function giveLoot(drops: { name: string, chance: number }[]) {
   width: 100%;
   height: 20px;
   background-color: #ac1f1f; /* Background of the bar container */
-  border-radius: 10px;
+  border-radius: 3px;
   overflow: hidden;
   margin-bottom: 10px;
 }
@@ -450,6 +452,5 @@ function giveLoot(drops: { name: string, chance: number }[]) {
   height: 100%;
   background-color: #4caf50; /* Color of the health bar */
   transition: width 0.2s; /* Smooth transition when health changes */
-  border-radius: 10px;
 }
 </style>
