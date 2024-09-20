@@ -4,6 +4,7 @@ import { useSkillStore } from '../composable/useSkills'
 import monsters from '../data/monsters.json'
 import { useInventoryStore } from '~/composable/useInventory'
 import { usePlayerStore } from '~/composable/usePlayer'
+import { Progress } from '~/components/ui/progress'
 
 const skillStore = useSkillStore()
 const inventoryStore = useInventoryStore()
@@ -18,7 +19,14 @@ function imgUrl(name: string) {
 }
 
 const isRunningAway = ref(false)
-const DEFAULT_WEAPON_SPEED = 5
+const DEFAULT_WEAPON_SPEED = 2
+const playerHealthPercentage = computed(() => {
+  return (player.value.currentHealth / player.value.hitpoints) * 100
+})
+
+const monsterHealthPercentage = computed(() => {
+  return (monster.value.currentHealth / monster.value.health) * 100
+})
 
 const isRespawning = ref(false)
 const combatLog = ref<Array<{ action: string, playerDamage?: number, monsterDamage?: number }>>([])
@@ -42,8 +50,8 @@ const player = computed(() => ({
 const monster = ref({
   id: 1,
   name: 'Goblin',
-  health: 500,
-  currentHealth: 500,
+  health: 50000,
+  currentHealth: 50000,
   attack: 1,
   strength: 1,
   defense: 1,
@@ -150,12 +158,8 @@ async function handleMonsterAttack() {
 }
 
 function rollDamage(attack: number, strength: number, defense: number) {
-  const maxDamage = Math.max(0, (attack * strength + 20) - (defense * 0.5))
+  const maxDamage = Math.max(0, (attack * strength) - (defense * 0.5))
   return Math.floor(Math.random() * (maxDamage + 1))
-}
-
-function checkIfPlayerIsDead() {
-  return player.value.currentHealth <= 0
 }
 
 // Handle monster death and introduce respawn delay
@@ -251,6 +255,13 @@ function giveLoot(drops: { name: string, chance: number }[]) {
           Player
         </h2>
         <div class="w-32 h-32 bg-green-700 rounded-full mb-4" />
+        <p>Health: {{ player.currentHealth }} / {{ player.hitpoints *10 }}</p>
+        <div class="health-bar-container">
+          <div
+            class="health-bar"
+            :style="{ width: playerHealthPercentage + '%' }"
+          />
+        </div>
         <p>Health: {{ player.currentHealth }} / {{ player.hitpoints }}</p>
         <p>Attack: {{ player.attack }}</p>
         <p>Strength: {{ player.strength }}</p>
@@ -334,6 +345,13 @@ function giveLoot(drops: { name: string, chance: number }[]) {
         <p :class="{ 'text-red-500': monster.currentHealth < 0 }">
           Health: {{ monster.currentHealth }} / {{ monster.health }}
         </p>
+        <div class="health-bar-container">
+          <div
+            class="health-bar"
+            :style="{ width: monsterHealthPercentage + '%' }"
+          />
+        </div>
+        <p>Health: {{ monster.currentHealth }} / {{ monster.health }}</p>
         <p>Attack: {{ monster.attack }}</p>
         <p>Strength: {{ monster.strength }}</p>
         <p>Defense: {{ monster.defense }}</p>
@@ -419,5 +437,19 @@ function giveLoot(drops: { name: string, chance: number }[]) {
 </template>
 
 <style scoped>
-/* Add some extra styling if needed */
+.health-bar-container {
+  width: 100%;
+  height: 20px;
+  background-color: #ac1f1f; /* Background of the bar container */
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.health-bar {
+  height: 100%;
+  background-color: #4caf50; /* Color of the health bar */
+  transition: width 0.2s; /* Smooth transition when health changes */
+  border-radius: 10px;
+}
 </style>
