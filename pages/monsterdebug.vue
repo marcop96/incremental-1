@@ -34,13 +34,91 @@
             <td
               class="border border-black p-2"
               :class="{ 'bg-red-200': !drop.inDatabase }"
+              @click="showForm"
             >
-              {{ drop.name === '' ? '(empty drop)' : drop.name }}
+              {{ drop.name === '' ? '' : drop.name }}
             </td>
           </tr>
         </template>
       </tbody>
     </table>
+
+    <!-- Floating form modal -->
+    <div
+      v-if="openForm"
+      class="fixed inset-0 bg-gray-800  flex justify-center items-center"
+    >
+      <div class="bg-white p-8 rounded shadow-lg w-96">
+        <h2 class="text-lg font-bold mb-4">
+          Add Item to Database
+        </h2>
+        <form @submit.prevent="submitForm">
+          <div class="mb-4">
+            <label class="block text-sm font-bold mb-2">Name</label>
+            <input
+              v-model="form.name"
+              type="text"
+              class="border border-gray-300 p-2 w-full"
+              required
+            >
+          </div>
+
+          <div class="mb-4">
+            <label class="block text-sm font-bold mb-2">Description</label>
+            <input
+              v-model="form.description"
+              type="text"
+              class="border border-gray-300 p-2 w-full"
+              required
+            >
+          </div>
+
+          <div class="mb-4">
+            <label class="block text-sm font-bold mb-2">Value</label>
+            <input
+              v-model="form.value"
+              type="number"
+              class="border border-gray-300 p-2 w-full"
+              required
+            >
+          </div>
+
+          <div class="mb-4">
+            <label class="block text-sm font-bold mb-2">Quantity</label>
+            <input
+              v-model="form.quantity"
+              type="number"
+              class="border border-gray-300 p-2 w-full"
+              required
+            >
+          </div>
+
+          <div class="mb-4">
+            <label class="block text-sm font-bold mb-2">Icon</label>
+            <input
+              v-model="form.icon"
+              type="text"
+              class="border border-gray-300 p-2 w-full"
+              required
+            >
+          </div>
+
+          <button
+            type="submit"
+            class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+          >
+            Add Item
+          </button>
+          <button
+            type="button"
+            class="ml-2 bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded"
+            @click="closeForm"
+          >
+            Cancel
+          </button>
+        </form>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -48,7 +126,16 @@
 import { ref } from 'vue'
 import monsters from '~/data/monsters.json'
 import { useInventoryStore } from '~/composable/useInventory'
+import type { ItemWithoutID } from '~/types'
 
+const openForm = ref(false)
+const form = ref({
+  name: '',
+  description: '',
+  value: 0,
+  quantity: 1,
+  icon: '',
+})
 const inventoryStore = useInventoryStore()
 const monsterDrops = ref([])
 
@@ -63,4 +150,41 @@ for (const monster of monsters) {
   }
   monsterDrops.value.push(monsterWithDrops)
 }
+
+function showForm() {
+  openForm.value = true
+}
+function closeForm() {
+  openForm.value = false
+  resetForm()
+}
+
+function resetForm() {
+  form.value = {
+    name: '',
+    description: '',
+    value: 0,
+    quantity: 1,
+    icon: '',
+  }
+}
+
+function submitForm() {
+  // Logic to add the item to the database
+  const newItem: ItemWithoutID = {
+    name: form.value.name,
+    description: form.value.description,
+    value: form.value.value,
+    quantity: form.value.quantity,
+    icon: form.value.icon,
+  }
+
+  inventoryStore.addItemToDataBase(newItem) // Save the item to the database
+  closeForm()
+  console.log(`Item ${newItem.name} added to the database.`)
+}
 </script>
+
+<style scoped>
+/* Optional: Adjust floating modal styling */
+</style>

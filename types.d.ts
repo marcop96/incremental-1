@@ -25,6 +25,7 @@ export interface Item {
   quantity: number
   icon: string
 }
+interface ItemWithoutID extends Omit<Item, 'id'> {}
 
 export interface Monster {
   id: number

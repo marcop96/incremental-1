@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import itemDataBase from '../data/items.json'
-import type { Item } from '@/types'
+import type { Item, ItemWithoutID } from '@/types'
 
 export const useInventoryStore = defineStore('inventory', () => {
   const inventory = ref<Item[]>([
@@ -69,6 +69,26 @@ export const useInventoryStore = defineStore('inventory', () => {
 
     return null
   }
+
+  const addItemToDataBase = (item: ItemWithoutID) => {
+    const foundItem = findItemInDataBase(item.name)
+
+    if (foundItem === null) {
+      // Obtener el nuevo ID
+      const lastItem = itemDataBase[itemDataBase.length - 1]
+      const newItemId = lastItem ? lastItem.id + 1 : 1
+
+      // Crear un nuevo objeto con el ID incluido
+      const newItem: Item = { ...item, id: newItemId }
+
+      itemDataBase.push(newItem)
+      console.log(`Item ${newItem.name} added to database with ID ${newItemId}`)
+    }
+    else {
+      console.warn(`Item ${item.name} already exists in database`)
+    }
+  }
+
   return {
     inventory,
     addItem,
@@ -76,5 +96,6 @@ export const useInventoryStore = defineStore('inventory', () => {
     findItemById,
     findItemByName,
     findItemInDataBase,
+    addItemToDataBase,
   }
 })
