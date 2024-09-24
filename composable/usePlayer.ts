@@ -28,7 +28,7 @@ export const usePlayerStore = defineStore('playerxp', () => {
           skill.level++
           toast({
             title: `Congratulations!`,
-            description: `your ${skillStore.activeSkill!.name} level is ${skill.level}`,
+            description: `your ${skill.name} level is ${skill.level}`,
           })
         }
         else { break }

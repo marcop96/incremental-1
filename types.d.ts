@@ -4,6 +4,7 @@ export interface Skill {
   level: number
   xp: number
   isGathering: boolean
+  isCombat?: boolean
 }
 
 export interface Resource {
@@ -23,4 +24,25 @@ export interface Item {
   value: number
   quantity: number
   icon: string
+}
+interface ItemWithoutID extends Omit<Item, 'id'> {}
+
+export interface Monster {
+  id: number
+  name: string
+  level: number
+  health: number
+  currentHealth: number
+  attack: number
+  strength: number
+  defense: number
+  speed: number
+  gold: number
+  xp: number
+  drops: Drop[]
+}
+
+export interface Drop {
+  name: string
+  chance: number
 }

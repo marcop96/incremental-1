@@ -63,6 +63,7 @@ onUnmounted(() => {
         :skill="activeSkill as Skill"
       />
     </div>
+    <CombatView v-if="activeSkill?.isCombat" />
     <div v-else>
       <TheInventory v-if="!activeSkill" />
     </div>

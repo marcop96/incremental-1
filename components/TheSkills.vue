@@ -1,64 +1,38 @@
 <script setup lang='ts'>
 import type { Skill } from '~/types'
 import resources from '~/data/resources.json'
-import levels from '~/data/levels.json'
 import { useGatherStore } from '~/composable/useGather'
-import { useSkillStore } from '~/composable/useSkills'
+import SkillProgress from '~/components/SkillProgress.vue'
 
 const gatherStore = useGatherStore()
-const skillStore = useSkillStore()
 const { progress, activeResource } = storeToRefs(gatherStore)
 const props = defineProps<{ skill: Skill }>()
 const filteredResources = computed(() => {
   return resources.filter(resource => resource.skillId === (props.skill as Skill).id)
 },
 )
-
-const remainingExp = computed(() => {
-  const nextLevel = levels.find(level => level.level === skillStore.activeSkill!.level + 1)
-  if (!nextLevel) return ''
-  return nextLevel.requiredXP - skillStore.activeSkill!.xp
-})
-const xpPerHour = computed(() => {
-  const gatheringTime = activeResource.value?.timeToGather || 0
-  const xpPerResource = activeResource.value?.experienceGiven || 0
-  const resourcesPerHour = 3600 / gatheringTime
-  const xpPerHour = xpPerResource * resourcesPerHour
-  if (!xpPerHour) {
-    return 0
-  }
-  else { return xpPerHour }
-})
-const nextLevelExpRequired = computed(() => {
-  const nextLevel = levels.find(level => level.level === skillStore.activeSkill!.level + 1)
-  if (!nextLevel) return ''
-  return nextLevel.requiredXP
-})
 </script>
 
 <template>
-  <div>
-    Level: {{ skillStore.activeSkill!.level }}  <br>
-    Exp: {{ skillStore.activeSkill!.xp }}/ {{ nextLevelExpRequired }} <br>
-    Exp to next level: {{ remainingExp }} <br>
-    {{ xpPerHour }} xp/h
-  </div>
-  <progress
-    :value="progress"
-    max="100"
-    class="progress-bar"
-  />
-  <div
-    class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
-  >
-    <ActionCard
-      v-for="resource in filteredResources"
-      :key="resource.id"
-      class="cursor-pointer"
-      :resource="resource"
-      :active-resource="activeResource"
-      @click="gatherStore.toggleGathering(resource)"
+  <div v-if="!skill.isCombat">
+    <SkillProgress :skill="skill" />
+    <progress
+      :value="progress"
+      max="100"
+      class="progress-bar"
     />
+    <div
+      class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+    >
+      <ActionCard
+        v-for="resource in filteredResources"
+        :key="resource.id"
+        class="cursor-pointer"
+        :resource="resource"
+        :active-resource="activeResource"
+        @click="gatherStore.toggleGathering(resource)"
+      />
+    </div>
   </div>
 </template>
 
