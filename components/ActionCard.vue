@@ -1,69 +1,95 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
-import { computed, defineProps } from 'vue'
-import { storeToRefs } from 'pinia'
-import type { Resource } from '~/types'
-import { useSkillStore } from '~/composable/useSkills'
-import { useInventoryStore } from '~/composable/useInventory'
-import { useGatherStore } from '~/composable/useGather'
+  import type { PropType } from 'vue'
+  import { computed, defineProps } from 'vue'
+  import { storeToRefs } from 'pinia'
+  import type { Resource } from '~/types'
+  import { useSkillStore } from '~/composable/useSkills'
+  import { useInventoryStore } from '~/composable/useInventory'
+  import { useGatherStore } from '~/composable/useGather'
 
-const skillStore = useSkillStore()
-const inventoryStore = useInventoryStore()
-const gatherStore = useGatherStore()
-const { skills } = storeToRefs(skillStore)
+  const skillStore = useSkillStore()
+  const inventoryStore = useInventoryStore()
+  const gatherStore = useGatherStore()
+  const { skills } = storeToRefs(skillStore)
 
-const props = defineProps({
-  resource: {
-    type: Object as PropType<Resource>,
-    required: true,
-  },
+  const props = defineProps({
+    resource: {
+      type: Object as PropType<Resource>,
+      required: true,
+    },
+  })
 
-})
+  const userHasRequiredLevel = computed(() => {
+    const skill = skills.value.find(skill => skill.id === props.resource.skillId)
+    return skill ? skill.level >= props.resource.requiredLevel : false
+  })
 
-const userHasRequiredLevel = computed(() => {
-  const skill = skills.value.find(skill => skill.id === props.resource.skillId)
-  return skill ? skill.level >= props.resource.requiredLevel : false
-})
-
-const userHasItem = computed(() => {
-  if (skillStore.activeSkill?.isGathering === false) {
-    return !!inventoryStore.findItemById(props.resource.itemId)
-  }
-  return false
-})
+  const userHasItem = computed(() => {
+    if (skillStore.activeSkill?.isGathering === false) {
+      return !!inventoryStore.findItemById(props.resource.itemId)
+    }
+    return false
+  })
 </script>
 
 <template>
   <div
-    class="w-48 h-48 p-2 m-2  border-2 border-gray-300 rounded-lg shadow-md flex flex-col items-center justify-center transition-colors duration-300 ease-in-out  hover:border-gray-700"
+    class="relative w-48 h-64 m-4 overflow-hidden transition-all duration-300 transform cursor-pointer bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 rounded-xl hover:shadow-2xl hover:-translate-y-2"
     :class="{
       'hidden': !userHasRequiredLevel,
-      'bg-gray-300 cursor-not-allowed': skillStore.activeSkill?.isGathering===false && !userHasItem, // Adding a conditional class for `userHasItem`
-    }"
-  >
-    <div class="text-xl font-bold mb-2 text-gray-800">
-      {{ props.resource.name }}
+      'opacity-50 grayscale pointer-events-none': skillStore.activeSkill?.isGathering === false && !userHasItem,
+      'ring-4 ring-green-400/50': gatherStore.activeResource?.name === resource.name
+    }">
+    <!-- Card Background Pattern -->
+    <div class="absolute inset-0 opacity-20 bg-[url('@/assets/textures/carbon-fiber.png')]" />
+
+    <!-- Resource Artwork -->
+    <div class="relative z-10 flex items-center justify-center h-32">
+      <div class="p-4 transition-transform duration-300 rounded-full bg-gray-900/30 hover:scale-110">
+        <span class="text-4xl" :class="resource.icon">{{ resource.icon }}</span>
+      </div>
     </div>
 
-    <div
-      class="text-lg font-medium mb-4 text-gray-700"
-      :class="{ 'text-green-500 ': gatherStore.activeResource && (gatherStore.activeResource as Resource).name === props.resource.name }"
-    >
-      {{ props.resource.experienceGiven }} exp
+    <!-- Card Content -->
+    <div class="relative z-10 p-4 pt-0">
+      <!-- Resource Name & Level -->
+      <div class="mb-2 text-center">
+        <h3 class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-600">
+          {{ resource.name }}
+        </h3>
+        <div class="text-xs font-medium text-gray-400">
+          Lv. {{ resource.requiredLevel }}
+        </div>
+      </div>
+
+      <!-- Stats Grid -->
+      <div class="grid grid-cols-2 gap-3 text-sm">
+        <div class="flex items-center justify-center p-2 rounded-md bg-gray-900/50">
+          <span class="mr-1 text-green-400">⏳</span>
+          <span class="font-semibold text-gray-300">{{ resource.timeToGather }}s</span>
+        </div>
+        <div class="flex items-center justify-center p-2 rounded-md bg-gray-900/50">
+          <span class="mr-1 text-yellow-400">⭐</span>
+          <span class="font-semibold text-gray-300">{{ resource.experienceGiven }}xp</span>
+        </div>
+      </div>
+
+      <!-- Active Progress Bar -->
+      <div v-if="gatherStore.activeResource?.name === resource.name"
+        class="absolute bottom-0 left-0 right-0 h-1 bg-green-900/50">
+        <div class="h-full bg-gradient-to-r from-green-400 to-emerald-600 transition-all duration-1000 ease-linear"
+          :style="{ width: `${gatherStore.progress * 100}%` }" />
+      </div>
     </div>
-    <div class="w-full h-2 bg-gray-300 rounded-full mb-4">
-      <div
-        class="h-2 rounded-full transition-colors ease-in-out duration-300"
-        :class="{ 'bg-green-500 ': gatherStore.activeResource && (gatherStore.activeResource as Resource).name === props.resource.name }"
-      />
-    </div>
-    <div class="text-sm font-medium text-gray-600">
-      Gather Time:
-      <span
-        :class="{
-          'text-green-500': gatherStore.activeResource && (gatherStore.activeResource as Resource).name === props.resource.name,
-        }"
-      >{{ props.resource.timeToGather }}</span>
+
+    <!-- Requirement Warning -->
+    <div v-if="skillStore.activeSkill?.isGathering === false && !userHasItem"
+      class="absolute inset-0 flex items-center justify-center p-2 text-xs text-center text-red-400 bg-black/50">
+      <span class="text-red-400">⚠️ Requires {{ inventoryStore.getItemName(resource.itemId) }}</span>
     </div>
   </div>
 </template>
+
+<style scoped>
+  /* Add any custom animations here if needed */
+</style>
