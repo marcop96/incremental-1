@@ -1,13 +1,30 @@
 <script setup lang="ts">
-import type { Skill } from '~/types'
+  import type { Skill } from '~/types'
 
-defineProps<{ skill: Skill }>()
+  const props = defineProps<{ skill: Skill }>()
+
+
 </script>
 
 <template>
-  <main class="w-48 h-32 flex flex-col justify-center items-center  bg-red-200 rounded-lg m-4">
-    <h1>{{ skill.name }}</h1>
-    <p> Level {{ skill.level }} </p>
-    <p> {{ skill.xp }} exp</p>
-  </main>
+  <div
+    class="w-64 h-40 p-4 bg-gradient-to-r from-blue-500 to-blue-700 rounded-xl shadow-lg m-4 flex flex-col justify-between">
+    <!-- Skill Name -->
+    <div>
+      <h2 class="text-white text-2xl font-bold">
+        {{ skill.name }}
+      </h2>
+    </div>
+
+    <!-- Skill Details -->
+    <div class="flex justify-between items-center">
+      <span class="text-white text-lg">
+        Level {{ skill.level }} / 99
+      </span>
+      <span class="text-white text-lg">
+        {{ skill.xp }} XP
+      </span>
+
+    </div>
+  </div>
 </template>
