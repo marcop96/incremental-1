@@ -11,9 +11,9 @@ export const useSkillStore = defineStore('skills', () => {
     { id: 4, name: 'cooking', level: 1, xp: 0, isGathering: false },
     { id: 5, name: 'mining', level: 1, xp: 0, isGathering: true },
     { id: 6, name: 'attack', level: 1, xp: 0, isGathering: false, isCombat: true },
-    { id: 7, name: 'strength', level: 1, xp: 0, isGathering: false, isCombat: true },
+    { id: 7, name: 'strength', level: 99, xp: 123412341234, isGathering: false, isCombat: true },
     { id: 8, name: 'defense', level: 1, xp: 0, isGathering: false, isCombat: true },
-    { id: 9, name: 'hitpoints', level: 1, xp: 0, isGathering: false, isCombat: true },
+    { id: 9, name: 'hitpoints', level: 99, xp: 13241234, isGathering: false, isCombat: true },
 
   ])
 
