@@ -41,18 +41,17 @@
       'ring-4 ring-green-400/50': gatherStore.activeResource?.name === resource.name
     }">
     <!-- Card Background Pattern -->
-    <div class="absolute inset-0 opacity-20 bg-[url('@/assets/textures/carbon-fiber.png')]" />
+    <!-- <div class="absolute inset-0 opacity-20 bg-[url('@/assets/textures/carbon-fiber.png')]" /> -->
 
     <!-- Resource Artwork -->
     <div class="relative z-10 flex items-center justify-center h-32">
       <div class="p-4 transition-transform duration-300 rounded-full bg-gray-900/30 hover:scale-110">
-        <span class="text-4xl" :class="resource.icon">{{ resource.icon }}</span>
+        <span class="text-4xl" :class="resource.icon">{{ resource.icon }} 🌲</span>
       </div>
     </div>
 
     <!-- Card Content -->
     <div class="relative z-10 p-4 pt-0">
-      <!-- Resource Name & Level -->
       <div class="mb-2 text-center">
         <h3 class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-600">
           {{ resource.name }}
@@ -85,7 +84,7 @@
     <!-- Requirement Warning -->
     <div v-if="skillStore.activeSkill?.isGathering === false && !userHasItem"
       class="absolute inset-0 flex items-center justify-center p-2 text-xs text-center text-red-400 bg-black/50">
-      <span class="text-red-400">⚠️ Requires {{ inventoryStore.getItemName(resource.itemId) }}</span>
+      <!-- <span class="text-red-400">⚠️ Requires {{ gatherStore.(resource.itemId) }}</span> -->
     </div>
   </div>
 </template>
