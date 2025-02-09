@@ -40,8 +40,7 @@
       'opacity-50 grayscale pointer-events-none': skillStore.activeSkill?.isGathering === false && !userHasItem,
       'ring-4 ring-green-400/50': gatherStore.activeResource?.name === resource.name
     }">
-    <!-- Card Background Pattern -->
-    <!-- <div class="absolute inset-0 opacity-20 bg-[url('@/assets/textures/carbon-fiber.png')]" /> -->
+
 
     <!-- Resource Artwork -->
     <div class="relative z-10 flex items-center justify-center h-32">
