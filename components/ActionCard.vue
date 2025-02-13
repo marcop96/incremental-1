@@ -55,33 +55,34 @@
     <!-- Card Content -->
     <div class="relative z-10 p-4 pt-0">
       <div class="mb-2 text-center">
+        <h3 class="text-lg font-bold ">
+          {{ resource.name }}
+        </h3>
         <div v-if="skillStore.activeSkill?.isGathering === false && !userHasItem"
           class="absolute inset-0 flex items-center justify-center p-2 text-xs text-center text-red-400 bg-black/50">
           <span class="text-red-400">⚠️ Requires {{ requiredItem?.name }} </span>
         </div>
+
         <div v-else>
 
-          <h3 class="text-lg font-bold ">
-            {{ resource.name }}
-          </h3>
           <div class=" text-xs font-medium text-gray-400">
             Lv. {{ resource.requiredLevel }}
           </div>
+
+          <!-- Stats Grid -->
+          <div class="grid grid-cols-2 gap-3 text-sm">
+            <div class="flex items-center justify-center p-2 rounded-md bg-gray-900/50">
+              <span class="mr-1 text-green-400">⏳</span>
+              <span class="font-semibold text-gray-300">{{ resource.timeToGather }}s</span>
+            </div>
+            <div class="flex items-center justify-center p-2 rounded-md bg-gray-900/50">
+              <span class="mr-1 text-yellow-400">⭐</span>
+              <span class="font-semibold text-gray-300">{{ resource.experienceGiven }}xp</span>
+            </div>
+          </div>
         </div>
 
-        <!-- Stats Grid -->
-        <div class="grid grid-cols-2 gap-3 text-sm">
-          <div class="flex items-center justify-center p-2 rounded-md bg-gray-900/50">
-            <span class="mr-1 text-green-400">⏳</span>
-            <span class="font-semibold text-gray-300">{{ resource.timeToGather }}s</span>
-          </div>
-          <div class="flex items-center justify-center p-2 rounded-md bg-gray-900/50">
-            <span class="mr-1 text-yellow-400">⭐</span>
-            <span class="font-semibold text-gray-300">{{ resource.experienceGiven }}xp</span>
-          </div>
-        </div>
       </div>
-
       <!-- Active Progress Bar -->
       <div v-if="gatherStore.activeResource?.name === resource.name"
         class="absolute bottom-0 left-0 right-0 h-1 bg-green-900/50">
