@@ -18,7 +18,7 @@ export const useGatherStore = defineStore('gather', () => {
   let interval: string | number | NodeJS.Timeout | null | undefined = null
   const activeResource = ref<Resource | null>(null)
 
-  const checkIfResourceIsGatherable = (resource: Resource) => {
+  const checkIfPlayerHasTools = (resource: Resource) => {
     if (skillStore.activeSkill?.isGathering === false) {
       const requiredItem = items.find(item => item.id === resource.itemId) as Item
       const inventoryItem = inventoryStore.findItemById(requiredItem.id)
@@ -51,12 +51,13 @@ export const useGatherStore = defineStore('gather', () => {
   }
 
   const startGathering = (resource: Resource) => {
-    if (!checkIfResourceIsGatherable(resource)) return
+    if (!checkIfPlayerHasTools(resource)) return
 
     activeResource.value = resource
 
     interval = setInterval(() => {
-      if (!checkIfResourceIsGatherable(resource)) {
+      if (!checkIfPlayerHasTools(resource)) {
+        console.error('esto no se callea?')
         stopGathering()
         return
       }
@@ -101,7 +102,9 @@ export const useGatherStore = defineStore('gather', () => {
 
   return {
     toggleGathering,
+    checkIfPlayerHasTools,
     progress,
     activeResource,
-    stopGathering }
+    stopGathering
+  }
 })
