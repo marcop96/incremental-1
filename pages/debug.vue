@@ -204,8 +204,8 @@
           <tr v-for="row in displayedRows" :key="row.id" class="hover:bg-green-500">
             <template v-if="editingRow && editingRow.id === row.id">
               <td v-for="header in tableHeaders" :key="header.key" class="px-4 py-2 border">
-                <input v-model="editingRow.data[header.key]" class="w-full p-1 border border-gray-300 rounded-md"
-                  type="text" />
+                <input v-model="editingRow.data[header.key]"
+                  class="w-full p-1 border border-gray-300 rounded-md bg-black" type="text" />
               </td>
               <td class="px-4 py-2 border">
                 <button @click="saveEdit" class="text-green-500 mr-2">
@@ -217,17 +217,20 @@
               </td>
             </template>
             <template v-else>
-              <td v-for="header in tableHeaders" :key="header.key" class="px-4 py-2 border">
+              <td v-for="header in tableHeaders" :key="header.key" class="px-4 py-2 border ">
                 <!-- If the field is an array (like drops), join its values -->
                 <span v-if="Array.isArray(row[header.key])">
                   {{
                     row[header.key]
                       .map((item) =>
-                        typeof item === 'object' && item.name ? item.name : item
+                        typeof item === 'object'
+                          ? `${item.name} (Chance: ${item.chance})`
+                          : item
                       )
                       .join(', ')
                   }}
                 </span>
+
                 <span v-else>
                   {{ row[header.key] }}
                 </span>
@@ -247,8 +250,7 @@
 
 <script setup lang="ts">
   import { ref, computed } from 'vue'
-  import type { Item, Resource } from '~/types'
-  import type { Monster } from '~/types'
+  import type { Item, Resource, Monster } from '~/types'
   import resourcesData from '~/data/resources.json'
   import monstersData from '~/data/monsters.json'
   import itemsData from '~/data/items.json'
@@ -293,7 +295,7 @@
     ],
   })
 
-  // Import data arrays from JSON files
+  // Data arrays imported from JSON files
   const resources = ref<Resource[]>(resourcesData)
   const monsters = ref<Monster[]>(monstersData)
   const items = ref<Item[]>(itemsData)
@@ -364,6 +366,7 @@
   }
 
   /**
+   * Returns a template with correct types for the selected database.
    */
   function getTemplateForSelectedDatabase() {
     if (selectedDatabase.value === 'monsters') {
@@ -405,19 +408,33 @@
   }
 
   /**
-   * Transforms the edited row data into the proper types based on a template.
+   * Helper: returns true if the given key (field) is expected to be a number.
+   */
+  function isNumberField(key: string): boolean {
+    const template = getTemplateForSelectedDatabase()
+    return typeof template[key] === 'number'
+  }
+
+  /**
+   * Validates and transforms data based on a template.
+   * If a field expected to be a number is invalid, it alerts and returns null.
    */
   function transformData(data: any, template: any) {
     const newData: any = {}
     for (const key in data) {
       if (template.hasOwnProperty(key)) {
         if (typeof template[key] === 'number') {
-          newData[key] = Number(data[key])
+          const num = Number(data[key])
+          if (isNaN(num)) {
+            alert(`Invalid number for field ${key}`)
+            return null
+          }
+          newData[key] = num
         } else if (Array.isArray(template[key])) {
-          // For arrays like drops, you might want to add your own parsing logic.
-          // For now, we'll assume the field is entered as a comma-separated string
-          // and split it into an array of strings.
-          newData[key] = typeof data[key] === 'string' ? data[key].split(',').map((s: string) => s.trim()) : data[key]
+          newData[key] =
+            typeof data[key] === 'string'
+              ? data[key].split(',').map((s: string) => s.trim())
+              : data[key]
         } else {
           newData[key] = data[key]
         }
@@ -440,9 +457,13 @@
       endpoint = 'api/updateMonster'
     }
 
-    // Get the appropriate template and transform the data
     const template = getTemplateForSelectedDatabase()
     const transformedData = transformData(editingRow.value.data, template)
+
+    if (!transformedData) {
+      // Validation failed.
+      return
+    }
 
     try {
       const result = await $fetch(endpoint, {
@@ -452,7 +473,6 @@
       })
 
       if (result.success) {
-        // Update the local data array accordingly
         if (selectedDatabase.value === 'items') {
           const index = items.value.findIndex((r) => r.id === editingRow.value!.id)
           if (index !== -1) items.value[index] = transformedData
@@ -473,46 +493,41 @@
     }
   }
 
-  // Function to handle item form submission
+  // Form submission functions for adding new records
   async function createItem(item: Item) {
     try {
       await $fetch('api/addItem', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(item),
-      }).then((response) => {
-        console.log('Item added successfully')
       })
+      console.log('Item added successfully')
     } catch (error) {
       console.error('An error occurred:', error)
     }
   }
 
-  // Function to handle monster form submission
   async function createMonster(monster: Monster) {
     try {
       await $fetch('api/addMonster', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(monster),
-      }).then((response) => {
-        console.log('Monster added successfully')
       })
+      console.log('Monster added successfully')
     } catch (error) {
       console.error('An error occurred:', error)
     }
   }
 
-  // Function to handle resource form submission
   async function createResource(resource: Resource) {
     try {
       await $fetch('api/addResource', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(resource),
-      }).then((response) => {
-        console.log('Resource added successfully')
       })
+      console.log('Resource added successfully')
     } catch (error) {
       console.error('An error occurred:', error)
     }
