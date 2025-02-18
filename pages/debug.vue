@@ -56,7 +56,7 @@
           </div>
           <div>
             <label for="resource-skill-id" class="block text-sm font-medium text-gray-700">Skill ID:</label>
-            <input id="resource-skill-id" v-model.number="resource.skillId" type="number" required
+            <input id="resource-skill-id" v-model.number="resource.skillName" type="string" required
               class="mt-1 block w-full p-2 border border-gray-300 rounded-md text-gray-900 focus:ring-blue-500 focus:border-blue-500" />
           </div>
           <div>
@@ -292,7 +292,7 @@
   const resourcesHeaders = [
     { label: 'ID', key: 'id' },
     { label: 'Name', key: 'name' },
-    { label: 'Skill ID', key: 'skillId' },
+    { label: 'Skill Name', key: 'skillName' },
     { label: 'Required Level', key: 'requiredLevel' },
     { label: 'Experience Given', key: 'experienceGiven' },
     { label: 'Time to Gather', key: 'timeToGather' },
