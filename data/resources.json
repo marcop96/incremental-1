@@ -2,7 +2,7 @@
   {
     "id": 1001,
     "name": "Normal Log",
-    "skillId": 1,
+    "skillName": "Woodcutting",
     "requiredLevel": 1,
     "experienceGiven": 25,
     "timeToGather": 1,
@@ -11,7 +11,7 @@
   {
     "id": 1002,
     "name": "Oak Log",
-    "skillId": 1,
+    "skillName": "Woodcutting",
     "requiredLevel": 15,
     "experienceGiven": 37.5,
     "timeToGather": 2,
@@ -20,7 +20,7 @@
   {
     "id": 1003,
     "name": "Willow Log",
-    "skillId": 1,
+    "skillName": "Woodcutting",
     "requiredLevel": 30,
     "experienceGiven": 67.5,
     "timeToGather": 4,
@@ -29,7 +29,7 @@
   {
     "id": 1004,
     "name": "Maple Log",
-    "skillId": 1,
+    "skillName": "Woodcutting",
     "requiredLevel": 45,
     "experienceGiven": 100,
     "timeToGather": 6,
@@ -38,7 +38,7 @@
   {
     "id": 1005,
     "name": "Yew Log",
-    "skillId": 1,
+    "skillName": "Woodcutting",
     "requiredLevel": 60,
     "experienceGiven": 175,
     "timeToGather": 8,
@@ -47,7 +47,7 @@
   {
     "id": 1006,
     "name": "Magic Log",
-    "skillId": 1,
+    "skillName": "Woodcutting",
     "requiredLevel": 75,
     "experienceGiven": 250,
     "timeToGather": 10,
@@ -56,7 +56,7 @@
   {
     "id": 1007,
     "name": "Redwood Log",
-    "skillId": 1,
+    "skillName": "Woodcutting",
     "requiredLevel": 90,
     "experienceGiven": 380,
     "timeToGather": 12,
@@ -65,7 +65,7 @@
   {
     "id": 1008,
     "name": "Teak Log",
-    "skillId": 1,
+    "skillName": "Woodcutting",
     "requiredLevel": 35,
     "experienceGiven": 85,
     "timeToGather": 5,
@@ -74,7 +74,7 @@
   {
     "id": 1009,
     "name": "Mahogany Log",
-    "skillId": 1,
+    "skillName": "Woodcutting",
     "requiredLevel": 50,
     "experienceGiven": 125,
     "timeToGather": 7,
@@ -83,7 +83,7 @@
   {
     "id": 1010,
     "name": "Elder Log",
-    "skillId": 1,
+    "skillName": "Woodcutting",
     "requiredLevel": 85,
     "experienceGiven": 315,
     "timeToGather": 11,
@@ -92,7 +92,7 @@
   {
     "id": 2001,
     "name": "Shrimp",
-    "skillId": 3,
+    "skillName": "Fishing",
     "requiredLevel": 1,
     "experienceGiven": 10,
     "timeToGather": 1,
@@ -101,7 +101,7 @@
   {
     "id": 2002,
     "name": "Sardine",
-    "skillId": 3,
+    "skillName": "Fishing",
     "requiredLevel": 5,
     "experienceGiven": 20,
     "timeToGather": 2,
@@ -110,7 +110,7 @@
   {
     "id": 2003,
     "name": "Herring",
-    "skillId": 3,
+    "skillName": "Fishing",
     "requiredLevel": 10,
     "experienceGiven": 30,
     "timeToGather": 3,
@@ -119,7 +119,7 @@
   {
     "id": 2004,
     "name": "Anchovy",
-    "skillId": 3,
+    "skillName": "Fishing",
     "requiredLevel": 15,
     "experienceGiven": 40,
     "timeToGather": 4,
@@ -128,7 +128,7 @@
   {
     "id": 2005,
     "name": "Mackerel",
-    "skillId": 3,
+    "skillName": "Fishing",
     "requiredLevel": 20,
     "experienceGiven": 50,
     "timeToGather": 5,
@@ -137,7 +137,7 @@
   {
     "id": 2006,
     "name": "Trout",
-    "skillId": 3,
+    "skillName": "Fishing",
     "requiredLevel": 25,
     "experienceGiven": 60,
     "timeToGather": 6,
@@ -146,7 +146,7 @@
   {
     "id": 2007,
     "name": "Cod",
-    "skillId": 3,
+    "skillName": "Fishing",
     "requiredLevel": 30,
     "experienceGiven": 70,
     "timeToGather": 7,
@@ -155,7 +155,7 @@
   {
     "id": 2008,
     "name": "Pike",
-    "skillId": 3,
+    "skillName": "Fishing",
     "requiredLevel": 35,
     "experienceGiven": 80,
     "timeToGather": 8,
@@ -164,7 +164,7 @@
   {
     "id": 2009,
     "name": "Salmon",
-    "skillId": 3,
+    "skillName": "Fishing",
     "requiredLevel": 40,
     "experienceGiven": 90,
     "timeToGather": 9,
@@ -173,7 +173,7 @@
   {
     "id": 2010,
     "name": "Tuna",
-    "skillId": 3,
+    "skillName": "Fishing",
     "requiredLevel": 50,
     "experienceGiven": 100,
     "timeToGather": 10,
@@ -182,7 +182,7 @@
   {
     "id": 2011,
     "name": "Lobster",
-    "skillId": 3,
+    "skillName": "Fishing",
     "requiredLevel": 60,
     "experienceGiven": 120,
     "timeToGather": 11,
@@ -191,7 +191,7 @@
   {
     "id": 2012,
     "name": "Swordfish",
-    "skillId": 3,
+    "skillName": "Fishing",
     "requiredLevel": 70,
     "experienceGiven": 150,
     "timeToGather": 12,
@@ -200,7 +200,7 @@
   {
     "id": 2013,
     "name": "Shark",
-    "skillId": 3,
+    "skillName": "Fishing",
     "requiredLevel": 80,
     "experienceGiven": 200,
     "timeToGather": 13,
@@ -209,7 +209,7 @@
   {
     "id": 2014,
     "name": "Manta Ray",
-    "skillId": 3,
+    "skillName": "Fishing",
     "requiredLevel": 90,
     "experienceGiven": 250,
     "timeToGather": 14,
@@ -218,7 +218,7 @@
   {
     "id": 2015,
     "name": "Whale",
-    "skillId": 3,
+    "skillName": "Fishing",
     "requiredLevel": 99,
     "experienceGiven": 300,
     "timeToGather": 15,
@@ -227,7 +227,7 @@
   {
     "id": 3001,
     "name": "Normal Log",
-    "skillId": 2,
+    "skillName": "Firemaking",
     "requiredLevel": 1,
     "experienceGiven": 25,
     "timeToGather": 1,
@@ -236,7 +236,7 @@
   {
     "id": 3002,
     "name": "Oak Log",
-    "skillId": 2,
+    "skillName": "Firemaking",
     "requiredLevel": 15,
     "experienceGiven": 37.5,
     "timeToGather": 2,
@@ -245,7 +245,7 @@
   {
     "id": 3003,
     "name": "Willow Log",
-    "skillId": 2,
+    "skillName": "Firemaking",
     "requiredLevel": 30,
     "experienceGiven": 67.5,
     "timeToGather": 4,
@@ -254,7 +254,7 @@
   {
     "id": 3004,
     "name": "Maple Log",
-    "skillId": 2,
+    "skillName": "Firemaking",
     "requiredLevel": 45,
     "experienceGiven": 100,
     "timeToGather": 6,
@@ -263,7 +263,7 @@
   {
     "id": 3005,
     "name": "Yew Log",
-    "skillId": 2,
+    "skillName": "Firemaking",
     "requiredLevel": 60,
     "experienceGiven": 175,
     "timeToGather": 8,
@@ -272,7 +272,7 @@
   {
     "id": 3006,
     "name": "Magic Log",
-    "skillId": 2,
+    "skillName": "Firemaking",
     "requiredLevel": 75,
     "experienceGiven": 250,
     "timeToGather": 10,
@@ -281,7 +281,7 @@
   {
     "id": 3007,
     "name": "Redwood Log",
-    "skillId": 2,
+    "skillName": "Firemaking",
     "requiredLevel": 90,
     "experienceGiven": 380,
     "timeToGather": 12,
@@ -290,7 +290,7 @@
   {
     "id": 3008,
     "name": "Teak Log",
-    "skillId": 2,
+    "skillName": "Firemaking",
     "requiredLevel": 35,
     "experienceGiven": 85,
     "timeToGather": 5,
@@ -299,7 +299,7 @@
   {
     "id": 3009,
     "name": "Mahogany Log",
-    "skillId": 2,
+    "skillName": "Firemaking",
     "requiredLevel": 50,
     "experienceGiven": 125,
     "timeToGather": 7,
@@ -308,7 +308,7 @@
   {
     "id": 3010,
     "name": "Elder Log",
-    "skillId": 2,
+    "skillName": "Firemaking",
     "requiredLevel": 85,
     "experienceGiven": 315,
     "timeToGather": 11,
@@ -317,7 +317,7 @@
   {
     "id": 4001,
     "name": "Shrimp",
-    "skillId": 4,
+    "skillName": "Cooking",
     "requiredLevel": 1,
     "experienceGiven": 10,
     "timeToGather": 1,
@@ -326,7 +326,7 @@
   {
     "id": 4002,
     "name": "Sardine",
-    "skillId": 4,
+    "skillName": "Cooking",
     "requiredLevel": 5,
     "experienceGiven": 20,
     "timeToGather": 2,
@@ -335,7 +335,7 @@
   {
     "id": 4003,
     "name": "Herring",
-    "skillId": 4,
+    "skillName": "Cooking",
     "requiredLevel": 10,
     "experienceGiven": 30,
     "timeToGather": 3,
@@ -344,7 +344,7 @@
   {
     "id": 4004,
     "name": "Anchovy",
-    "skillId": 4,
+    "skillName": "Cooking",
     "requiredLevel": 15,
     "experienceGiven": 40,
     "timeToGather": 4,
@@ -353,7 +353,7 @@
   {
     "id": 4005,
     "name": "Mackerel",
-    "skillId": 4,
+    "skillName": "Cooking",
     "requiredLevel": 20,
     "experienceGiven": 50,
     "timeToGather": 5,
@@ -362,7 +362,7 @@
   {
     "id": 4006,
     "name": "Trout",
-    "skillId": 4,
+    "skillName": "Cooking",
     "requiredLevel": 25,
     "experienceGiven": 60,
     "timeToGather": 6,
@@ -371,7 +371,7 @@
   {
     "id": 4007,
     "name": "Cod",
-    "skillId": 4,
+    "skillName": "Cooking",
     "requiredLevel": 30,
     "experienceGiven": 70,
     "timeToGather": 7,
@@ -380,7 +380,7 @@
   {
     "id": 4008,
     "name": "Pike",
-    "skillId": 4,
+    "skillName": "Cooking",
     "requiredLevel": 35,
     "experienceGiven": 80,
     "timeToGather": 8,
@@ -389,7 +389,7 @@
   {
     "id": 4009,
     "name": "Salmon",
-    "skillId": 4,
+    "skillName": "Cooking",
     "requiredLevel": 40,
     "experienceGiven": 90,
     "timeToGather": 9,
@@ -398,7 +398,7 @@
   {
     "id": 4010,
     "name": "Tuna",
-    "skillId": 4,
+    "skillName": "Cooking",
     "requiredLevel": 50,
     "experienceGiven": 100,
     "timeToGather": 10,
@@ -407,7 +407,7 @@
   {
     "id": 4011,
     "name": "Lobster",
-    "skillId": 4,
+    "skillName": "Cooking",
     "requiredLevel": 60,
     "experienceGiven": 120,
     "timeToGather": 11,
@@ -416,7 +416,7 @@
   {
     "id": 4012,
     "name": "Swordfish",
-    "skillId": 4,
+    "skillName": "Cooking",
     "requiredLevel": 70,
     "experienceGiven": 150,
     "timeToGather": 12,
@@ -425,7 +425,7 @@
   {
     "id": 4013,
     "name": "Shark",
-    "skillId": 4,
+    "skillName": "Cooking",
     "requiredLevel": 80,
     "experienceGiven": 200,
     "timeToGather": 13,
@@ -434,7 +434,7 @@
   {
     "id": 4014,
     "name": "Manta Ray",
-    "skillId": 4,
+    "skillName": "Cooking",
     "requiredLevel": 90,
     "experienceGiven": 250,
     "timeToGather": 14,
@@ -443,7 +443,7 @@
   {
     "id": 4015,
     "name": "Whale",
-    "skillId": 4,
+    "skillName": "Cooking",
     "requiredLevel": 99,
     "experienceGiven": 300,
     "timeToGather": 15,
@@ -452,7 +452,7 @@
   {
     "id": 5001,
     "name": "Copper Ore",
-    "skillId": 5,
+    "skillName": "Mining",
     "requiredLevel": 1,
     "experienceGiven": 17.5,
     "timeToGather": 2,
@@ -461,7 +461,7 @@
   {
     "id": 5002,
     "name": "Tin Ore",
-    "skillId": 5,
+    "skillName": "Mining",
     "requiredLevel": 1,
     "experienceGiven": 17.5,
     "timeToGather": 2,
@@ -470,7 +470,7 @@
   {
     "id": 5003,
     "name": "Iron Ore",
-    "skillId": 5,
+    "skillName": "Mining",
     "requiredLevel": 15,
     "experienceGiven": 35,
     "timeToGather": 3,
@@ -479,7 +479,7 @@
   {
     "id": 5004,
     "name": "Coal",
-    "skillId": 5,
+    "skillName": "Mining",
     "requiredLevel": 30,
     "experienceGiven": 50,
     "timeToGather": 4,
@@ -488,7 +488,7 @@
   {
     "id": 5005,
     "name": "Gold Ore",
-    "skillId": 5,
+    "skillName": "Mining",
     "requiredLevel": 40,
     "experienceGiven": 65,
     "timeToGather": 5,
@@ -497,7 +497,7 @@
   {
     "id": 5006,
     "name": "Mithril Ore",
-    "skillId": 5,
+    "skillName": "Mining",
     "requiredLevel": 55,
     "experienceGiven": 80,
     "timeToGather": 6,
@@ -506,7 +506,7 @@
   {
     "id": 5007,
     "name": "Adamantite Ore",
-    "skillId": 5,
+    "skillName": "Mining",
     "requiredLevel": 70,
     "experienceGiven": 95,
     "timeToGather": 7,
@@ -515,7 +515,7 @@
   {
     "id": 5008,
     "name": "Runite Ore",
-    "skillId": 5,
+    "skillName": "Mining",
     "requiredLevel": 85,
     "experienceGiven": 125,
     "timeToGather": 8,

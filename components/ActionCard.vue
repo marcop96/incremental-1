@@ -18,9 +18,9 @@
       required: true,
     },
   })
-
   const userHasRequiredLevel = computed(() => {
-    const skill = skills.value.find(skill => skill.id === props.resource.skillId)
+    const skill = skills.value.find(skill => skill.name === props.resource.skillName.toLowerCase())
+
     return skill ? skill.level >= props.resource.requiredLevel : false
   })
   const requiredItem = computed(() => {
@@ -48,7 +48,7 @@
     <!-- Resource Artwork -->
     <div class="relative z-10 flex items-center justify-center h-32">
       <div class="p-4 transition-transform duration-300 rounded-full bg-gray-900/30 hover:scale-110">
-        <span class="text-4xl" :class="resource.icon">{{ resource.icon }} 🌲</span>
+        <!-- <span class="text-4xl" :class="resource.icon">{{ resource.icon }} 🌲</span> -->
       </div>
     </div>
 

@@ -57,7 +57,6 @@ export const useGatherStore = defineStore('gather', () => {
 
     interval = setInterval(() => {
       if (!checkIfPlayerHasTools(resource)) {
-        console.error('esto no se callea?')
         stopGathering()
         return
       }
@@ -74,16 +73,15 @@ export const useGatherStore = defineStore('gather', () => {
     else {
       const resource = activeResource.value
       if (!resource) return
-
       if (skillStore.activeSkill?.isGathering === false) {
         const requiredItem = items.find(item => item.id === resource.itemId) as Item
         inventoryStore.removeItem(requiredItem)
-        playerStore.addExperience(resource.skillId, resource.experienceGiven)
+        playerStore.addExperience(resource.skillName, resource.experienceGiven)
       }
 
       if (skillStore.activeSkill?.isGathering === true) {
         giveResourceFromItem(resource)
-        playerStore.addExperience(resource.skillId, resource.experienceGiven)
+        playerStore.addExperience(resource.skillName, resource.experienceGiven)
       }
 
       currentProgress.value = 0

@@ -8,13 +8,18 @@
   const { progress, activeResource } = storeToRefs(gatherStore)
   const props = defineProps<{ skill: Skill }>()
   const filteredResources = computed(() => {
-    return resources.filter(resource => resource.skillId === (props.skill as Skill).id)
+    return resources.filter(resource => resource.skillName.toLowerCase() === props.skill.name.toLowerCase())
   },
   )
+
+
 </script>
 
 <template>
   <div v-if="!skill.isCombat">
+    <button @click="  console.log(filteredResources)
+      " class="btn btn-primary">consolefilter
+    </button>
     <SkillProgress :skill="skill" />
     <progress :value="progress" max="100" class="progress-bar" />
     <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">

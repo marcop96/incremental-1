@@ -10,7 +10,7 @@ export interface Skill {
 export interface Resource {
   id: number
   name: string
-  skillId: number
+  skillName: string
   requiredLevel: number
   experienceGiven: number
   timeToGather: number
@@ -22,10 +22,10 @@ export interface Item {
   name: string
   description: string
   value: number
-  quantity: number
+  quantity?: number
   icon: string
 }
-interface ItemWithoutID extends Omit<Item, 'id'> {}
+interface ItemWithoutID extends Omit<Item, 'id'> { }
 
 export interface Monster {
   id: number
