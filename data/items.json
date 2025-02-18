@@ -4,7 +4,6 @@
     "name": "Normal Log",
     "description": "log from a normal tree",
     "value": 100,
-    "quantity": 1,
     "icon": "noto:crossed-swords"
   },
   {
@@ -12,7 +11,6 @@
     "name": "Oak Log",
     "description": "log from an oak tree. Requires level 15, gives 37.5 experience",
     "value": 37.5,
-    "quantity": 1,
     "icon": "noto:wood"
   },
   {
@@ -20,7 +18,6 @@
     "name": "Willow Log",
     "description": "log from a willow tree. Requires level 30, gives 67.5 experience",
     "value": 67.5,
-    "quantity": 1,
     "icon": "noto:wood"
   },
   {
@@ -28,7 +25,6 @@
     "name": "Maple Log",
     "description": "log from a maple tree. Requires level 45, gives 100 experience",
     "value": 100,
-    "quantity": 1,
     "icon": "noto:wood"
   },
   {
@@ -36,7 +32,6 @@
     "name": "Yew Log",
     "description": "log from a yew tree. Requires level 60, gives 175 experience",
     "value": 175,
-    "quantity": 1,
     "icon": "noto:wood"
   },
   {
@@ -44,7 +39,6 @@
     "name": "Magic Log",
     "description": "log from a magic tree. Requires level 75, gives 250 experience",
     "value": 250,
-    "quantity": 1,
     "icon": "noto:wood"
   },
   {
@@ -52,7 +46,6 @@
     "name": "Redwood Log",
     "description": "log from a redwood tree. Requires level 90, gives 380 experience",
     "value": 380,
-    "quantity": 1,
     "icon": "noto:wood"
   },
   {
@@ -60,7 +53,6 @@
     "name": "Teak Log",
     "description": "log from a teak tree. Requires level 35, gives 85 experience",
     "value": 85,
-    "quantity": 1,
     "icon": "noto:wood"
   },
   {
@@ -68,7 +60,6 @@
     "name": "Mahogany Log",
     "description": "log from a mahogany tree. Requires level 50, gives 125 experience",
     "value": 125,
-    "quantity": 1,
     "icon": "noto:wood"
   },
   {
@@ -76,7 +67,6 @@
     "name": "Elder Log",
     "description": "log from an elder tree. Requires level 85, gives 315 experience",
     "value": 315,
-    "quantity": 1,
     "icon": "noto:wood"
   },
   {
@@ -84,7 +74,6 @@
     "name": "Raw Shrimp",
     "description": "A small, edible marine crustacean.",
     "value": 10,
-    "quantity": 1,
     "icon": "mdi:fish"
   },
   {
@@ -92,7 +81,6 @@
     "name": "Raw Sardine",
     "description": "A small, silvery fish often canned.",
     "value": 20,
-    "quantity": 1,
     "icon": "mdi:fish"
   },
   {
@@ -100,7 +88,6 @@
     "name": "Raw Herring",
     "description": "A small, oily fish found in the North Atlantic.",
     "value": 30,
-    "quantity": 1,
     "icon": "mdi:fish"
   },
   {
@@ -108,7 +95,6 @@
     "name": "Raw Anchovy",
     "description": "A small, common salt-water forage fish.",
     "value": 40,
-    "quantity": 1,
     "icon": "mdi:fish"
   },
   {
@@ -116,7 +102,6 @@
     "name": "Raw Mackerel",
     "description": "A fast-swimming fish of the tuna family.",
     "value": 50,
-    "quantity": 1,
     "icon": "mdi:fish"
   },
   {
@@ -124,7 +109,6 @@
     "name": "Raw Trout",
     "description": "A freshwater fish highly prized by anglers.",
     "value": 60,
-    "quantity": 1,
     "icon": "mdi:fish"
   },
   {
@@ -132,7 +116,6 @@
     "name": "Raw Cod",
     "description": "A large marine fish with a mild flavor.",
     "value": 70,
-    "quantity": 1,
     "icon": "mdi:fish"
   },
   {
@@ -140,7 +123,6 @@
     "name": "Raw Pike",
     "description": "A large, predatory freshwater fish.",
     "value": 80,
-    "quantity": 1,
     "icon": "mdi:fish"
   },
   {
@@ -148,7 +130,6 @@
     "name": "Raw Salmon",
     "description": "A popular game fish known for its pink flesh.",
     "value": 90,
-    "quantity": 1,
     "icon": "mdi:fish"
   },
   {
@@ -156,7 +137,6 @@
     "name": "Raw Tuna",
     "description": "A large, fast-swimming fish of the open seas.",
     "value": 100,
-    "quantity": 1,
     "icon": "mdi:fish"
   },
   {
@@ -164,7 +144,6 @@
     "name": "Raw Lobster",
     "description": "A large marine crustacean with a strong shell.",
     "value": 120,
-    "quantity": 1,
     "icon": "mdi:lobster"
   },
   {
@@ -172,7 +151,6 @@
     "name": "Raw Swordfish",
     "description": "A large fish with a long, flat bill.",
     "value": 150,
-    "quantity": 1,
     "icon": "mdi:sword-fish"
   },
   {
@@ -180,7 +158,6 @@
     "name": "Raw Shark",
     "description": "A large, predatory fish known for its sharp teeth.",
     "value": 200,
-    "quantity": 1,
     "icon": "mdi:shark"
   },
   {
@@ -188,7 +165,6 @@
     "name": "Raw Manta Ray",
     "description": "A large, flat fish with wing-like pectoral fins.",
     "value": 250,
-    "quantity": 1,
     "icon": "mdi:ray-start"
   },
   {
@@ -196,7 +172,6 @@
     "name": "Raw Whale",
     "description": "The largest marine mammal, known for its size.",
     "value": 300,
-    "quantity": 1,
     "icon": "mdi:whale"
   },
   {
@@ -204,7 +179,6 @@
     "name": "Raw Shrimp",
     "description": "A small, edible marine crustacean.",
     "value": 10,
-    "quantity": 1,
     "icon": "mdi:fish"
   },
   {
@@ -212,7 +186,6 @@
     "name": "Raw Sardine",
     "description": "A small, silvery fish often canned.",
     "value": 20,
-    "quantity": 1,
     "icon": "mdi:fish"
   },
   {
@@ -220,7 +193,6 @@
     "name": "Raw Herring",
     "description": "A small, oily fish found in the North Atlantic.",
     "value": 30,
-    "quantity": 1,
     "icon": "mdi:fish"
   },
   {
@@ -228,7 +200,6 @@
     "name": "Raw Anchovy",
     "description": "A small, common salt-water forage fish.",
     "value": 40,
-    "quantity": 1,
     "icon": "mdi:fish"
   },
   {
@@ -236,7 +207,6 @@
     "name": "Raw Mackerel",
     "description": "A fast-swimming fish of the tuna family.",
     "value": 50,
-    "quantity": 1,
     "icon": "mdi:fish"
   },
   {
@@ -244,7 +214,6 @@
     "name": "Raw Trout",
     "description": "A freshwater fish highly prized by anglers.",
     "value": 60,
-    "quantity": 1,
     "icon": "mdi:fish"
   },
   {
@@ -252,7 +221,6 @@
     "name": "Raw Cod",
     "description": "A large marine fish with a mild flavor.",
     "value": 70,
-    "quantity": 1,
     "icon": "mdi:fish"
   },
   {
@@ -260,7 +228,6 @@
     "name": "Raw Pike",
     "description": "A large, predatory freshwater fish.",
     "value": 80,
-    "quantity": 1,
     "icon": "mdi:fish"
   },
   {
@@ -268,7 +235,6 @@
     "name": "Raw Salmon",
     "description": "A popular game fish known for its pink flesh.",
     "value": 90,
-    "quantity": 1,
     "icon": "mdi:fish"
   },
   {
@@ -276,7 +242,6 @@
     "name": "Raw Tuna",
     "description": "A large, fast-swimming fish of the open seas.",
     "value": 100,
-    "quantity": 1,
     "icon": "mdi:fish"
   },
   {
@@ -284,7 +249,6 @@
     "name": "Raw Lobster",
     "description": "A large marine crustacean with a strong shell.",
     "value": 120,
-    "quantity": 1,
     "icon": "mdi:lobster"
   },
   {
@@ -292,7 +256,6 @@
     "name": "Raw Swordfish",
     "description": "A large fish with a long, flat bill.",
     "value": 150,
-    "quantity": 1,
     "icon": "mdi:sword-fish"
   },
   {
@@ -300,7 +263,6 @@
     "name": "Raw Shark",
     "description": "A large, predatory fish known for its sharp teeth.",
     "value": 200,
-    "quantity": 1,
     "icon": "mdi:shark"
   },
   {
@@ -308,7 +270,6 @@
     "name": "Raw Manta Ray",
     "description": "A large, flat fish with wing-like pectoral fins.",
     "value": 250,
-    "quantity": 1,
     "icon": "mdi:ray-start"
   },
   {
@@ -316,7 +277,6 @@
     "name": "Raw Whale",
     "description": "The largest marine mammal, known for its size.",
     "value": 300,
-    "quantity": 1,
     "icon": "mdi:whale"
   },
   {
@@ -324,7 +284,6 @@
     "name": "Copper Ore",
     "description": "A lump of copper ore.",
     "value": 5,
-    "quantity": 1,
     "icon": "copper_ore_icon.png"
   },
   {
@@ -332,7 +291,6 @@
     "name": "Tin Ore",
     "description": "A lump of tin ore.",
     "value": 5,
-    "quantity": 1,
     "icon": "tin_ore_icon.png"
   },
   {
@@ -340,7 +298,6 @@
     "name": "Iron Ore",
     "description": "A lump of iron ore.",
     "value": 10,
-    "quantity": 1,
     "icon": "iron_ore_icon.png"
   },
   {
@@ -348,7 +305,6 @@
     "name": "Coal",
     "description": "A chunk of coal.",
     "value": 15,
-    "quantity": 1,
     "icon": "coal_icon.png"
   },
   {
@@ -356,7 +312,6 @@
     "name": "Gold Ore",
     "description": "A lump of gold ore.",
     "value": 20,
-    "quantity": 1,
     "icon": "gold_ore_icon.png"
   },
   {
@@ -364,7 +319,6 @@
     "name": "Mithril Ore",
     "description": "A lump of mithril ore.",
     "value": 25,
-    "quantity": 1,
     "icon": "mithril_ore_icon.png"
   },
   {
@@ -372,7 +326,6 @@
     "name": "Adamantite Ore",
     "description": "A lump of adamantite ore.",
     "value": 30,
-    "quantity": 1,
     "icon": "adamantite_ore_icon.png"
   },
   {
@@ -380,7 +333,6 @@
     "name": "Runite Ore",
     "description": "A lump of runite ore.",
     "value": 50,
-    "quantity": 1,
     "icon": "runite_ore_icon.png"
   },
   {
@@ -388,7 +340,6 @@
     "name": "Goblin Dagger",
     "description": "A crude dagger used by goblins.",
     "value": 10,
-    "quantity": 1,
     "icon": "goblin_dagger_icon.png"
   },
   {
@@ -396,7 +347,6 @@
     "name": "Tattered Cloth",
     "description": "A torn piece of cloth from a goblin's attire.",
     "value": 2,
-    "quantity": 1,
     "icon": "tattered_cloth_icon.png"
   },
   {
@@ -404,7 +354,6 @@
     "name": "Bones",
     "description": "A torn piece of cloth from a goblin's attire.",
     "value": 2,
-    "quantity": 1,
     "icon": "tattered_cloth_icon.png"
   },
   {
@@ -412,7 +361,6 @@
     "name": "Dragon Scale",
     "description": "A torn piece of cloth from a goblin's attire.",
     "value": 2,
-    "quantity": 1,
     "icon": "tattered_cloth_icon.png"
   },
   {
@@ -420,7 +368,6 @@
     "name": "Magic Herb",
     "description": "A rare herb with magical properties.",
     "value": 50,
-    "quantity": 1,
     "icon": "magic_herb_icon.png"
   },
   {
@@ -428,7 +375,6 @@
     "name": "Ancient Relic",
     "description": "A relic from ancient times.",
     "value": 100,
-    "quantity": 1,
     "icon": "ancient_relic_icon.png"
   },
   {
@@ -436,7 +382,6 @@
     "name": "Leather Armor",
     "description": "Armor made from leather.",
     "value": 75,
-    "quantity": 1,
     "icon": "leather_armor_icon.png"
   },
   {
@@ -444,7 +389,6 @@
     "name": "Battle Axe",
     "description": "A heavy axe used in battle.",
     "value": 150,
-    "quantity": 1,
     "icon": "battle_axe_icon.png"
   },
   {
@@ -452,7 +396,6 @@
     "name": "Fire Sword",
     "description": "A sword imbued with fire.",
     "value": 200,
-    "quantity": 1,
     "icon": "fire_sword_icon.png"
   },
   {
@@ -460,7 +403,6 @@
     "name": "Dragon Egg",
     "description": "An egg of a dragon.",
     "value": 500,
-    "quantity": 1,
     "icon": "dragon_egg_icon.png"
   },
   {
@@ -468,7 +410,6 @@
     "name": "Rare Potion",
     "description": "A potion with rare ingredients.",
     "value": 300,
-    "quantity": 1,
     "icon": "rare_potion_icon.png"
   },
   {
@@ -476,7 +417,6 @@
     "name": "Gemstone",
     "description": "A precious gemstone.",
     "value": 250,
-    "quantity": 1,
     "icon": "gemstone_icon.png"
   },
   {
@@ -484,7 +424,6 @@
     "name": "Club",
     "description": "A heavy club used by trolls.",
     "value": 50,
-    "quantity": 1,
     "icon": "club_icon.png"
   },
   {
@@ -492,7 +431,6 @@
     "name": "Troll Hide",
     "description": "The hide of a troll.",
     "value": 100,
-    "quantity": 1,
     "icon": "troll_hide_icon.png"
   },
   {
@@ -500,7 +438,6 @@
     "name": "Broken Shield",
     "description": "A shield that is broken.",
     "value": 20,
-    "quantity": 1,
     "icon": "broken_shield_icon.png"
   },
   {
@@ -508,7 +445,6 @@
     "name": "Dark Crystal",
     "description": "A crystal with dark energy.",
     "value": 150,
-    "quantity": 1,
     "icon": "dark_crystal_icon.png"
   },
   {
@@ -516,7 +452,6 @@
     "name": "Leather Boots",
     "description": "Boots made from leather.",
     "value": 30,
-    "quantity": 1,
     "icon": "leather_boots_icon.png"
   },
   {
@@ -524,7 +459,6 @@
     "name": "Stolen Pouch",
     "description": "A pouch stolen by bandits.",
     "value": 40,
-    "quantity": 1,
     "icon": "stolen_pouch_icon.png"
   }
 ]
