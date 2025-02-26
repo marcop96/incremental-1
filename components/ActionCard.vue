@@ -18,20 +18,22 @@
       required: true,
     },
   })
+
   const userHasRequiredLevel = computed(() => {
     const skill = skills.value.find(skill => skill.name === props.resource.skillName.toLowerCase())
-
     return skill ? skill.level >= props.resource.requiredLevel : false
   })
+
   const requiredItem = computed(() => {
-    const itemId = props.resource.itemId
-    return inventoryStore.findItemInDataBase(undefined, itemId)
+    return inventoryStore.findItemInDataBase(undefined, props.resource.itemId)
   })
+
   const userHasItem = computed(() => {
-    if (skillStore.activeSkill?.isGathering === false) {
-      return inventoryStore.findItemById(props.resource.itemId)
-    }
-    return false
+    return inventoryStore.findItemById(props.resource.itemId) || null
+  })
+
+  const userItemCount = computed(() => {
+    return (userHasItem.value?.quantity ?? 0)
   })
 </script>
 
@@ -43,8 +45,6 @@
       'opacity-50 grayscale pointer-events-none': skillStore.activeSkill?.isGathering === false && !userHasItem,
       'ring-4 ring-green-400/50': gatherStore.activeResource?.name === resource.name
     }">
-
-
     <!-- Resource Artwork -->
     <div class="relative z-10 flex items-center justify-center h-32">
       <div class="p-4 transition-transform duration-300 rounded-full bg-gray-900/30 hover:scale-110">
@@ -55,17 +55,12 @@
     <!-- Card Content -->
     <div class="relative z-10 p-4 pt-0">
       <div class="mb-2 text-center">
-        <h3 class="text-lg font-bold ">
+        <h3 class="text-lg font-bold">
           {{ resource.name }}
         </h3>
-        <div v-if="skillStore.activeSkill?.isGathering === false && !userHasItem"
-          class="absolute inset-0 flex items-center justify-center p-2 text-xs text-center text-red-400 bg-black/50">
-          <span class="text-red-400">⚠️ Requires {{ requiredItem?.name }} </span>
-        </div>
 
-        <div v-else>
-
-          <div class=" text-xs font-medium text-gray-400">
+        <div>
+          <div class="text-xs font-medium text-gray-400">
             Lv. {{ resource.requiredLevel }}
           </div>
 
@@ -80,21 +75,30 @@
               <span class="font-semibold text-gray-300">{{ resource.experienceGiven }}xp</span>
             </div>
           </div>
-        </div>
 
+          <!-- Required Item Display -->
+          <div v-if="skillStore.activeSkill?.isGathering === false"
+            class="m-2 flex items-center justify-center text-xs text-center bg-black/50">
+            <span :class="userItemCount > 0 ? 'text-green-400' : 'text-red-400'">
+              ⚠️ Requires {{ requiredItem?.name }} (You have: {{ userItemCount }})
+            </span>
+          </div>
+
+          <!-- Item Count Display when Gathering is Allowed -->
+          <div v-else class="m-2 flex items-center justify-center text-xs text-center bg-black/50">
+            <span :class="userItemCount > 0 ? 'text-green-400' : 'text-red-400'">
+              You have: {{ userItemCount }}
+            </span>
+          </div>
+        </div>
       </div>
+
       <!-- Active Progress Bar -->
-      <div v-if="gatherStore.activeResource?.name === resource.name"
+      <!-- <div v-if="gatherStore.activeResource?.name === resource.name"
         class="absolute bottom-0 left-0 right-0 h-1 bg-green-900/50">
         <div class="h-full bg-gradient-to-r from-green-400 to-emerald-600 transition-all duration-1000 ease-linear"
           :style="{ width: `${gatherStore.progress * 100}%` }" />
-      </div>
+      </div>-->
     </div>
-
-
   </div>
 </template>
-
-<style scoped>
-  /* Add any custom animations here if needed */
-</style>
