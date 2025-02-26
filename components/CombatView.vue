@@ -4,6 +4,7 @@
   import { useSkillStore } from '../composable/useSkills'
   import { useInventoryStore } from '~/composable/useInventory'
   import { usePlayerStore } from '~/composable/usePlayer'
+  import { useCombatStore } from '~/composable/useCombat'
   import { Progress } from '~/components/ui/progress'
 
   /* =======================
@@ -42,9 +43,11 @@
   const skillStore = useSkillStore()
   const inventoryStore = useInventoryStore()
   const playerStore = usePlayerStore()
+  const combatStore = useCombatStore()
 
   // Filter combat-related skills
   const combatStats = skillStore.skills.filter(skill => skill.isCombat)
+
 
   // Player base stats computed from combat stats (read-only)
   const playerBase = computed(() => ({
@@ -54,8 +57,7 @@
     hitpoints: combatStats.find(stat => stat.name === 'hitpoints')?.level || 1,
   }))
 
-  // Separate mutable state for the player's current health
-  const playerCurrentHealth = ref(playerBase.value.hitpoints * 10)
+
 
   // Sorted monsters (make a shallow copy before sorting)
   const sortedMonsters = computed(() => [...monsters].sort((a, b) => (a.level || 0) - (b.level || 0)))
@@ -73,7 +75,7 @@
   }
 
   // Logging helper that adds a timestamp and type to combat log entries
-  function logCombat(action: string, playerDamage: number | null, monsterDamage: number | null): void {
+  function logCombat(action: string, playerDamage?: number, monsterDamage?: number): void {
     const timestamp = Date.now()
     let type: string = 'other'
     let message: string
@@ -106,7 +108,7 @@
   const monsterWeaponSpeed = ref(1)
 
   // Health percentages
-  const playerHealthPercentage = computed(() => (playerCurrentHealth.value / (playerBase.value.hitpoints * 10)) * 100)
+  const playerHealthPercentage = computed(() => (skillStore.playerCurrentHealth / (playerBase.value.hitpoints * 10)) * 100)
   const monsterHealthPercentage = computed(() => (monster.value.currentHealth / monster.value.health) * 100)
 
   // Define reactive monster state with the Monster interface
@@ -184,7 +186,7 @@
     if (now >= playerNextAttackTime && monster.value.currentHealth > 0) {
       handlePlayerAttack().then(() => { /* After player attack */ })
     }
-    if (now >= monsterNextAttackTime && playerCurrentHealth.value > 0) {
+    if (now >= monsterNextAttackTime && skillStore.playerCurrentHealth > 0) {
       handleMonsterAttack().then(() => { /* After monster attack */ })
     }
     combatTimeoutId = setTimeout(combatLoop, 100)
@@ -193,8 +195,7 @@
   async function handlePlayerAttack(): Promise<void> {
     const now = Date.now()
     if (now >= playerNextAttackTime) {
-      const playerDamage = rollDamage(playerBase.value.attack, playerBase.value.strength, monster.value.defense)
-      // Subtract damage and clamp monster health to zero
+      const playerDamage = combatStore.rollDamage(playerBase.value.attack, playerBase.value.strength, monster.value.defense)
       monster.value.currentHealth = Math.max(0, monster.value.currentHealth - playerDamage)
       logCombat('Player', playerDamage, 0)
       if (monster.value.currentHealth <= 0) {
@@ -209,12 +210,12 @@
   async function handleMonsterAttack(): Promise<void> {
     const now = Date.now()
     if (now >= monsterNextAttackTime && monster.value.currentHealth > 0) {
-      const monsterDamage = rollDamage(monster.value.attack, monster.value.strength, playerBase.value.defense)
+      const monsterDamage = combatStore.rollDamage(monster.value.attack, monster.value.strength, playerBase.value.defense)
       // Subtract damage and clamp player health to zero
-      playerCurrentHealth.value = Math.max(0, playerCurrentHealth.value - monsterDamage)
+      skillStore.playerCurrentHealth = Math.max(0, skillStore.playerCurrentHealth - monsterDamage)
       logCombat('Monster', 0, monsterDamage)
-      if (playerCurrentHealth.value <= 0) {
-        logCombat('You Died', null, null)
+      if (skillStore.playerCurrentHealth <= 0) {
+        logCombat('You Died')
         isCombatActive.value = false
         return
       }
@@ -223,20 +224,14 @@
     await new Promise(resolve => setTimeout(resolve, 100))
   }
 
-  // Enhanced damage calculation with 20% variance
-  function rollDamage(attack: number, strength: number, defense: number): number {
-    const baseDamage = Math.max(0, (attack * strength) - (defense * 0.5))
-    const variance = baseDamage * 0.2
-    const damage = baseDamage + (Math.random() * variance - variance / 2)
-    return Math.floor(damage)
-  }
+
 
   function handleMonsterDeath(): void {
     if (isRunningAway.value) return
     startMonsterRespawn() // Begin monster respawn timer
-    playerStore.addExperience(selectedAttackStyle.value.id, Math.floor(monster.value.xp * 0.66))
-    playerStore.addExperience(9, Math.floor(monster.value.xp * 0.33))
-    logCombat(`You Killed ${monster.value.name}`, null, null)
+    playerStore.addExperience(selectedAttackStyle.value.name, Math.floor(monster.value.xp * 0.66))
+    playerStore.addExperience('hitpoints', Math.floor(monster.value.xp * 0.33))
+    logCombat(`You Killed ${monster.value.name}`)
     giveLoot(monster.value.drops)
   }
 
@@ -263,7 +258,7 @@
   function respawn(): void {
     isRespawning.value = true
     setTimeout(() => {
-      playerCurrentHealth.value = playerBase.value.hitpoints * 10
+      skillStore.playerCurrentHealth = skillStore.playerMaxHealth
       restartCombat()
       isRespawning.value = false
     }, 1000)
@@ -306,9 +301,10 @@
       <div class="flex flex-col items-center bg-gray-700 p-6 rounded-lg shadow-lg">
         <h2 class="text-2xl font-bold mb-4">Player</h2>
         <div class="w-32 h-32 bg-green-700 rounded-full mb-4"></div>
-        <p>Health: {{ playerCurrentHealth }} / {{ playerBase.hitpoints * 10 }}</p>
+        <p>Health: {{ skillStore.playerCurrentHealth }} / {{ playerBase.hitpoints * 10 }}</p>
         <div class="health-bar-container">
-          <div v-if="playerCurrentHealth > 0" class="health-bar" :style="{ width: playerHealthPercentage + '%' }"></div>
+          <div v-if="skillStore.playerCurrentHealth > 0" class="health-bar"
+            :style="{ width: playerHealthPercentage + '%' }"></div>
         </div>
         <p>Attack: {{ playerBase.attack }}</p>
         <p>Strength: {{ playerBase.strength }}</p>
@@ -338,13 +334,13 @@
           {{ isCombatActive && !isMonsterRespawning ? '🏃‍♂️' : '' }}
           {{ isMonsterRespawning ? 'placeholder spinner' : '' }}
         </div>
-        <button v-if="playerCurrentHealth > 0"
+        <button v-if="skillStore.playerCurrentHealth > 0"
           class="bg-red-500 text-white px-6 py-3 rounded-lg text-xl font-bold hover:bg-red-600 transition-colors mb-4"
           :class="{ 'bg-red-900': isRespawning }" :hidden="isCombatActive || isRespawning || isMonsterRespawning"
           @click="startCombat">
           FIGHT!
         </button>
-        <button v-if="playerCurrentHealth <= 0"
+        <button v-if="skillStore.playerCurrentHealth <= 0"
           class="bg-gray-500 text-white px-6 py-3 rounded-lg text-xl font-bold hover:bg-gray-600 transition-colors mb-4"
           @click="respawn">
           {{ isRespawning ? 'Respawning...' : 'Respawn' }}

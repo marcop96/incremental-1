@@ -3,42 +3,19 @@ import { ref, computed, onUnmounted } from 'vue'
 import { useSkillStore } from '../composable/useSkills'
 import { useInventoryStore } from '~/composable/useInventory'
 import { usePlayerStore } from '~/composable/usePlayer'
+import type { Monster } from '~/types'
 
-/* =======================
-   CONFIGURATION CONSTANTS
-========================== */
 const DEFAULT_WEAPON_SPEED = 1        // In seconds
 const MONSTER_RESPAWN_DELAY = 1       // In milliseconds (for testing – adjust for production)
 const MAX_COMBAT_LOG_ENTRIES = 10
 
-/* =======================
-   Define Interfaces & Types
-========================== */
-export interface Monster {
-  id: number
-  name: string
-  level?: number
-  health: number
-  currentHealth: number
-  attack: number
-  strength: number
-  defense: number
-  speed: number
-  gold: number
-  xp: number
-  drops: Array<{ name: string; chance: number }>
-}
-
-/* =======================
-   Define and Export the Combat Store
-========================== */
 export const useCombatStore = defineStore('combat', () => {
   // Import other stores
   const skillStore = useSkillStore()
   const inventoryStore = useInventoryStore()
   const playerStore = usePlayerStore()
 
-  // Filter combat-related skills from skillStore
+  // Filter combat-related skills from the skillStore
   const combatStats = skillStore.skills.filter(skill => skill.isCombat)
 
   // Player base stats computed from combat stats (read-only)
@@ -49,8 +26,9 @@ export const useCombatStore = defineStore('combat', () => {
     hitpoints: combatStats.find(stat => stat.name === 'hitpoints')?.level || 1,
   }))
 
-  // Player's current health (this could also belong to your player store)
-  const playerCurrentHealth = ref(playerBase.value.hitpoints * 10)
+  // Define player's current health and max health (using a multiplier of 10)
+  const playerMaxHealth = computed(() => playerBase.value.hitpoints * 10)
+  const playerCurrentHealth = ref(playerMaxHealth.value)
 
   // Combat log state (each entry stores a timestamp and message, plus optional damage values and a type)
   const combatLog = ref<Array<{ timestamp: number; message: string; playerDamage?: number; monsterDamage?: number; type?: string }>>([])
@@ -69,7 +47,7 @@ export const useCombatStore = defineStore('combat', () => {
   const monsterWeaponSpeed = ref(1)
 
   // Health percentages computed from current health values
-  const playerHealthPercentage = computed(() => (playerCurrentHealth.value / (playerBase.value.hitpoints * 10)) * 100)
+  const playerHealthPercentage = computed(() => (playerCurrentHealth.value / playerMaxHealth.value) * 100)
   const monsterHealthPercentage = computed(() => (monster.value.currentHealth / monster.value.health) * 100)
 
   // Define reactive monster state (default monster: Goblin)
@@ -78,9 +56,10 @@ export const useCombatStore = defineStore('combat', () => {
     name: 'Goblin',
     health: 1,
     currentHealth: 1,
-    attack: 5,
-    strength: 3,
-    defense: 2,
+    level: 1,
+    attack: 1,
+    strength: 1,
+    defense: 1,
     speed: 3,
     gold: 5,
     xp: 10000,
@@ -92,7 +71,7 @@ export const useCombatStore = defineStore('combat', () => {
     ],
   })
 
-  // Attack styles and selected style (these could also be defined in a separate module)
+  // Attack styles and selected style
   const attackStyles = [
     { name: 'attack', icon: 'IconSword', color: 'text-red-500', id: 6 },
     { name: 'strength', icon: 'IconArm', color: 'text-yellow-500', id: 7 },
@@ -108,11 +87,12 @@ export const useCombatStore = defineStore('combat', () => {
 
   /* =======================
      Utility: Logging Combat Events
-  =========================== */
+  ========================== */
   function logCombat(action: string, playerDamage: number | null, monsterDamage: number | null): void {
     const timestamp = Date.now()
-    let type: string = 'other'
-    let message: string = ''
+    let type = 'other'
+    let message = ''
+
     if (action === 'Player') {
       message = `Player dealt ${playerDamage} damage to ${monster.value.name}!`
       type = 'player'
@@ -122,6 +102,7 @@ export const useCombatStore = defineStore('combat', () => {
     } else {
       message = action
     }
+
     combatLog.value.push({ timestamp, message, playerDamage, monsterDamage, type })
     if (combatLog.value.length > MAX_COMBAT_LOG_ENTRIES) {
       combatLog.value.shift()
@@ -129,25 +110,31 @@ export const useCombatStore = defineStore('combat', () => {
   }
 
   /* =======================
-     Combat Logic Functions
-  =========================== */
+     Combat Loop
+  ========================== */
   function combatLoop(): void {
     if (!isCombatActive.value) return
     const now = Date.now()
+
+    // Check and process player attack
     if (now >= playerNextAttackTime.value && monster.value.currentHealth > 0) {
-      handlePlayerAttack().then(() => { /* After player attack */ })
+      handlePlayerAttack()
     }
+    // Check and process monster attack
     if (now >= monsterNextAttackTime.value && playerCurrentHealth.value > 0) {
-      handleMonsterAttack().then(() => { /* After monster attack */ })
+      handleMonsterAttack()
     }
+
     combatTimeoutId = setTimeout(combatLoop, 100)
   }
 
-  async function handlePlayerAttack(): Promise<void> {
+  /* =======================
+     Attack Handling Functions
+  ========================== */
+  function handlePlayerAttack(): void {
     const now = Date.now()
     if (now >= playerNextAttackTime.value) {
       const playerDamage = rollDamage(playerBase.value.attack, playerBase.value.strength, monster.value.defense)
-      // Subtract damage and ensure monster health doesn't go below zero
       monster.value.currentHealth = Math.max(0, monster.value.currentHealth - playerDamage)
       logCombat('Player', playerDamage, 0)
       if (monster.value.currentHealth <= 0) {
@@ -156,14 +143,12 @@ export const useCombatStore = defineStore('combat', () => {
       }
       playerNextAttackTime.value = now + playerWeaponSpeed.value * 1000
     }
-    await new Promise(resolve => setTimeout(resolve, 100))
   }
 
-  async function handleMonsterAttack(): Promise<void> {
+  function handleMonsterAttack(): void {
     const now = Date.now()
     if (now >= monsterNextAttackTime.value && monster.value.currentHealth > 0) {
       const monsterDamage = rollDamage(monster.value.attack, monster.value.strength, playerBase.value.defense)
-      // Subtract damage and ensure player health doesn't go below zero
       playerCurrentHealth.value = Math.max(0, playerCurrentHealth.value - monsterDamage)
       logCombat('Monster', 0, monsterDamage)
       if (playerCurrentHealth.value <= 0) {
@@ -173,23 +158,25 @@ export const useCombatStore = defineStore('combat', () => {
       }
       monsterNextAttackTime.value = now + monsterWeaponSpeed.value * 1000
     }
-    await new Promise(resolve => setTimeout(resolve, 100))
   }
 
-  // Damage calculation with 20% variance
   function rollDamage(attack: number, strength: number, defense: number): number {
-    const baseDamage = Math.max(0, (attack * strength) - (defense * 0.5))
+    const baseDamage = (attack * strength) + 10 / Math.sqrt(defense + 1) + 1
     const variance = baseDamage * 0.2
     const damage = baseDamage + (Math.random() * variance - variance / 2)
-    return Math.floor(damage)
+    return Math.max(1, Math.floor(damage))
   }
 
+
+  /* =======================
+     Monster Death & Respawn
+  ========================== */
   function handleMonsterDeath(): void {
     if (isRunningAway.value) return
     startMonsterRespawn()
     // Award experience using values from selected attack style
-    playerStore.addExperience(selectedAttackStyle.value.id, Math.floor(monster.value.xp * 0.66))
-    playerStore.addExperience(9, Math.floor(monster.value.xp * 0.33))
+    playerStore.addExperience(selectedAttackStyle.value.name, Math.floor(monster.value.xp * 0.66))
+    playerStore.addExperience('hitpoints', Math.floor(monster.value.xp * 0.33))
     logCombat(`You Killed ${monster.value.name}`, null, null)
     giveLoot(monster.value.drops)
   }
@@ -206,6 +193,9 @@ export const useCombatStore = defineStore('combat', () => {
     }, MONSTER_RESPAWN_DELAY)
   }
 
+  /* =======================
+     Combat Control Functions
+  ========================== */
   function restartCombat(): void {
     isCombatActive.value = false
     combatLog.value = []
@@ -213,42 +203,49 @@ export const useCombatStore = defineStore('combat', () => {
     if (combatTimeoutId) clearTimeout(combatTimeoutId)
     monster.value.currentHealth = monster.value.health
   }
-  function startCombat() {
+
+  function startCombat(): void {
     if (isCombatActive.value || isMonsterRespawning.value) return
     isCombatActive.value = true
     const now = Date.now()
-    playerNextAttackTime = now + playerWeaponSpeed.value * 1000
-    monsterNextAttackTime = now + monsterWeaponSpeed.value * 1000
+    playerNextAttackTime.value = now + playerWeaponSpeed.value * 1000
+    monsterNextAttackTime.value = now + monsterWeaponSpeed.value * 1000
     combatLoop()
   }
+
   function respawn(): void {
     isRespawning.value = true
     setTimeout(() => {
-      playerCurrentHealth.value = playerBase.value.hitpoints * 10
+      playerCurrentHealth.value = playerMaxHealth.value
       restartCombat()
       isRespawning.value = false
     }, 1000)
   }
 
+  /* =======================
+     Loot Handling Function
+  ========================== */
   function giveLoot(drops: Array<{ name: string, chance: number }>): void {
     const lootedItems: string[] = []
-    drops.forEach(drop => {
+
+    for (const drop of drops) {
       const roll = Math.random() * 100
       if (roll <= drop.chance && drop.name) {
         const existingItem = inventoryStore.findItemInDataBase(drop.name)
-        if (existingItem) inventoryStore.addItem(existingItem)
+        if (existingItem) {
+          inventoryStore.addItem(existingItem)
+        }
         lootedItems.push(drop.name)
       }
-    })
-    if (lootedItems.length) {
-      lootedItems.forEach(item => {
-        const existingLoot = lootLog.value.find(loot => loot.name === item)
-        if (existingLoot) {
-          existingLoot.count++
-        } else {
-          lootLog.value.push({ name: item, count: 1 })
-        }
-      })
+    }
+
+    for (const item of lootedItems) {
+      const existingLoot = lootLog.value.find(loot => loot.name === item)
+      if (existingLoot) {
+        existingLoot.count++
+      } else {
+        lootLog.value.push({ name: item, count: 1 })
+      }
     }
   }
 
@@ -257,8 +254,8 @@ export const useCombatStore = defineStore('combat', () => {
     restartCombat()
   }
 
-  // Optionally, you could hook onUnmounted() here if the store is used within components.
-  // onUnmounted(() => { cleanup() })
+  // Ensure cleanup when the component using this store is unmounted
+  onUnmounted(cleanup)
 
   return {
     // State
@@ -269,15 +266,15 @@ export const useCombatStore = defineStore('combat', () => {
     combatLog,
     sortedCombatLog,
     lootLog,
-    playerCurrentHealth,
     playerBase,
+    playerCurrentHealth,
+    playerHealthPercentage,
     monster,
+    monsterHealthPercentage,
     attackStyles,
     selectedAttackStyle,
     playerWeaponSpeed,
     monsterWeaponSpeed,
-    playerHealthPercentage,
-    monsterHealthPercentage,
     // Functions
     startCombat,
     handlePlayerAttack,

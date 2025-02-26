@@ -10,16 +10,17 @@ export const usePlayerStore = defineStore('playerxp', () => {
   const { skills } = storeToRefs(skillStore)
 
   const addExperience = (skillName: string, exp: number) => {
-    const skill = skills.value.find(s => s.name.toLowerCase() === skillName.toLowerCase())
+    const skill = skills.value.find(s => s.name === skillName)
     if (skill) {
       skill.xp += exp
     }
+    else { console.log(`${skillName} not found`) }
 
     checkLevelUp(skillName)
   }
 
   const checkLevelUp = (skillName: string) => {
-    const skill = skills.value.find(s => s.name.toLowerCase() === skillName.toLowerCase())
+    const skill = skills.value.find(s => s.name === skillName)
     if (skill) {
       // eslint-disable-next-line no-constant-condition
       while (true) {
